@@ -1,0 +1,82 @@
+{
+  "project": {
+    "name": "CarMarket App",
+    "type": "Vue.js",
+    "version": "3.x",
+    "ui": "PrimeVue 4.x"
+  },
+  "components": {
+    "naming": {
+      "files": "PascalCase.vue",
+      "components": "PascalCase",
+      "props": "camelCase",
+      "events": "camelCase"
+    },
+    "structure": {
+      "template": "first",
+      "script": "second",
+      "style": "last"
+    },
+    "requirements": {
+      "props": {
+        "type": "required",
+        "validation": "required",
+        "default": "if needed",
+        "description": "required"
+      },
+      "documentation": {
+        "usage": "required",
+        "props": "required",
+        "events": "if exists",
+        "slots": "if exists"
+      },
+      "primevue": {
+        "baseComponent": "required",
+        "description": "Перед створенням нового компонента обов'язково вказати, на базі яких PrimeVue компонентів він буде створений",
+        "approval": "required",
+        "styling": "use only PrimeVue classes and utilities"
+      }
+    }
+  },
+  "styling": {
+    "primary": "PrimeVue",
+    "utilities": "PrimeFlex",
+    "customCSS": "only if absolutely necessary",
+    "themes": {
+      "light": "required",
+      "dark": "optional but preferred"
+    }
+  },
+  "conventions": {
+    "imports": {
+      "order": [
+        "vue core",
+        "vue router",
+        "primevue components",
+        "local components",
+        "composables",
+        "assets"
+      ]
+    },
+    "comments": {
+      "components": "required",
+      "complex logic": "required",
+      "props": "required",
+      "base components": "required"
+    }
+  },
+  "workflow": {
+    "before_creation": {
+      "1": "Визначити базові PrimeVue компоненти",
+      "2": "Описати структуру та взаємодію компонентів",
+      "3": "Отримати схвалення на створення",
+      "4": "Дотримуватися стилів PrimeVue"
+    }
+  },
+  "quality": {
+    "testing": "optional",
+    "typescript": "preferred",
+    "eslint": "required",
+    "prettier": "required"
+  }
+} 

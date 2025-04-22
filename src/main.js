@@ -7,13 +7,14 @@ import PrimeVue from 'primevue/config'
 import { definePreset } from '@primeuix/themes'
 import Lara from '@primeuix/themes/lara'
 import 'primeicons/primeicons.css'
-
+import 'primeflex/primeflex.css'
 // Імпорт компонентів PrimeVue
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
 import Dropdown from 'primevue/dropdown'
+import Message from 'primevue/message'
 
 // Налаштування пресету з orange кольором
 const MyPreset = definePreset(Lara, {
@@ -42,17 +43,17 @@ const MyPreset = definePreset(Lara, {
         },
         surface: {
             0: '#ffffff',
-            50: '#f8f9fa',
-            100: '#f1f3f5',
-            200: '#e9ecef',
-            300: '#dee2e6',
-            400: '#ced4da',
-            500: '#adb5bd',
-            600: '#868e96',
-            700: '#495057',
-            800: '#343a40',
-            900: '#212529',
-            950: '#1a1d20'
+            50: 'slate-50',
+            100: 'slate-100',
+            200: 'slate-200',
+            300: 'slate-300',
+            400: 'slate-400',
+            500: 'slate-500',
+            600: 'slate-600',
+            700: 'slate-700',
+            800: 'slate-800',
+            900: 'slate-900',
+            950: 'slate-950'
         }
     }
 })
@@ -78,5 +79,6 @@ app.component('InputText', InputText)
 app.component('Checkbox', Checkbox)
 app.component('RadioButton', RadioButton)
 app.component('Dropdown', Dropdown)
+app.component('Message', Message)
 
 app.mount('#app')

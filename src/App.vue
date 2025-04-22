@@ -1,36 +1,32 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import Header from './components/Header.vue'
 </script>
 
 <template>
-  <div class="app">
-    <nav class="nav">
-      <router-link to="/" class="nav-link">Головна</router-link>
-      <router-link to="/design-system" class="nav-link">Дизайн система</router-link>
-    </nav>
-    <router-view></router-view>
-  </div>
+  <Header />
+  <RouterView />
 </template>
 
 <style scoped>
-.app {
+.p-app {
   min-height: 100vh;
 }
 
-.nav {
+.p-nav {
   padding: 1rem 2rem;
   background-color: var(--p-surface-0);
   border-bottom: 1px solid var(--p-surface-200);
 }
 
-.nav-link {
+.p-nav-link {
   margin-right: 1rem;
   color: var(--p-primary-600);
   text-decoration: none;
   font-weight: 500;
 }
 
-.nav-link:hover {
+.p-nav-link:hover {
   color: var(--p-primary-700);
 }
 
