@@ -1,32 +1,71 @@
+/* Імпорт шрифту Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.5;
+  font-family: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+    Helvetica, Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
   
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--p-surface-50);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Futura PT', sans-serif;
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--p-surface-100);
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+  font-size: 1rem;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--surface-900);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
 #app {
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--p-surface-100);
   max-width: 1280px;
   margin: 0 auto;
-  
+}
+
+/* Базові стилі для тексту */
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+
+/* Товщина шрифту */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Базові стилі для елементів форм */
+button, input, optgroup, select, textarea {
+    font-feature-settings: inherit;
+    color: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    font-variation-settings: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
 }
 

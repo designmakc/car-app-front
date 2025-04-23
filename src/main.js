@@ -11,23 +11,21 @@ import 'primeflex/primeflex.css'
 // Імпорт компонентів PrimeVue
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
+import Dropdown from 'primevue/dropdown'
+import Card from 'primevue/card'
+import Tag from 'primevue/tag'
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
+import Menubar from 'primevue/menubar'
+import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
-import Dropdown from 'primevue/dropdown'
-import Message from 'primevue/message'
 
-// Налаштування пресету з orange кольором
+
+// Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
-    options: {
-        darkModeSelector: 'none'
-    },
     semantic: {
-        font: {
-            family: 'Roboto, sans-serif',
-            heading: {
-                family: 'Futura PT, sans-serif'
-            }
-        },
         primary: {
             50: '{orange.50}',
             100: '{orange.100}',
@@ -40,33 +38,20 @@ const MyPreset = definePreset(Lara, {
             800: '{orange.800}',
             900: '{orange.900}',
             950: '{orange.950}'
-        },
-        surface: {
-            0: '#ffffff',
-            50: 'slate-50',
-            100: 'slate-100',
-            200: 'slate-200',
-            300: 'slate-300',
-            400: 'slate-400',
-            500: 'slate-500',
-            600: 'slate-600',
-            700: 'slate-700',
-            800: 'slate-800',
-            900: 'slate-900',
-            950: 'slate-950'
         }
     }
 })
 
+// Створюємо та налаштовуємо додаток
 const app = createApp(App)
 
+// Налаштовуємо PrimeVue
 app.use(PrimeVue, {
     theme: {
         preset: MyPreset,
         options: {
             prefix: 'p',
-            darkModeSelector: false,
-            fontFamily: 'Roboto, sans-serif'
+            darkModeSelector: false
         }
     }
 })
@@ -76,9 +61,16 @@ app.use(router)
 // Реєстрація компонентів
 app.component('Button', Button)
 app.component('InputText', InputText)
+app.component('InputNumber', InputNumber)
+app.component('Dropdown', Dropdown)
+app.component('Card', Card)
+app.component('Tag', Tag)
+app.component('TabView', TabView)
+app.component('TabPanel', TabPanel)
+app.component('Menubar', Menubar)
+app.component('Textarea', Textarea)
 app.component('Checkbox', Checkbox)
 app.component('RadioButton', RadioButton)
-app.component('Dropdown', Dropdown)
-app.component('Message', Message)
 
+// Монтуємо додаток
 app.mount('#app')
