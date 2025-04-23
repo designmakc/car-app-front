@@ -42,7 +42,7 @@
         />
       </div>
       <div class="col-12">
-        <Button label="Додати оголошення" class="w-full" />
+        <Button label="Додати оголошення" class="w-full" @click="handleSearch" />
       </div>
     </div>
   </div>
@@ -68,4 +68,27 @@ const brands = ref([
 
 const models = ref([])
 const regions = ref(['Передній', 'Задній', 'Повний'])
+
+const handleSearch = () => {
+  // Тут буде логіка пошуку
+  console.log('Пошук автомобілів:', {
+    brand: selectedBrand.value,
+    model: selectedModel.value,
+    yearFrom: priceFrom.value,
+    yearTo: priceTo.value,
+    priceFrom: priceFrom.value,
+    priceTo: priceTo.value,
+    fuelType: null,
+    transmission: null,
+    location: selectedRegion.value
+  })
+}
+
+const handleReset = () => {
+  selectedBrand.value = null
+  selectedModel.value = null
+  priceFrom.value = null
+  priceTo.value = null
+  selectedRegion.value = null
+}
 </script> 

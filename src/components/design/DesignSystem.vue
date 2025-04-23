@@ -11,19 +11,19 @@
         <div class="col-12">
           <h3 class="text-xl font-medium mb-3 text-700">Primary кольори</h3>
           <div class="flex flex-wrap gap-3">
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box bg-primary-50 p-3 text-900 text-center border-round">
                 Primary 50
               </div>
               <div class="mt-2 text-center text-600">var(--primary-50)</div>
             </div>
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box bg-primary p-3 text-white text-center border-round">
                 Primary
               </div>
               <div class="mt-2 text-center text-600">var(--primary-color)</div>
             </div>
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box bg-primary-700 p-3 text-white text-center border-round">
                 Primary 700
               </div>
@@ -36,19 +36,19 @@
         <div class="col-12 mt-4">
           <h3 class="text-xl font-medium mb-3 text-700">Surface кольори</h3>
           <div class="flex flex-wrap gap-3">
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box surface-0 p-3 text-900 text-center border-round border-1 surface-border">
                 Surface 0
               </div>
               <div class="mt-2 text-center text-600">var(--surface-0)</div>
             </div>
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box surface-500 p-3 text-white text-center border-round">
                 Surface 500
               </div>
               <div class="mt-2 text-center text-600">var(--surface-500)</div>
             </div>
-            <div class="surface-card p-3 border-round">
+            <div class="surface-card p-3 border-round shadow-2">
               <div class="color-box surface-900 p-3 text-white text-center border-round">
                 Surface 900
               </div>
@@ -62,24 +62,140 @@
     <!-- Типографіка -->
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Типографіка</h2>
-      <div class="surface-card p-4 border-round">
+      <div class="surface-card p-4 border-round shadow-2">
         <div class="grid">
           <div class="col-12 mb-4">
-            <h3 class="text-xl font-medium mb-3 text-700">Розміри та ваги</h3>
-            <h1 class="text-4xl font-bold text-900 mb-3">Заголовок H1 - 2.5rem</h1>
-            <h2 class="text-3xl font-semibold text-800 mb-3">Заголовок H2 - 2rem</h2>
-            <h3 class="text-2xl font-medium text-700 mb-3">Заголовок H3 - 1.75rem</h3>
-            <h4 class="text-xl font-medium text-700 mb-3">Заголовок H4 - 1.5rem</h4>
-            <p class="text-lg text-700 mb-3">Великий текст - 1.125rem</p>
-            <p class="text-base text-600 mb-3">Звичайний текст - 1rem</p>
-            <p class="text-sm text-500">Малий текст - 0.875rem</p>
+            <h3 class="text-xl font-medium mb-3 text-700">Розміри тексту</h3>
+            <div class="flex flex-column gap-3">
+              <div class="flex align-items-center">
+                <div class="text-5xl w-8rem">5xl</div>
+                <div class="text-5xl">Розмір тексту 2.5rem (35px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-4xl w-8rem">4xl</div>
+                <div class="text-4xl">Розмір тексту 2rem (28px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-3xl w-8rem">3xl</div>
+                <div class="text-3xl">Розмір тексту 1.75rem (24.5px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-2xl w-8rem">2xl</div>
+                <div class="text-2xl">Розмір тексту 1.5rem (21px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-xl w-8rem">xl</div>
+                <div class="text-xl">Розмір тексту 1.25rem (17.5px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-lg w-8rem">lg</div>
+                <div class="text-lg">Розмір тексту 1.125rem (15.75px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-base w-8rem">base</div>
+                <div class="text-base">Розмір тексту 1rem (14px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-sm w-8rem">sm</div>
+                <div class="text-sm">Розмір тексту 0.875rem (12.25px)</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="text-xs w-8rem">xs</div>
+                <div class="text-xs">Розмір тексту 0.75rem (10.5px)</div>
+              </div>
+            </div>
           </div>
+
+          <div class="col-12 mb-4">
+            <h3 class="text-xl font-medium mb-3 text-700">Жирність шрифту</h3>
+            <div class="flex flex-column gap-3">
+              <div class="flex align-items-center">
+                <div class="font-black w-8rem">black</div>
+                <div class="font-black">Дуже жирний текст 900</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-extrabold w-8rem">extrabold</div>
+                <div class="font-extrabold">Екстра жирний текст 800</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-bold w-8rem">bold</div>
+                <div class="font-bold">Жирний текст 700</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-semibold w-8rem">semibold</div>
+                <div class="font-semibold">Напівжирний текст 600</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-medium w-8rem">medium</div>
+                <div class="font-medium">Середній текст 500</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-normal w-8rem">normal</div>
+                <div class="font-normal">Звичайний текст 400</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-light w-8rem">light</div>
+                <div class="font-light">Тонкий текст 300</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-extralight w-8rem">extralight</div>
+                <div class="font-extralight">Екстра тонкий текст 200</div>
+              </div>
+              <div class="flex align-items-center">
+                <div class="font-thin w-8rem">thin</div>
+                <div class="font-thin">Найтонший текст 100</div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="text-lg font-medium mb-2 text-700">Приклади використання</h4>
+              <div class="flex flex-column gap-3">
+                <div class="surface-100 p-3 border-round">
+                  <h5 class="text-xl font-bold text-900 mb-2">Заголовок статті</h5>
+                  <p class="font-normal text-700 mb-2">Звичайний текст статті використовує font-normal (400)</p>
+                  <p class="font-medium text-600">Підписи та додаткова інформація використовує font-medium (500)</p>
+                </div>
+
+                <div class="surface-100 p-3 border-round">
+                  <div class="text-2xl font-black text-900 mb-2">Великий заголовок</div>
+                  <div class="text-xl font-bold text-800 mb-2">Підзаголовок</div>
+                  <div class="font-medium text-700">Текст опису з середньою жирністю</div>
+                </div>
+
+                <div class="surface-100 p-3 border-round">
+                  <div class="flex align-items-center justify-content-between">
+                    <span class="font-semibold text-900">Ціна</span>
+                    <span class="font-bold text-primary text-xl">$999</span>
+                  </div>
+                  <div class="flex align-items-center justify-content-between mt-2">
+                    <span class="font-medium text-700">Знижка</span>
+                    <span class="font-semibold text-success">-15%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="col-12">
             <h3 class="text-xl font-medium mb-3 text-700">Line Height</h3>
-            <p class="mb-3 line-height-1">Line Height 1 - щільний</p>
-            <p class="mb-3 line-height-2">Line Height 2 - компактний</p>
-            <p class="mb-3 line-height-3">Line Height 3 - нормальний</p>
-            <p class="mb-3 line-height-4">Line Height 4 - розширений</p>
+            <div class="flex flex-column gap-3">
+              <div class="flex align-items-center">
+                <div class="w-8rem">1</div>
+                <p class="mb-0 line-height-1">Line Height 1 - щільний</p>
+              </div>
+              <div class="flex align-items-center">
+                <div class="w-8rem">2</div>
+                <p class="mb-0 line-height-2">Line Height 2 - компактний</p>
+              </div>
+              <div class="flex align-items-center">
+                <div class="w-8rem">3</div>
+                <p class="mb-0 line-height-3">Line Height 3 - нормальний</p>
+              </div>
+              <div class="flex align-items-center">
+                <div class="w-8rem">4</div>
+                <p class="mb-0 line-height-4">Line Height 4 - розширений</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -88,17 +204,17 @@
     <!-- Кнопки -->
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Кнопки</h2>
-      <div class="surface-card p-4 border-round">
+      <div class="surface-card p-4 border-round shadow-2">
         <!-- Основні варіанти -->
         <h3 class="text-xl font-medium mb-3 text-700">Основні варіанти</h3>
         <div class="flex flex-wrap gap-3 mb-4">
-          <Button label="Primary" />
-          <Button label="Secondary" severity="secondary" />
-          <Button label="Success" severity="success" />
-          <Button label="Info" severity="info" />
-          <Button label="Warning" severity="warning" />
-          <Button label="Help" severity="help" />
-          <Button label="Danger" severity="danger" />
+          <Button label="Primary" class="p-button-raised" />
+          <Button label="Secondary" severity="secondary" class="p-button-raised" />
+          <Button label="Success" severity="success" class="p-button-raised" />
+          <Button label="Info" severity="info" class="p-button-raised" />
+          <Button label="Warning" severity="warning" class="p-button-raised" />
+          <Button label="Help" severity="help" class="p-button-raised" />
+          <Button label="Danger" severity="danger" class="p-button-raised" />
         </div>
 
         <!-- Стилі -->
@@ -133,7 +249,7 @@
     <!-- Форми -->
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Форми</h2>
-      <div class="surface-card p-4 border-round">
+      <div class="surface-card p-4 border-round shadow-2">
         <div class="grid">
           <!-- Текстові поля -->
           <div class="col-12 md:col-4">
@@ -200,11 +316,29 @@
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Картки</h2>
       <div class="grid">
+        <!-- Картка автомобіля -->
+        <div class="col-12 md:col-4">
+          <CarCard
+            :car="{
+              title: 'Mercedes-Benz C-Class',
+              price: '25,000',
+              year: '2020',
+              mileage: '45,000',
+              fuel: 'Бензин',
+              location: 'Київ',
+              image: '/src/assets/cars/car1.jpg',
+              isTop: true,
+              isOnSite: true,
+              isSold: false
+            }"
+          />
+        </div>
+
         <!-- Стандартна картка -->
         <div class="col-12 md:col-4">
-          <Card>
+          <Card class="shadow-2 hover:shadow-4 transition-shadow transition-duration-150">
             <template #header>
-              <img alt="card header" src="https://picsum.photos/300/200" />
+              <img alt="card header" src="https://picsum.photos/300/200" class="w-full" />
             </template>
             <template #title>
               <span class="text-xl font-medium text-900">Заголовок картки</span>
@@ -226,27 +360,13 @@
 
         <!-- Проста картка -->
         <div class="col-12 md:col-4">
-          <Card>
+          <Card class="shadow-2 hover:shadow-4 transition-shadow transition-duration-150">
             <template #title>
               <span class="text-xl font-medium text-900">Проста картка</span>
             </template>
             <template #content>
               <p class="text-700">
                 Картка без зображення та футера. Тільки заголовок та контент.
-              </p>
-            </template>
-          </Card>
-        </div>
-
-        <!-- Hover картка -->
-        <div class="col-12 md:col-4">
-          <Card class="hover:surface-100 transition-colors transition-duration-150">
-            <template #title>
-              <span class="text-xl font-medium text-900">Hover картка</span>
-            </template>
-            <template #content>
-              <p class="text-700">
-                При наведенні змінює колір фону. Спробуйте навести курсор.
               </p>
             </template>
           </Card>
@@ -281,29 +401,41 @@
     <!-- Іконки -->
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Іконки</h2>
-      <div class="surface-card p-4 border-round">
-        <!-- Основні іконки -->
-        <h3 class="text-xl font-medium mb-3 text-700">Основні іконки</h3>
-        <div class="flex flex-wrap gap-4 mb-4">
-          <i class="pi pi-car text-2xl text-primary"></i>
-          <i class="pi pi-search text-2xl text-secondary"></i>
-          <i class="pi pi-user text-2xl text-success"></i>
-          <i class="pi pi-calendar text-2xl text-info"></i>
-          <i class="pi pi-filter text-2xl text-warning"></i>
-          <i class="pi pi-cog text-2xl text-help"></i>
-          <i class="pi pi-times text-2xl text-danger"></i>
-        </div>
-
-        <!-- Розміри іконок -->
-        <h3 class="text-xl font-medium mb-3 text-700">Розміри</h3>
-        <div class="flex flex-wrap gap-4 align-items-center">
-          <i class="pi pi-car text-sm"></i>
-          <i class="pi pi-car text-base"></i>
-          <i class="pi pi-car text-lg"></i>
-          <i class="pi pi-car text-xl"></i>
-          <i class="pi pi-car text-2xl"></i>
-          <i class="pi pi-car text-3xl"></i>
-          <i class="pi pi-car text-4xl"></i>
+      <div class="surface-card p-4 border-round shadow-2">
+        <div class="grid">
+          <div class="col-12 md:col-4">
+            <h3 class="text-xl font-medium mb-3 text-700">Основні іконки</h3>
+            <div class="flex flex-wrap gap-3">
+              <i class="pi pi-home text-2xl"></i>
+              <i class="pi pi-user text-2xl"></i>
+              <i class="pi pi-car text-2xl"></i>
+              <i class="pi pi-search text-2xl"></i>
+              <i class="pi pi-filter text-2xl"></i>
+              <i class="pi pi-calendar text-2xl"></i>
+            </div>
+          </div>
+          <div class="col-12 md:col-4">
+            <h3 class="text-xl font-medium mb-3 text-700">Дії</h3>
+            <div class="flex flex-wrap gap-3">
+              <i class="pi pi-plus text-2xl"></i>
+              <i class="pi pi-minus text-2xl"></i>
+              <i class="pi pi-check text-2xl"></i>
+              <i class="pi pi-times text-2xl"></i>
+              <i class="pi pi-trash text-2xl"></i>
+              <i class="pi pi-pencil text-2xl"></i>
+            </div>
+          </div>
+          <div class="col-12 md:col-4">
+            <h3 class="text-xl font-medium mb-3 text-700">Навігація</h3>
+            <div class="flex flex-wrap gap-3">
+              <i class="pi pi-arrow-left text-2xl"></i>
+              <i class="pi pi-arrow-right text-2xl"></i>
+              <i class="pi pi-arrow-up text-2xl"></i>
+              <i class="pi pi-arrow-down text-2xl"></i>
+              <i class="pi pi-chevron-left text-2xl"></i>
+              <i class="pi pi-chevron-right text-2xl"></i>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -331,20 +463,143 @@
         </div>
       </div>
     </section>
+
+    <!-- Стилізація -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold mb-4 text-800">Стилізація</h2>
+      <div class="surface-card p-4 border-round shadow-2">
+        <!-- Кольори тексту -->
+        <h3 class="text-xl font-medium mb-3 text-700">Кольори тексту</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="text-900">text-900 Основний текст</div>
+              <div class="text-800">text-800 Заголовки</div>
+              <div class="text-700">text-700 Підзаголовки</div>
+              <div class="text-600">text-600 Звичайний текст</div>
+              <div class="text-500">text-500 Другорядний текст</div>
+              <div class="text-400">text-400 Неактивний текст</div>
+              <div class="text-primary">text-primary Акцентний текст</div>
+              <div class="bg-primary text-white p-2 border-round">text-white на темному фоні</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Фони -->
+        <h3 class="text-xl font-medium mb-3 mt-4 text-700">Фони</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="bg-primary p-3 text-white border-round">bg-primary</div>
+              <div class="bg-primary-100 p-3 text-900 border-round">bg-primary-100</div>
+              <div class="surface-0 p-3 text-900 border-round shadow-1">surface-0</div>
+              <div class="surface-50 p-3 text-900 border-round shadow-1">surface-50</div>
+              <div class="surface-100 p-3 text-900 border-round shadow-1">surface-100</div>
+              <div class="surface-900 p-3 text-white border-round">surface-900</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Відступи -->
+        <h3 class="text-xl font-medium mb-3 mt-4 text-700">Відступи та вирівнювання</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="surface-100 p-3 border-round">p-3 Padding</div>
+              <div class="surface-100 px-3 border-round">px-3 Padding X</div>
+              <div class="surface-100 py-3 border-round">py-3 Padding Y</div>
+              <div class="surface-100 p-3 border-round mb-3">mb-3 Margin Bottom</div>
+              <div class="surface-100 p-3 border-round mt-3">mt-3 Margin Top</div>
+              <div class="surface-100 p-3 border-round mx-3">mx-3 Margin X</div>
+            </div>
+          </div>
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="surface-100 p-3 border-round text-center">text-center</div>
+              <div class="surface-100 p-3 border-round text-right">text-right</div>
+              <div class="surface-100 p-3 border-round text-left">text-left</div>
+              <div class="surface-100 p-3 border-round text-justify">text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flex та Grid -->
+        <h3 class="text-xl font-medium mb-3 mt-4 text-700">Flex та Grid утиліти</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6">
+            <div class="surface-100 p-3 border-round">
+              <div class="flex justify-content-between align-items-center mb-3">
+                <div class="surface-200 p-2 border-round">Item 1</div>
+                <div class="surface-200 p-2 border-round">Item 2</div>
+                <div class="surface-200 p-2 border-round">Item 3</div>
+              </div>
+              <div class="flex justify-content-center align-items-center mb-3">
+                <div class="surface-200 p-2 border-round mr-2">Centered</div>
+                <div class="surface-200 p-2 border-round">Items</div>
+              </div>
+              <div class="flex flex-column gap-2">
+                <div class="surface-200 p-2 border-round">Column 1</div>
+                <div class="surface-200 p-2 border-round">Column 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Тіні та Бордери -->
+        <h3 class="text-xl font-medium mb-3 mt-4 text-700">Тіні та Бордери</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="surface-card p-3 border-round shadow-1">shadow-1</div>
+              <div class="surface-card p-3 border-round shadow-2">shadow-2</div>
+              <div class="surface-card p-3 border-round shadow-3">shadow-3</div>
+              <div class="surface-card p-3 border-round shadow-4">shadow-4</div>
+            </div>
+          </div>
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="surface-card p-3 border-round border-1 surface-border">border-1</div>
+              <div class="surface-card p-3 border-round-sm">border-round-sm</div>
+              <div class="surface-card p-3 border-round">border-round</div>
+              <div class="surface-card p-3 border-round-lg">border-round-lg</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Переходи -->
+        <h3 class="text-xl font-medium mb-3 mt-4 text-700">Переходи та Ховери</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="flex flex-column gap-3">
+              <div class="surface-card p-3 border-round shadow-1 hover:shadow-3 transition-duration-200">
+                hover:shadow-3 transition-duration-200
+              </div>
+              <div class="surface-card p-3 border-round border-1 surface-border hover:surface-100 transition-colors transition-duration-200">
+                hover:surface-100 transition-colors
+              </div>
+              <div class="surface-card p-3 border-round text-600 hover:text-primary transition-colors transition-duration-200">
+                hover:text-primary transition-colors
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Dropdown from 'primevue/dropdown'
-import Card from 'primevue/card'
-import Tag from 'primevue/tag'
 import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
-import { ref } from 'vue'
+import Tag from 'primevue/tag'
+import CarCard from '../cars/CarCard.vue'
 
 const checkboxValue = ref([])
 const radioValue = ref(null)
@@ -352,17 +607,38 @@ const radioValue = ref(null)
 
 <style scoped>
 .design-system {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-section {
-  background: var(--surface-card);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
+.color-box {
+  min-width: 150px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.field {
-  margin-bottom: 1.5rem;
+.surface-card {
+  background: var(--surface-card);
+  border-radius: var(--border-radius);
+}
+
+/* Hover ефекти */
+.hover\:shadow-4:hover {
+  box-shadow: var(--shadow-4);
+}
+
+/* Переходи */
+.transition-shadow {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.transition-colors {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.transition-duration-150 {
+  transition-duration: 150ms;
 }
 </style> 

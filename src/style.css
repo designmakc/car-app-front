@@ -1,6 +1,11 @@
 /* Імпорт шрифту Inter */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Базовий розмір для rem */
+html {
+  font-size: 14px;
+}
+
 :root {
   font-family: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
     Helvetica, Arial, sans-serif;
@@ -13,6 +18,46 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Скидання стилів для всіх елементів */
+* {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Розміри тексту */
+.text-xs { font-size: 0.75rem; }    /* 10.5px */
+.text-sm { font-size: 0.875rem; }   /* 12.25px */
+.text-base { font-size: 1rem; }     /* 14px */
+.text-lg { font-size: 1.125rem; }   /* 15.75px */
+.text-xl { font-size: 1.25rem; }    /* 17.5px */
+.text-2xl { font-size: 1.5rem; }    /* 21px */
+.text-3xl { font-size: 1.75rem; }   /* 24.5px */
+.text-4xl { font-size: 2rem; }      /* 28px */
+.text-5xl { font-size: 2.5rem; }    /* 35px */
+
+/* Заголовки */
+h1 { font-size: 2.5rem; }    /* 35px */
+h2 { font-size: 2rem; }      /* 28px */
+h3 { font-size: 1.75rem; }   /* 24.5px */
+h4 { font-size: 1.5rem; }    /* 21px */
+h5 { font-size: 1.25rem; }   /* 17.5px */
+h6 { font-size: 1rem; }      /* 14px */
+
+/* Відступи */
+.p-component {
+  font-size: 1rem;
+}
+
+.p-button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.p-input-text {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -22,50 +67,39 @@ body {
   font-size: 1rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: inherit;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0;
-  color: var(--surface-900);
+/* Видалення обводки для кнопок та посилань */
+a, button, .p-button, [class*="p-button-"] {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.5rem; }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1rem; }
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
+a:focus, button:focus, .p-button:focus, [class*="p-button-"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Базові стилі для тексту */
-.text-sm { font-size: 0.875rem; }
-.text-base { font-size: 1rem; }
-.text-lg { font-size: 1.125rem; }
-.text-xl { font-size: 1.25rem; }
+/* Видалення синього фону при тапі на мобільних */
+input, button, textarea, select, a {
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* Товщина шрифту */
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+/* Видалення обводки для PrimeVue компонентів */
+.p-component:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 /* Базові стилі для елементів форм */
 button, input, optgroup, select, textarea {
-    font-feature-settings: inherit;
-    color: inherit;
-    font-family: inherit;
-    font-size: 100%;
-    font-variation-settings: inherit;
-    font-weight: inherit;
-    letter-spacing: inherit;
-    line-height: inherit;
-    margin: 0;
-    padding: 0;
+  font-feature-settings: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  font-variation-settings: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
 }
 
