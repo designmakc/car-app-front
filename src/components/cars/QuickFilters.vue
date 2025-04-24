@@ -1,0 +1,40 @@
+<template>
+  <div class="quick-filters mt-2">
+    <div>
+      <h4 class="mb-2 text-lg font-semibold">Нові авто за</h4>
+      <div class="flex flex-wrap gap-2 mb-4"> <!-- flex-wrap для переносу на малих екранах -->
+        <Button type="button" label="Сьогодні" severity="secondary" variant="outlined" class="p-button-rounded border-2"  badge="2" badgeSeverity="contrast" outlined />
+
+        <Button type="button" label="Два дні" severity="secondary" variant="outlined" class="p-button-rounded border-2"  badge="2" badgeSeverity="contrast" outlined />
+
+        <Button type="button" label="Три дні" severity="secondary" variant="outlined" class="p-button-rounded border-2"  badge="2" badgeSeverity="contrast" outlined />
+
+        <Button type="button" label="Тиждень" severity="secondary" variant="outlined" class="p-button-rounded border-2"  badge="2" badgeSeverity="contrast" outlined />
+          
+          
+        
+      </div>
+    </div>
+    <div>
+       <h4 class="mb-2 text-lg font-semibold">Популярні запити</h4>
+       <div class="flex flex-wrap gap-2">
+        <Button type="button" label="Автомат до 5000$" severity="secondary" variant="outlined" class="p-button-rounded border-2"  />
+        <Button type="button" label="5000-7000$" severity="secondary" variant="outlined" class="p-button-rounded border-2" />
+        <Button type="button" label="Електро" severity="success" variant="outlined" class="p-button-rounded border-2" icon="pi pi-bolt"/>
+        <Button type="button" label="Універсал" severity="secondary" variant="outlined" class="p-button-rounded border-2" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Button from 'primevue/button';
+import Badge from 'primevue/badge';
+</script>
+
+<style scoped>
+
+
+/* Стилізація кнопок для кращої відповідності макету */
+
+</style> 

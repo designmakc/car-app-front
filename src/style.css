@@ -48,10 +48,7 @@ h6 { font-size: 1rem; }      /* 14px */
   font-size: 1rem;
 }
 
-.p-button {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-}
+
 
 .p-input-text {
   font-size: 1rem;
@@ -108,17 +105,14 @@ button, input, optgroup, select, textarea {
 
 input, select, textarea.p-input, .p-textarea, .p-select {
   border-width: 2px !important;
+  border-color: var(--p-primary-500) !important;
+}
+
+.p-badge {
+  min-height: 1.5rem !important;
+  min-width: 1.5rem !important;
 }
 
 
-/* Стилі Табів*/
-.p-tabpanels {
-  background-color: var(--p-surface-900) !important;
-}
 
-.p-tab-active {
-  background-color: var(--p-surface-900) !important;
-  color: var(--p-surface-0) !important;
-  border-radius: var(--p-content-border-radius) var(--p-content-border-radius) 0 0 !important;
 
-}
