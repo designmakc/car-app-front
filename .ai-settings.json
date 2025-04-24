@@ -40,12 +40,37 @@
   },
   "styling": {
     "primary": "PrimeVue",
-    "utilities": "PrimeFlex",
+    "utilities": "PrimeFlex v3",
     "customCSS": "only if absolutely necessary",
     "themes": {
-      "light": "required",
-      "dark": "optional but preferred"
-    }
+      "light": "Lara Light",
+      "dark": "Lara Dark"
+    },
+    "rules": {
+      "forbidden": {
+        "custom_css": "Заборонено використання кастомних CSS/Stylus/Sass стилів",
+        "inline_styles": "Заборонено використання інлайн-стилів style=\"...\"",
+        "external_libraries": "Заборонено використання сторонніх бібліотек стилів"
+      },
+      "required": {
+        "primevue": "Використовувати тільки офіційні компоненти PrimeVue 4",
+        "primeflex": "Використовувати тільки утиліти PrimeFlex v3",
+        "passthrough": "Використовувати :pt проп для кастомізації компонентів",
+        "responsive": "Використовувати адаптивні класи (col-12 md:col-6)",
+        "themes": "Використовувати стандартні теми Lara"
+      }
+    },
+    "guidelines": {
+      "positioning": "Використовувати flex, grid, absolute/relative з PrimeFlex",
+      "colors": "Використовувати semantic кольори теми (primary, surface-500)",
+      "animations": "Використовувати вбудовані класи (transition-all, hover:shadow-2)",
+      "sizing": "Використовувати стандартну систему PrimeFlex (rem-шкала)"
+    },
+    "customization_order": [
+      "Перевірити рішення в документації PrimeVue/PrimeFlex",
+      "Використати :pt проп для кастомізації",
+      "Тільки в крайньому випадку - мінімальний scoped CSS"
+    ]
   },
   "conventions": {
     "imports": {

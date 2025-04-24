@@ -44,10 +44,6 @@ h5 { font-size: 1.25rem; }   /* 17.5px */
 h6 { font-size: 1rem; }      /* 14px */
 
 /* Відступи */
-.p-component {
-  font-size: 1rem;
-}
-
 
 
 .p-input-text {
@@ -61,57 +57,30 @@ body {
   min-height: 100vh;
   background-color: var(--surface-ground);
   color: var(--text-color);
-  font-size: 1rem;
 }
 
-/* Видалення обводки для кнопок та посилань */
-a, button, .p-button, [class*="p-button-"] {
+/* PrimeVue компоненти */
+
+
+.p-button:focus {
   outline: none !important;
   box-shadow: none !important;
 }
 
-a:focus, button:focus, .p-button:focus, [class*="p-button-"]:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Видалення синього фону при тапі на мобільних */
-input, button, textarea, select, a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Видалення обводки для PrimeVue компонентів */
 .p-component:focus {
   outline: none !important;
   box-shadow: none !important;
-}
-
-/* Базові стилі для елементів форм */
-button, input, optgroup, select, textarea {
-  font-feature-settings: inherit;
-  color: inherit;
-  font-family: inherit;
-  font-size: 100%;
-  font-variation-settings: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  margin: 0;
-  padding: 0;
-  
-}
-
-
-
-input, select, textarea.p-input, .p-textarea, .p-select {
-  border-width: 2px !important;
-  border-color: var(--p-primary-500) !important;
 }
 
 .p-badge {
   min-height: 1.5rem !important;
   min-width: 1.5rem !important;
 }
+
+.p-card-body {
+  padding: 0.5rem 1.25rem 1.25rem 1.25rem !important;
+}
+
 
 
 

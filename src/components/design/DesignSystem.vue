@@ -3,6 +3,12 @@
   <div class="design-system p-4">
     <h1 class="text-4xl font-bold mb-4 text-900">Дизайн система CarMarket</h1>
 
+    <!-- Заголовок -->
+    <header class="mb-6">
+      <h1 class="text-4xl font-bold mb-2">Дизайн система</h1>
+      <p class="text-lg text-600">Компоненти та стилі для CarMarket</p>
+    </header>
+
     <!-- Кольори -->
     <section class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 text-800">Кольори</h2>
@@ -313,51 +319,76 @@
     </section>
 
     <!-- Картки -->
-    <section class="mb-6">
-      <h2 class="text-2xl font-semibold mb-4 text-800">Картки</h2>
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-4">Картки авто</h2>
+      
+      <!-- Варіанти карток -->
       <div class="grid">
-        <!-- Картка автомобіля -->
-        <div class="col-12 md:col-4">
-          
+        <div class="col-12 md:col-6 lg:col-4 mb-4">
+          <h3 class="text-xl mb-3">Звичайна картка</h3>
+          <div class="mb-2 text-600">Базовий варіант картки для відображення автомобіля</div>
+          <CarCard :car="demoCarData" />
+        </div>
+        
+        <div class="col-12 md:col-6 lg:col-4 mb-4">
+          <h3 class="text-xl mb-3">Топ пропозиція</h3>
+          <div class="mb-2 text-600">Картка з відміткою TOP (додатковий prop top="true")</div>
+          <CarCard :car="demoCarData" :top="true" />
         </div>
 
-        <!-- Стандартна картка -->
-        <div class="col-12 md:col-4">
-          <Card class="shadow-2 hover:shadow-4 transition-shadow transition-duration-150">
-            <template #header>
-              <img alt="card header" src="https://picsum.photos/300/200" class="w-full" />
-            </template>
-            <template #title>
-              <span class="text-xl font-medium text-900">Заголовок картки</span>
-            </template>
-            <template #content>
-              <p class="text-700">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                Inventore sed consequuntur error repudiandae.
-              </p>
-            </template>
-            <template #footer>
-              <div class="flex justify-content-between">
-                <Button label="Відмінити" text />
-                <Button label="Зберегти" />
-              </div>
-            </template>
-          </Card>
-        </div>
+        <div class="col-12">
+          <div class="surface-card p-4 border-round">
+            <h3 class="text-xl font-medium mb-3">Використання компонента</h3>
+            <p class="mb-3 text-600">Компонент приймає два пропси:</p>
+            <ul class="list-none p-0 m-0 mb-4">
+              <li class="flex align-items-center mb-2">
+                <i class="pi pi-check text-success mr-2"></i>
+                <span><code class="bg-primary-50 px-2 py-1 border-round">car</code> - об'єкт з даними автомобіля (обов'язковий)</span>
+              </li>
+              <li class="flex align-items-center">
+                <i class="pi pi-check text-success mr-2"></i>
+                <span><code class="bg-primary-50 px-2 py-1 border-round">top</code> - булеве значення для відображення як TOP пропозиції (необов'язковий)</span>
+              </li>
+            </ul>
 
-        <!-- Проста картка -->
-        <div class="col-12 md:col-4">
-          <Card class="shadow-2 hover:shadow-4 transition-shadow transition-duration-150">
-            <template #title>
-              <span class="text-xl font-medium text-900">Проста картка</span>
-            </template>
-            <template #content>
-              <p class="text-700">
-                Картка без зображення та футера. Тільки заголовок та контент.
-              </p>
-            </template>
-          </Card>
+            <div class="surface-100 p-3 border-round">
+              <pre class="m-0"><code>// Приклад використання:
+&lt;CarCard 
+  :car="{
+    title: 'Назва авто',
+    price: '19 999',
+    mileage: '240',
+    transmission: 'Автомат',
+    engine: 'Дизель 2.0',
+    location: 'Житомир',
+    publishedAt: '20 хвилин тому',
+    image: '/path/to/image.jpg'
+  }"
+  :top="true"
+/&gt;</code></pre>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Адаптивність -->
+      <div class="mt-4">
+        <h3 class="text-xl font-medium mb-3">Адаптивність</h3>
+        <p class="mb-3 text-600">Картки автоматично адаптуються під різні розміри екрану:</p>
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center mb-2">
+            <i class="pi pi-mobile text-primary mr-2"></i>
+            <span>Мобільні пристрої: 1 картка в ряд</span>
+          </li>
+          <li class="flex align-items-center mb-2">
+            <i class="pi pi-tablet text-primary mr-2"></i>
+            <span>Планшети: 2 картки в ряд</span>
+          </li>
+          <li class="flex align-items-center">
+            <i class="pi pi-desktop text-primary mr-2"></i>
+            <span>Десктоп: 3 картки в ряд</span>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -586,10 +617,23 @@ import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
 import Tag from 'primevue/tag'
-
+import CarCard from '@/components/cars/CarCard.vue'
+import demoCarImage from '@/assets/cars/car-demo.png'
 
 const checkboxValue = ref([])
 const radioValue = ref(null)
+
+// Демо дані для CarCard
+const demoCarData = {
+  title: 'Jeep Grand Cherokee 2020',
+  price: '19 999',
+  mileage: '240',
+  transmission: 'Автомат',
+  engine: 'Дизель 2.0',
+  location: 'Житомир',
+  publishedAt: '20 хвилин тому',
+  image: demoCarImage
+}
 </script>
 
 <style scoped>
