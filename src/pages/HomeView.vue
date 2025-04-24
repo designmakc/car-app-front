@@ -63,8 +63,6 @@ import TabPanel from 'primevue/tabpanel'
 import Button from 'primevue/button'
 import CarSearchForm from '@/components/cars/CarSearchForm.vue'
 import CarSellForm from '@/components/cars/CarSellForm.vue'
-import CarStats from '@/components/cars/CarStats.vue'
-import CarGrid from '@/components/cars/CarGrid.vue'
 import StatisticsBlock from '../components/cars/StatisticsBlock.vue'
 import QuickFilters from '../components/cars/QuickFilters.vue'
 

@@ -318,20 +318,7 @@
       <div class="grid">
         <!-- Картка автомобіля -->
         <div class="col-12 md:col-4">
-          <CarCard
-            :car="{
-              title: 'Mercedes-Benz C-Class',
-              price: '25,000',
-              year: '2020',
-              mileage: '45,000',
-              fuel: 'Бензин',
-              location: 'Київ',
-              image: '/src/assets/cars/car1.jpg',
-              isTop: true,
-              isOnSite: true,
-              isSold: false
-            }"
-          />
+          
         </div>
 
         <!-- Стандартна картка -->
@@ -599,7 +586,7 @@ import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
 import Tag from 'primevue/tag'
-import CarCard from '../cars/CarCard.vue'
+
 
 const checkboxValue = ref([])
 const radioValue = ref(null)
