@@ -5,9 +5,9 @@
       <div class="hidden lg:flex justify-content-between align-items-center py-4 ">
         <div class="flex align-items-center gap-4">
           <router-link to="/" class="no-underline flex align-items-center">
-            <img src="@/assets/logo-orang2.svg" alt="CarMarket Logo" height="32" />
+            <img src="@/assets/logo-orang2.svg" alt="CarMarket Logo" height="40" />
           </router-link>
-          <span class="text-500 font-base text-sm">Авторинок без меж ©</span>
+          <span class="text-500 font-base text-sm ">Авторинок без меж ©</span>
         </div>
 
         <nav class="flex gap-2 align-items-center font-base font-normal text-sm font-weight-400">

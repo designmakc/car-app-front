@@ -50,7 +50,7 @@
     </div>
 
     <div class="flex justify-content-center mt-3">
-      <Button label="Знайти" icon="pi pi-search" class="mr-2" />
+      <Button label="Знайти" icon="pi pi-search" severity="success" />
       <Button label="Продати" icon="pi pi-plus" severity="success" />
     </div>
   </div>
