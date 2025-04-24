@@ -1,4 +1,4 @@
-<!-- Based on: PrimeVue/Layout -->
+<!-- Based on: PrimeVue/Layouts -->
 <template>
   <div class="home">
     <!-- Головний банер -->
@@ -27,7 +27,7 @@
                   <Tab value="search" class=" col-6 " > <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
                   <Tab value="sell" class=" col-6 "> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
                 </TabList>
-                <TabPanels>
+                <TabPanels class="border-round-bottom-md">
                   <TabPanel value="search"> <CarSearchForm /> </TabPanel>
                   <TabPanel value="sell"> <CarSellForm /> </TabPanel>
                 </TabPanels>

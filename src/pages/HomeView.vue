@@ -20,7 +20,7 @@
       <div class="container">
         <div class="grid">
           <!-- Форма пошуку -->
-          <div class="col-12 lg:col-6 mb-4 lg:mb-0">
+          <div class="col-12 lg:col-6 mb-4 lg:mb-0 rounded-md">
             <div class="surface-card border-round shadow-2">
               <Tabs value="search" >
                 <TabList>

@@ -1,4 +1,4 @@
-<!-- Based on: PrimeVue/Layout -->
+<!-- Based on: PrimeVue/Layouts -->
 <template>
   <div id="app" class="app-wrapper">
     <Header />
@@ -9,8 +9,8 @@
 
 <script setup>
 import { RouterView } from 'vue-router'
-import Footer from './components/layout/Footer.vue'
-import Header from './components/layout/Header.vue'
+import Footer from './layouts/Footer.vue'
+import Header from './layouts/Header.vue'
 </script>
 
 <style>
