@@ -1,8 +1,8 @@
 <!-- Based on: PrimeVue/Form -->
 <template>
-  <div class="car-sell-form">
+  <div class="car-sell-form ">
     <div class="grid">
-      <div class="col-12">
+      <div class="col-12 ">
         <Dropdown
           v-model="selectedBrand"
           :options="brands"

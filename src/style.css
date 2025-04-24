@@ -101,5 +101,24 @@ button, input, optgroup, select, textarea {
   line-height: inherit;
   margin: 0;
   padding: 0;
+  
 }
 
+
+
+input, select, textarea.p-input, .p-textarea, .p-select {
+  border-width: 2px !important;
+}
+
+
+/* Стилі Табів*/
+.p-tabpanels {
+  background-color: var(--p-surface-900) !important;
+}
+
+.p-tab-active {
+  background-color: var(--p-surface-900) !important;
+  color: var(--p-surface-0) !important;
+  border-radius: var(--p-content-border-radius) var(--p-content-border-radius) 0 0 !important;
+
+}
