@@ -16,16 +16,16 @@
     </div>
 
     <!-- Секція з формою пошуку та статистикою -->
-    <section class="flex search-stats-section w-full pb-4 align-items-stretch">
+    <section class="flex search-stats-section pb-4 ">
       <div class="container">
         <div class="grid">
           <!-- Форма пошуку -->
-          <div class="col-12 lg:col-6 mb-4 lg:mb-0">
-            <div class="surface-card h-full">
+          <div class="col-12 md:col-6 lg:col-6 mb-4 lg:mb-0">
+            <div class="surface-card">
               <Tabs value="search">
                 <TabList>
-                  <Tab value="search" class=" col-6 " > <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
-                  <Tab value="sell" class=" col-6 "> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
+                  <Tab value="search" class="col-6"> <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
+                  <Tab value="sell" class="col-6"> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
                 </TabList>
                 <TabPanels >
                   <TabPanel value="search"> <CarSearchForm /> </TabPanel>
@@ -36,7 +36,7 @@
           </div>
 
           <!-- Статистика -->
-          <div class="col-12 lg:col-6">
+          <div class="col-12 md:col-6 lg:col-6">
             <div class="surface-card">
               <StatisticsBlock />
             </div>
@@ -314,8 +314,7 @@ const regularCars = ref([
     location: 'Житомир',
     publishedAt: '2024-03-08'
   },
-   // Можна додати більше автомобілів для демонстрації пагінації
-   {
+  {
     id: 109,
     title: 'Skoda Octavia 2018',
     price: 17800,

@@ -1,9 +1,11 @@
 <!-- Based on: PrimeVue/Layouts -->
 <template>
-  <div id="app" class="app-wrapper">
-    <Header />
+  <div id="app" class="flex flex-column min-h-screen">
+    <Header class="w-full"/>
+    <div class="flex-grow-1 mx-auto w-full px-4 xl:px-0  " style="max-width: 1200px;">
     <router-view></router-view>
-    <Footer />
+    </div>
+    <Footer class="w-full" />
   </div>
 </template>
 

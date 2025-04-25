@@ -22,7 +22,12 @@ import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
 import Ripple from 'primevue/ripple';
-
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import FloatLabel from 'primevue/floatlabel';
+import CascadeSelect from 'primevue/cascadeselect';
+import Select from 'primevue/select';
+import Toast from 'primevue/toast';
 
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
@@ -74,6 +79,12 @@ app.component('Menubar', Menubar)
 app.component('Textarea', Textarea)
 app.component('Checkbox', Checkbox)
 app.component('RadioButton', RadioButton)
-
+app.directive('ripple', Ripple);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
+app.component('FloatLabel', FloatLabel);
+app.component('CascadeSelect', CascadeSelect);
+app.component('Select', Select);
+app.component('Toast', Toast);
 // Монтуємо додаток
 app.mount('#app')
