@@ -7,7 +7,7 @@
           <router-link to="/" class="no-underline flex align-items-center">
             <img src="@/assets/logo-orang2.svg" alt="CarMarket Logo" height="40" />
           </router-link>
-          <span class="text-500 font-base text-sm ">Авторинок без меж ©</span>
+          <span class="text-500 font-base text-sm ">Авторинок<br>без меж ©</span>
         </div>
 
         <nav class="flex gap-2 align-items-center font-base font-normal text-sm font-weight-400">
@@ -28,8 +28,9 @@
           </router-link>
           
           <div class="flex gap-2 align-items-center">
-            <Button label="Обране" icon="pi pi-heart-fill" class="p-button-rounded p-button-outlined border-2 border-primary text-white hover:surface-800" aria-label="Обране" />
-            <Button label="Увійти" icon="pi pi-user" class="p-button-rounded p-button-primary " />
+            <Button label="Обране" icon="pi pi-heart-fill" class="p-button-rounded p-button-outlined border-2 border-primary text-white hover:surface-800" badge="1" badgeSeverity="success" aria-label="Обране" />
+            <!-- <Button label="Увійти" icon="pi pi-user" class="p-button-rounded p-button-primary " /> -->
+            <Button icon="pi pi-user" severity="success" rounded aria-label="Мій кабінет" />
           </div>
         </nav>
       </div>
