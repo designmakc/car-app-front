@@ -24,24 +24,9 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Розміри тексту */
-.text-xs { font-size: 0.75rem; }    /* 10.5px */
-.text-sm { font-size: 0.875rem; }   /* 12.25px */
-.text-base { font-size: 1rem; }     /* 14px */
-.text-lg { font-size: 1.125rem; }   /* 15.75px */
-.text-xl { font-size: 1.25rem; }    /* 17.5px */
-.text-2xl { font-size: 1.5rem; }    /* 21px */
-.text-3xl { font-size: 1.75rem; }   /* 24.5px */
-.text-4xl { font-size: 2rem; }      /* 28px */
-.text-5xl { font-size: 2.5rem; }    /* 35px */
 
-/* Заголовки */
-h1 { font-size: 2.5rem; }    /* 35px */
-h2 { font-size: 2rem; }      /* 28px */
-h3 { font-size: 1.75rem; }   /* 24.5px */
-h4 { font-size: 1.5rem; }    /* 21px */
-h5 { font-size: 1.25rem; }   /* 17.5px */
-h6 { font-size: 1rem; }      /* 14px */
+
+
 
 /* Відступи */
 

@@ -43,7 +43,7 @@
         />
       </div>
       <div class="col-12">
-        <Button label="Продати авто" icon="pi pi-plus-circle" severity="success" class="w-full" />
+        <Button label="Продати авто" icon="pi pi-plus-circle" size="large" severity="success" class="w-full" />
       </div>
     </div>
   </div>

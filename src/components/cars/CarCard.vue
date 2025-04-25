@@ -46,7 +46,7 @@
             v-if="car.image"
             :src="car.image" 
             :alt="car.title"
-            class="w-full aspect-square object-cover border-round-top"
+            class="w-full h-full aspect-square object-cover border-round-top"
           />
           <Skeleton v-else height="300px" width="100%" class="border-round-top" />
         </div>

@@ -21,6 +21,7 @@ import Menubar from 'primevue/menubar'
 import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
+import Ripple from 'primevue/ripple';
 
 
 // Налаштування пресету з оранжевою темою
@@ -47,11 +48,13 @@ const app = createApp(App)
 
 // Налаштовуємо PrimeVue
 app.use(PrimeVue, {
+    ripple: true,
     theme: {
         preset: MyPreset,
         options: {
             prefix: 'p',
             darkModeSelector: false
+            
         }
     }
 })
