@@ -3,10 +3,10 @@
   <div class="car-search-form">
         <!-- Форма пошуку -->
     <div v-if="mode === 'search'" class="search-form">
-      <div class="flex flex-wrap grid">
-
-    <!-- Марка автомобіля -->
-    <div class="col-12 w-full">
+      <div class="flex flex-wrap grid justify-content-left ">
+        
+        <!-- Марка автомобіля -->
+        <div class="col-12 w-full pt-3">
       <FloatLabel variant="in">
         <Select 
           v-model="selectedBrand" 
@@ -18,13 +18,16 @@
           @change="handleBrandChange"
           variant="filled"
           size="large"
+          filterMessage="Пошук..."
+          emptyFilterMessage="Не знайденно"
+          emptyMessage="Немає доступних варіантів"
         />
         <label></label>
       </FloatLabel> 
-    </div>
+        </div>
 
-    <!-- Модель автомобіля -->
-    <div class="col-12 w-full">
+        <!-- Модель автомобіля -->
+        <div class="col-12 w-full pb-3">
       <FloatLabel variant="in">
         <Select 
           label="Marka"
@@ -38,13 +41,20 @@
           :placeholder="modelPlaceholder"
           :inputStyle="inputStyle"
           :disabled="!selectedBrand"
+          filterMessage="Пошук..."
+          emptyFilterMessage="Не знайденно"
+          emptyMessage="Немає доступних варіантів"
         />
         <label></label>
       </FloatLabel> 
-    </div>
-        <div class="col-12 grid">
-          <div class="col-6 pr-2 pl-0">
+        </div>
+        
+        <!-- Рік випуску -->
+        <div class="col-2 grid mr-0 ml-0 w-full gap-2 pb-3">
+          <div class="col p-0 ">
             <FloatLabel variant="in">
+              <IconField class="w-full">
+                <InputIcon class="pi pi-calendar" />
               <InputNumber 
                 id="year_from" 
                 v-model="yearFrom" 
@@ -54,12 +64,15 @@
                 class="w-full min-w-0"
                 :min="1900" 
                 :max="new Date().getFullYear()" 
-              />
-              <label for="year_from">Рік випуску від</label>
+              />  
+              </IconField>
+              <label for="year_from">Рік від</label>
             </FloatLabel>
           </div>
-          <div class="col-6 pl-2 pr-0">
+          <div class="col p-0 ">
             <FloatLabel variant="in">
+              <IconField class="w-full">
+              <InputIcon class="pi pi-calendar" />
               <InputNumber 
                 id="year_to" 
                 v-model="yearTo" 
@@ -70,12 +83,15 @@
                 :min="1900" 
                 :max="new Date().getFullYear()" 
               />
-              <label for="year_to">Рік випуску до</label>
+              </IconField>
+              <label for="year_to">Рік до</label>
             </FloatLabel>
           </div>
         </div>
-        <div class="col-12 grid">
-            <div class="col-6 pr-2 pl-0">
+
+        <!-- Ціна -->
+        <div class="col-2 grid mr-0 ml-0 w-full gap-2 pb-3">
+          <div class="col p-0">
             <FloatLabel variant="in">
               <IconField class="w-full">
                 <InputIcon class="pi pi-dollar" />
@@ -84,14 +100,14 @@
                   v-model="priceFrom" 
                   autocomplete="off" 
                   variant="filled" 
-                  size="small md:large" 
+                  size="large"
                   class="w-full min-w-0"
                 />
               </IconField>
               <label for="price_from">Ціна від</label>
             </FloatLabel>
           </div>
-            <div class="col-6 pl-2 pr-0">
+          <div class="col p-0">
             <FloatLabel variant="in">
               <IconField class="w-full">
                 <InputIcon class="pi pi-dollar" />
@@ -100,7 +116,7 @@
                   v-model="priceTo" 
                   autocomplete="off" 
                   variant="filled" 
-                  size="small md:large" 
+                  size="large"
                   class="w-full min-w-0"
                 />
               </IconField>
@@ -108,6 +124,8 @@
             </FloatLabel>
           </div>
         </div>
+
+        <!-- Кнопка пошуку -->
         <div class="col-12">
           <Button label="Пошук авто" icon="pi pi-search" size="large" class="w-full p-button-primary" @click="handleSearch" />
     

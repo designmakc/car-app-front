@@ -40,7 +40,7 @@
   },
   "styling": {
     "primary": "PrimeVue",
-    "utilities": "PrimeFlex v3",
+    "utilities": "PrimeFlex v4",
     "customCSS": "only if absolutely necessary",
     "themes": {
       "light": "Lara Light",
@@ -54,7 +54,7 @@
       },
       "required": {
         "primevue": "Використовувати тільки офіційні компоненти PrimeVue 4",
-        "primeflex": "Використовувати тільки утиліти PrimeFlex v3",
+        "primeflex": "Використовувати тільки утиліти PrimeFlex v4",
         "passthrough": "Використовувати :pt проп для кастомізації компонентів",
         "responsive": "Використовувати адаптивні класи (col-12 md:col-6)",
         "themes": "Використовувати стандартні теми Lara"

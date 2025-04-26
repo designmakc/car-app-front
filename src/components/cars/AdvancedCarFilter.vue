@@ -1,248 +1,262 @@
-<script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+<script>
 import debounce from 'lodash/debounce';
 
-// PrimeVue компоненти
-import MultiSelect from 'primevue/multiselect';
-import Slider from 'primevue/slider';
-import SelectButton from 'primevue/selectbutton';
-import Checkbox from 'primevue/checkbox';
-import CascadeSelect from 'primevue/cascadeselect';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import InputNumber from 'primevue/inputnumber';
-
-const route = useRoute();
-const router = useRouter();
-const visible = ref(false);
-
-// Стани фільтрів
-const filters = ref({
-  status: [],
-  brand: null,
-  model: null,
-  price_from: null,
-  price_to: null,
-  year_from: null,
-  year_to: null,
-  mileage: null,
-  fuel_type: [],
-  drive_type: [],
-  color: [],
-  exchange_available: false
-});
-
-// Опції для селектів
-const mileageOptions = [
-  { label: 'До 50 тис. км', value: '0-50000' },
-  { label: '50-100 тис. км', value: '50000-100000' },
-  { label: 'Більше 100 тис. км', value: '100000+' }
-];
-
-const fuelTypes = [
-  { label: 'Бензин', value: 'petrol' },
-  { label: 'Дизель', value: 'diesel' },
-  { label: 'Газ/Бензин', value: 'lpg' },
-  { label: 'Електро', value: 'electric' },
-  { label: 'Гібрид', value: 'hybrid' }
-];
-
-const colors = [
-  { label: 'Білий', value: 'white' },
-  { label: 'Чорний', value: 'black' },
-  { label: 'Сірий', value: 'gray' },
-  { label: 'Синій', value: 'blue' },
-  { label: 'Червоний', value: 'red' },
-  { label: 'Зелений', value: 'green' },
-  { label: 'Жовтий', value: 'yellow' },
-  { label: 'Коричневий', value: 'brown' }
-];
-
-const driveTypes = [
-  { label: 'Передній', value: 'fwd' },
-  { label: 'Задній', value: 'rwd' },
-  { label: 'Повний', value: 'awd' }
-];
-
-// Обробники подій
-const updateFilters = debounce(() => {
-  const queryParams = {};
-  Object.entries(filters.value).forEach(([key, value]) => {
-    if (value !== null && value !== '' && value !== false) {
-      queryParams[key] = value;
+export default {
+  data() {
+    return {
+      visible: false,
+      filters: {
+        status: [],
+        brand: null,
+        model: null,
+        price_from: null,
+        price_to: null,
+        year_from: null,
+        year_to: null,
+        mileage: null,
+        fuel_type: [],
+        drive_type: [],
+        color: [],
+        exchange_available: false
+      },
+      
+      StatusOptions: [
+        { label: 'Всі', value: 'all' },
+        { label: 'На майданчику', value: 'in_stock' },
+        { label: 'Онлайн', value: 'online' }
+      ],
+      StatusValue: 'all',
+      
+      mileageOptions: [
+        { label: 'До 50 тис. км', value: '0-50000' },
+        { label: '50-100 тис. км', value: '50000-100000' },
+        { label: '100-150 тис. км', value: '100000-150000' },
+        { label: '150-200 тис. км', value: '150000-200000' },
+        { label: 'Більше 200 тис. км', value: '200000+' }
+      ],
+      fuelTypes: [
+        { label: 'Дизель', value: 'diesel' },
+        { label: 'Бензин', value: 'petrol' },
+        { label: 'Бензин/Газ', value: 'gas' },
+        { label: 'Газ', value: 'lpg' },
+        { label: 'Гібрид', value: 'hybrid' },
+        { label: 'Електро', value: 'electric' }
+      ],
+      colors: [
+        { label: 'Білий', value: 'white' },
+        { label: 'Чорний', value: 'black' },
+        { label: 'Сірий', value: 'gray' },
+        { label: 'Синій', value: 'blue' },
+        { label: 'Червоний', value: 'red' },
+        { label: 'Зелений', value: 'green' },
+        { label: 'Жовтий', value: 'yellow' },
+        { label: 'Коричневий', value: 'brown' },
+        { label: 'Сріблястий', value: 'silver' },
+        { label: 'Бежевий', value: 'beige' }
+      ],
+      driveTypes: [
+        { label: 'Передній', value: 'fwd' },
+        { label: 'Задній', value: 'rwd' },
+        { label: 'Повний', value: 'awd' }
+      ],
+      brandOptions: [
+        { name: 'BMW', code: 'bmw' },
+        { name: 'Mercedes-Benz', code: 'mercedes' },
+        { name: 'Audi', code: 'audi' },
+        { name: 'Toyota', code: 'toyota' },
+        { name: 'Volkswagen', code: 'vw' }
+      ],
+      modelOptions: {
+        bmw: [
+          { name: '3 Series', code: '3' },
+          { name: '5 Series', code: '5' },
+          { name: 'X5', code: 'x5' },
+          { name: 'X6', code: 'x6' }
+        ],
+        mercedes: [
+          { name: 'C-Class', code: 'c' },
+          { name: 'E-Class', code: 'e' },
+          { name: 'S-Class', code: 's' },
+          { name: 'GLE', code: 'gle' }
+        ],
+        audi: [
+          { name: 'A4', code: 'a4' },
+          { name: 'A6', code: 'a6' },
+          { name: 'Q5', code: 'q5' },
+          { name: 'Q7', code: 'q7' }
+        ],
+        toyota: [
+          { name: 'Camry', code: 'camry' },
+          { name: 'RAV4', code: 'rav4' },
+          { name: 'Land Cruiser', code: 'lc' },
+          { name: 'Corolla', code: 'corolla' }
+        ],
+        vw: [
+          { name: 'Golf', code: 'golf' },
+          { name: 'Passat', code: 'passat' },
+          { name: 'Tiguan', code: 'tiguan' },
+          { name: 'Touareg', code: 'touareg' }
+        ]
+      },
+      priceRange: {
+        min: 0,
+        max: 200000,
+        step: 1000
+      },
+      yearRange: {
+        min: 1990,
+        max: 2024,
+        step: 1
+      }
     }
-  });
-  router.push({ query: queryParams });
-}, 300);
-
-// Синхронізація з URL
-watch(route, (newRoute) => {
-  Object.entries(newRoute.query).forEach(([key, value]) => {
-    if (key in filters.value) {
-      filters.value[key] = value;
+  },
+  watch: {
+    carStatusValue: {
+      handler(newValue) {
+        this.filters.status = newValue === 'in_stock';
+      }
+    },
+    filters: {
+      deep: true,
+      handler() {
+        this.updateFilters();
+      }
     }
-  });
-}, { immediate: true });
-
-watch(filters, () => {
-  updateFilters();
-}, { deep: true });
-
-const resetFilters = () => {
-  filters.value = {
-    status: [],
-    brand: null,
-    model: null,
-    price_from: null,
-    price_to: null,
-    year_from: null,
-    year_to: null,
-    mileage: null,
-    fuel_type: [],
-    drive_type: [],
-    color: [],
-    exchange_available: false
-  };
-};
-
-const applyFilters = () => {
-  // Тут буде логіка застосування фільтрів
-  visible.value = false;
-};
-
-const foundCarsCount = computed(() => {
-  // TODO: Реалізувати логіку підрахунку знайдених авто
-  return 356;
-});
-
-const updateSlider = () => {
-  if (filters.value.price_from && filters.value.price_to) {
-    filters.value.price = [filters.value.price_from, filters.value.price_to];
+  },
+  computed: {
+    foundCarsCount() {
+      return 356;
+    }
+  },
+  methods: {
+    updateFilters: debounce(function() {
+      const queryParams = {};
+      Object.entries(this.filters).forEach(([key, value]) => {
+        if (value !== null && value !== '' && value !== false) {
+          queryParams[key] = value;
+        }
+      });
+      this.$router.push({ query: queryParams });
+    }, 300),
+    
+    resetFilters() {
+      this.filters = {
+        status: [],
+        brand: null,
+        model: null,
+        price_from: null,
+        price_to: null,
+        year_from: null,
+        year_to: null,
+        mileage: null,
+        fuel_type: [],
+        drive_type: [],
+        color: [],
+        exchange_available: false
+      };
+      this.carStatusValue = 'all';
+    },
+    
+    applyFilters() {
+      this.visible = false;
+    },
+    
+    updateSlider() {
+      if (this.filters.price_from && this.filters.price_to) {
+        this.filters.price = [this.filters.price_from, this.filters.price_to];
+      }
+    }
+  },
+  mounted() {
+    this.carStatusValue = this.filters.status ? 'in_stock' : 'all';
+    
+    const route = this.$route;
+    Object.entries(route.query).forEach(([key, value]) => {
+      if (key in this.filters) {
+        this.filters[key] = value;
+      }
+    });
   }
-};
-
-watch(() => filters.value.price_from, updateSlider);
-watch(() => filters.value.price_to, updateSlider);
+}
 </script>
 
 <template>
-  <!-- Мобільна версія -->
-  <div class="md:hidden">
-    <Button label="Всі фільтри" icon="pi pi-filter" @click="visible = true" />
+  <div class="md:col-4 lg:hidden">
+    <Button label="Всі фільтри" icon="pi pi-filter" @click="visible = true" class="w-full"/>
     
-    <Dialog v-model:visible="visible" modal header="Фільтри" class="w-full md:w-8" :breakpoints="{ '960px': '75vw', '640px': '100vw' }">
+    <Dialog v-model:visible="visible" modal header="Фільтри" class="w-full md:w-8">
       <div class="filter-container">
-        <div class="grid">
-          <!-- Копія десктопних фільтрів -->
-          <div class="col-12">
-            <div class="flex align-items-center">
-              <Checkbox v-model="filters.status" :binary="true" />
-              <label class="ml-2">На майданчику</label>
-            </div>
-          </div>
-          
-          <div class="col-12">
-            <h3>Основні параметри</h3>
+        <div class="grid gap-4">
+          <Panel header="Статус автомобіля" class="w-full">
+            <SelectButton v-model="StatusValue" :options="StatusOptions" optionLabel="label" class="w-full"/>
+          </Panel>
+
+          <Panel header="Основні параметри" toggleable class="w-full">
             <div class="field mb-4">
               <label>Марка</label>
-              <MultiSelect v-model="filters.brand" :options="[]" optionLabel="name" placeholder="Оберіть марку" class="w-full" />
+              <MultiSelect v-model="filters.brand" :options="brandOptions" optionLabel="name" placeholder="Оберіть марку" class="w-full" />
             </div>
 
             <div class="field mb-4">
               <label>Модель</label>
-              <MultiSelect v-model="filters.model" :options="[]" optionLabel="name" placeholder="Оберіть модель" class="w-full" :disabled="!filters.brand" />
+              <MultiSelect v-model="filters.model" :options="modelOptions[filters.brand?.code] || []" optionLabel="name" placeholder="Оберіть модель" class="w-full" :disabled="!filters.brand" />
             </div>
 
             <div class="field mb-4">
               <label>Ціна ($)</label>
-              <div class="filter-container p-3" style="max-width: 100%; overflow: visible;">
-                <div class="flex gap-2 w-full" style="min-width: 0;">
-                  <InputNumber 
-                    v-model="filters.price_from" 
-                    placeholder="Від"
-                    class="flex-1 min-w-0"
-                    :min="0"
-                    :max="filters.price_to || 100000"
-                    inputClass="w-full"
-                  />
-                  <span class="text-500 mx-1">—</span>
-                  <InputNumber 
-                    v-model="filters.price_to" 
-                    placeholder="До"
-                    class="flex-1 min-w-0"
-                    :min="filters.price_from || 0"
-                    :max="100000"
-                    inputClass="w-full"
-                  />
-                </div>
-                <div class="slider-container mt-3 px-2" style="width: calc(100% - 1rem);">
-                  <Slider 
-                    v-model="filters.price" 
-                    range 
-                    class="w-full"
-                    :min="0" 
-                    :max="100000" 
-                  />
-                </div>
+              <div class="flex gap-2">
+                <InputNumber v-model="filters.price_from" placeholder="Від" :min="priceRange.min" :max="priceRange.max"/>
+                <InputNumber v-model="filters.price_to" placeholder="До" :min="filters.price_from || priceRange.min" :max="priceRange.max"/>
               </div>
+              <Slider v-model="filters.price" range :min="priceRange.min" :max="priceRange.max" :step="priceRange.step"/>
             </div>
 
             <div class="field mb-4">
               <label>Рік випуску</label>
-              <div class="filter-container p-3" style="max-width: 100%; overflow: visible;">
-                <div class="flex gap-2 w-full" style="min-width: 0;">
-                  <InputNumber 
-                    v-model="filters.year_from" 
-                    placeholder="Від"
-                    class="flex-1 min-w-0"
-                    :min="2010"
-                    :max="filters.year_to || 2024"
-                    inputClass="w-full"
-                  />
-                  <span class="text-500 mx-1">—</span>
-                  <InputNumber 
-                    v-model="filters.year_to" 
-                    placeholder="До"
-                    class="flex-1 min-w-0"
-                    :min="filters.year_from || 2010"
-                    :max="2024"
-                    inputClass="w-full"
-                  />
-                </div>
-                <div class="slider-container mt-3 px-2" style="width: calc(100% - 1rem);">
-                  <Slider 
-                    v-model="filters.year" 
-                    range 
-                    class="w-full"
-                    :min="2010" 
-                    :max="2024" 
-                  />
-                </div>
+              <div class="flex gap-2">
+                <InputNumber v-model="filters.year_from" placeholder="Від" :min="yearRange.min" :max="yearRange.max"/>
+                <InputNumber v-model="filters.year_to" placeholder="До" :min="filters.year_from || yearRange.min" :max="yearRange.max"/>
               </div>
+              <Slider v-model="filters.year" range :min="yearRange.min" :max="yearRange.max" :step="yearRange.step"/>
             </div>
 
             <div class="field mb-4">
               <label>Пробіг</label>
-              <SelectButton v-model="filters.mileage" :options="mileageOptions" optionLabel="label" class="w-full" />
+              <SelectButton v-model="filters.mileage" :options="mileageOptions" optionLabel="label"/>
             </div>
-          </div>
+          </Panel>
 
-          <div class="col-12">
-            <h3>Технічні характеристики</h3>
+          <Panel header="Технічні характеристики" toggleable class="w-full">
             <div class="field mb-4">
               <label>Тип палива</label>
-              <MultiSelect v-model="filters.fuel_type" :options="fuelTypes" optionLabel="label" placeholder="Оберіть тип палива" class="w-full" />
+              <div class="flex flex-wrap gap-2">
+                <ToggleButton 
+                  v-for="type in fuelTypes" 
+                  :key="type.value"
+                  v-model="filters.fuel_type" 
+                  :onLabel="type.label" 
+                  :offLabel="type.label"
+                  :value="type.value"
+                />
+              </div>
             </div>
             
             <div class="field mb-4">
               <label>Тип приводу</label>
-              <MultiSelect v-model="filters.drive_type" :options="driveTypes" optionLabel="label" placeholder="Оберіть тип приводу" class="w-full" />
+              <div class="flex flex-wrap gap-2">
+                <ToggleButton 
+                  v-for="type in driveTypes" 
+                  :key="type.value"
+                  v-model="filters.drive_type" 
+                  :onLabel="type.label" 
+                  :offLabel="type.label"
+                  :value="type.value"
+                />
+              </div>
             </div>
-          </div>
-          
-          <div class="col-12">
-            <h3>Додаткові параметри</h3>
+          </Panel>
+
+          <Panel header="Додаткові параметри" toggleable class="w-full">
             <div class="field mb-4">
               <label>Колір</label>
               <div class="grid">
@@ -261,10 +275,10 @@ watch(() => filters.value.price_to, updateSlider);
                 <label class="ml-2">Можливий обмін</label>
               </div>
             </div>
-          </div>
-          
-          <div class="col-12 flex justify-content-between">
-            <Button label="Скинути" severity="secondary" text @click="resetFilters" />
+          </Panel>
+
+          <div class="flex justify-content-between">
+            <Button label="Скинути" @click="resetFilters" />
             <Button label="Застосувати" @click="applyFilters" />
           </div>
         </div>
@@ -272,124 +286,77 @@ watch(() => filters.value.price_to, updateSlider);
     </Dialog>
   </div>
 
-  <!-- Десктопна версія -->
-  <div class="hidden md:block">
-    <div class="surface-card pr-2 border-round">
-      <div class="grid">
-        <!-- Статус -->
-        <div class="col-12">
-          <div class="flex align-items-center">
-            <Checkbox v-model="filters.status" :binary="true" />
-            <label class="ml-2">На майданчику</label>
-          </div>
-        </div>
+  <div class="hidden lg:block col-12">
+    <div class="surface-card border-round">
+      <div class="grid gap-4">
+        <SelectButton v-model="StatusValue" :options="StatusOptions" optionLabel="label"/>
 
-        <!-- Основні параметри -->
-        <div class="col-12">
-          <h3>Основні параметри</h3>
-          
+        <Panel header="Основні параметри" toggleable>
           <div class="field mb-4">
             <label>Марка</label>
-            <MultiSelect v-model="filters.brand" :options="[]" optionLabel="name" placeholder="Оберіть марку" class="w-full" />
+            <MultiSelect v-model="filters.brand" :options="brandOptions" optionLabel="name" placeholder="Оберіть марку"/>
           </div>
 
           <div class="field mb-4">
             <label>Модель</label>
-            <MultiSelect v-model="filters.model" :options="[]" optionLabel="name" placeholder="Оберіть модель" class="w-full" :disabled="!filters.brand" />
+            <MultiSelect v-model="filters.model" :options="modelOptions[filters.brand?.code] || []" optionLabel="name" placeholder="Оберіть модель" :disabled="!filters.brand"/>
           </div>
 
           <div class="field mb-4">
             <label>Ціна ($)</label>
-            <div class="filter-container " style="max-width: 100%; overflow: visible;">
-              <div class="flex gap-2 w-full" style="min-width: 0;">
-                <InputNumber 
-                  v-model="filters.price_from" 
-                  placeholder="Від"
-                  class="flex-1 min-w-0"
-                  :min="0"
-                  :max="filters.price_to || 100000"
-                  inputClass="w-full"
-                />
-                
-                <InputNumber 
-                  v-model="filters.price_to" 
-                  placeholder="До"
-                  class="flex-1 min-w-0"
-                  :min="filters.price_from || 0"
-                  :max="100000"
-                  inputClass="w-full"
-                />
-              </div>
-              <div class="slider-container mx-auto py-4 px-1" style="width: calc(100% - 1rem);">
-                <Slider 
-                  v-model="filters.price" 
-                  range 
-                  class="w-full"
-                  :min="0" 
-                  :max="100000" 
-                />
-              </div>
+            <div class="flex gap-2">
+              <InputNumber v-model="filters.price_from" placeholder="Від" :min="priceRange.min" :max="priceRange.max"/>
+              <InputNumber v-model="filters.price_to" placeholder="До" :min="filters.price_from || priceRange.min" :max="priceRange.max"/>
             </div>
+            <Slider v-model="filters.price" range :min="priceRange.min" :max="priceRange.max" :step="priceRange.step"/>
           </div>
 
           <div class="field mb-4">
             <label>Рік випуску</label>
-            <div class="filter-container " style="max-width: 100%; overflow: visible;">
-              <div class="flex gap-2 w-full" style="min-width: 0;">
-                <InputNumber 
-                  v-model="filters.year_from" 
-                  placeholder="Від"
-                  class="flex-1 min-w-0"
-                  :min="2010"
-                  :max="filters.year_to || 2024"
-                  inputClass="w-full"
-                />
-                <InputNumber 
-                  v-model="filters.year_to" 
-                  placeholder="До"
-                  class="flex-1 min-w-0"
-                  :min="filters.year_from || 2010"
-                  :max="2024"
-                  inputClass="w-full"
-                />
-              </div>
-              <div class="slider-container mx-auto py-4 px-1" style="width: calc(100% - 1rem);">
-                <Slider 
-                  v-model="filters.year" 
-                  range 
-                  class="w-full"
-                  :min="2010" 
-                  :max="2024" 
-                />
-              </div>
+            <div class="flex gap-2">
+              <InputNumber v-model="filters.year_from" placeholder="Від" :min="yearRange.min" :max="yearRange.max"/>
+              <InputNumber v-model="filters.year_to" placeholder="До" :min="filters.year_from || yearRange.min" :max="yearRange.max"/>
             </div>
+            <Slider v-model="filters.year" range :min="yearRange.min" :max="yearRange.max" :step="yearRange.step"/>
           </div>
 
           <div class="field mb-4">
             <label>Пробіг</label>
-            <SelectButton v-model="filters.mileage" :options="mileageOptions" optionLabel="label" class="w-full" />
+            <SelectButton v-model="filters.mileage" :options="mileageOptions" optionLabel="label"/>
           </div>
-        </div>
+        </Panel>
 
-        <!-- Технічні характеристики -->
-        <div class="col-12">
-          <h3>Технічні характеристики</h3>
-          
+        <Panel header="Технічні характеристики" toggleable>
           <div class="field mb-4">
             <label>Тип палива</label>
-            <MultiSelect v-model="filters.fuel_type" :options="fuelTypes" optionLabel="label" placeholder="Оберіть тип палива" class="w-full" />
+            <div class="flex flex-wrap gap-2">
+              <ToggleButton 
+                v-for="type in fuelTypes" 
+                :key="type.value"
+                v-model="filters.fuel_type" 
+                :onLabel="type.label" 
+                :offLabel="type.label"
+                :value="type.value"
+              />
+            </div>
           </div>
 
           <div class="field mb-4">
             <label>Тип приводу</label>
-            <MultiSelect v-model="filters.drive_type" :options="driveTypes" optionLabel="label" placeholder="Оберіть тип приводу" class="w-full" />
+            <div class="flex flex-wrap gap-2">
+              <ToggleButton 
+                v-for="type in driveTypes" 
+                :key="type.value"
+                v-model="filters.drive_type" 
+                :onLabel="type.label" 
+                :offLabel="type.label"
+                :value="type.value"
+              />
+            </div>
           </div>
-        </div>
+        </Panel>
 
-        <!-- Додаткові фільтри -->
-        <div class="col-12">
-          <h3>Додаткові параметри</h3>
-          
+        <Panel header="Додаткові параметри" toggleable>
           <div class="field mb-4">
             <label>Колір</label>
             <div class="grid">
@@ -408,82 +375,13 @@ watch(() => filters.value.price_to, updateSlider);
               <label class="ml-2">Можливий обмін</label>
             </div>
           </div>
-        </div>
+        </Panel>
 
-        <!-- Кнопки управління -->
-        <div class="col-12 flex justify-content-between">
+        <div class="flex justify-content-between">
           <Button label="Скинути" icon="pi pi-refresh" @click="resetFilters" outlined />
           <Button :label="'Показати ' + foundCarsCount + ' оголошень'" icon="pi pi-search" />
         </div>
       </div>
     </div>
   </div>
-</template>
-
-<style scoped>
-.filter-container {
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-:deep(.p-selectbutton) {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-:deep(.p-selectbutton .p-button) {
-  flex: 1;
-  white-space: nowrap;
-}
-
-@media screen and (max-width: 768px) {
-  :deep(.p-dialog) {
-    width: 90vw !important;
-    max-width: none !important;
-  }
-}
-
-.field {
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.p-inputnumber {
-  width: 100%;
-}
-
-.p-inputnumber-input {
-  width: 100%;
-  min-width: 0; /* Важливо для flex-елементів */
-}
-
-/* Додаткові стилі для фільтрів */
-.filter-container {
-  background: var(--surface-ground);
-  border-radius: var(--border-radius);
-}
-
-:deep(.p-inputnumber) {
-  width: 100%;
-}
-
-:deep(.p-inputnumber-input) {
-  width: 100% !important;
-  min-width: 0 !important;
-}
-
-:deep(.p-slider) {
-  margin: 0;
-}
-
-/* Медіа-запити */
-@media screen and (max-width: 768px) {
-  .filter-container {
-    padding: 0.5rem !important;
-  }
-  
-  .slider-container {
-    padding: 0 0.5rem !important;
-  }
-}
-</style> 
+</template> 

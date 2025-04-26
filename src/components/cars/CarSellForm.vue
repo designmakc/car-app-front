@@ -1,9 +1,9 @@
 <!-- Based on: PrimeVue/Form -->
 <template>
   <div class="car-sell-form">
-    <div class="flex flex-wrap grid">
+    <div class="flex flex-wrap grid gap-2">
       <!-- Марка автомобіля -->
-      <div class="col-12 w-full">
+      <div class="col-12 w-full pb-0 pt-3">
         <FloatLabel variant="in">
           <Select
             v-model="selectedBrand"
@@ -16,10 +16,14 @@
             variant="filled"
             size="large"
             :class="{ 'p-invalid': submitted && !selectedBrand }"
+            filterMessage="Пошук..."
+            emptyFilterMessage="Не знайденно"
+            emptyMessage="Немає доступних варіантів"
+            dt:
           />
           <label></label>
         </FloatLabel>
-        <small v-if="submitted && !selectedBrand" class="p-error">Оберіть марку автомобіля</small>
+        <small v-if="submitted && !selectedBrand" class="p-error text-red-500">Оберіть марку автомобіля</small>
       </div>
 
       <!-- Модель автомобіля -->
@@ -37,46 +41,53 @@
             :inputStyle="inputStyle"
             :disabled="!selectedBrand"
             :class="{ 'p-invalid': submitted && !selectedModel }"
+            filterMessage="Пошук..."
+            emptyFilterMessage="Не знайденно"
+            emptyMessage="Немає доступних варіантів"
           />
           <label></label>
         </FloatLabel>
-        <small v-if="submitted && !selectedModel" class="p-error">Оберіть модель автомобіля</small>
+        <small v-if="submitted && !selectedModel" class="p-error text-red-500">Оберіть модель автомобіля</small>
       </div>
 
       <!-- Рік випуску -->
-      <div class="col-12 md:col-6">
-        <FloatLabel variant="in">
-          <InputMask
-            v-model="year"
-            mask="9999"
-            autocomplete="off"
-            variant="filled"
-            size="large"
-            class="w-full"
-            :class="{ 'p-invalid': submitted && !year }"
-          />
-          <label>Рік випуску</label>
-        </FloatLabel>
-        <small v-if="submitted && !year" class="p-error">Введіть рік випуску</small>
-      </div>
-
-      <!-- Ціна -->
-      <div class="col-12 md:col-6">
-        <FloatLabel variant="in">
-          <IconField>
-            <InputIcon class="pi pi-dollar" />
-            <InputNumber
-              v-model="price"
+      <div class="col-2 grid mr-0 ml-0 w-full gap-2 pb-0">
+        <div class="col p-0">
+          <FloatLabel variant="in">
+            <IconField class="w-full">
+              <InputIcon class="pi pi-calendar" />
+            <InputNumber 
+              v-model="year"
               autocomplete="off"
               variant="filled"
               size="large"
-              class="w-full"
-              :class="{ 'p-invalid': submitted && !price }"
+              class="w-full min-w-0"
+              :max="new Date().getFullYear()"
+              :class="{ 'p-invalid': submitted && !year }"
             />
-          </IconField>
-          <label>Ціна</label>
-        </FloatLabel>
-        <small v-if="submitted && !price" class="p-error">Вкажіть ціну</small>
+            </IconField>
+            <label>Рік випуску</label>
+          </FloatLabel>
+          <small v-if="submitted && !year" class="p-error text-red-500">Введіть рік випуску</small>
+        </div>
+        <!-- Ціна -->
+        <div class="col p-0">
+          <FloatLabel variant="in">
+            <IconField class="w-full">
+              <InputIcon class="pi pi-dollar" />
+              <InputNumber 
+                v-model="price"
+                autocomplete="off"
+                variant="filled"
+                size="large"
+                class="w-full min-w-0"
+                :class="{ 'p-invalid': submitted && !price }"
+              />
+            </IconField>
+            <label>Ціна</label>
+          </FloatLabel>
+          <small v-if="submitted && !price" class="p-error text-red-500">Вкажіть ціну</small>
+        </div>
       </div>
 
       <!-- Телефон -->
@@ -85,7 +96,7 @@
           <InputMask
             v-model="phone"
             mask="+38 999 999 99 99"
-            autocomplete="off"
+            autocomplete="on"
             variant="filled"
             size="large"
             class="w-full"
@@ -93,8 +104,8 @@
           />
           <label>Номер телефону</label>
         </FloatLabel>
-        <small v-if="submitted && !phone" class="p-error">Введіть номер телефону</small>
-        <small v-else-if="submitted && phone && !isValidPhone" class="p-error">Введіть повний номер телефону</small>
+        <small v-if="submitted && !phone" class="p-error text-red-500">Введіть номер телефону</small>
+        <small v-else-if="submitted && phone && !isValidPhone" class="p-error text-red-500 ">Введіть повний номер телефону</small>
       </div>
 
       <!-- Кнопка -->
@@ -220,14 +231,24 @@ const validateAndSubmit = () => {
 </script>
 
 <style scoped>
-.p-error {
-  color: #f44336;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  display: block;
+:deep(.p-inputnumber) {
+  width: 100%;
 }
 
-.p-invalid {
-  border-color: #f44336 !important;
+:deep(.p-inputnumber-input) {
+  width: 100% !important;
+  min-width: 0 !important;
 }
-</style> 
+
+:deep(.p-float-label) {
+  width: 100%;
+}
+
+:deep(.p-input-icon-left) {
+  width: 100%;
+}
+
+:deep(.p-input-icon-left > .p-inputtext) {
+  width: 100%;
+}
+</style>

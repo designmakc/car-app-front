@@ -1,5 +1,7 @@
 /* Імпорт шрифту Inter */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
 
 /* Базовий розмір для rem */
 html {
@@ -8,7 +10,7 @@ html {
 
 :root {
   --font-family: 'Roboto', sans-serif;
-  --headings-font-family: 'Jost', sans-serif;
+  --headings-font-family: 'Unbounded', sans-serif;
 }
 
 /* Базовий шрифт - Roboto */
@@ -16,35 +18,25 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Шрифт для заголовків - Jost */
-h1, h2, h3, h4, h5, h6, .jost-heading {
-  font-family: 'Jost', sans-serif;
+/* Шрифт для заголовків - Unbounded */
+h1, h2, h3, h4, h5, h6, .Unbounded-heading {
+  font-family: 'Unbounded', sans-serif;
   font-weight: 600;
+  line-height: 1.1;
+  margin: auto;
+  
+  
+  
   
 }
-
-/* Додаткові стилі для заголовків */
-h1 {
-  font-size: 2.5rem;
-  
-}
-
-h2 {
-  font-size: 2rem;
-  
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
 /* Клас для примусового застосування Jost */
-.jost-font {
-  font-family: 'Jost', sans-serif !important;
+.unbounded-font {
+  font-family: 'Unbounded', sans-serif !important;
+  letter-spacing: 0.05em;
 }
 
 /* Клас для примусового застосування Roboto */
-.roboto-font {
+.roboto -font {
   font-family: 'Roboto', sans-serif !important;
 }
 /* Скидання стилів для всіх елементів */

@@ -10,7 +10,17 @@
       </div>
     </section>
     <div class="container">
-      <Message severity="info" :closable="true" class="mb-4">
+      <Message 
+        severity="info" 
+        :closable="true" 
+        :variant="simple" 
+        icon="pi pi-info-circle" 
+        class="mb-4" 
+        :pt="{
+          text: 'font-normal text-sm md:text-base',
+          content: 'gap-2'
+        }"
+      >
         <span>Шановні користувачі! Наш сайт працює в тестовому режимі. Дякуємо за розуміння.</span>
       </Message>
     </div>
@@ -24,8 +34,8 @@
             <div class="surface-card">
               <Tabs value="search">
                 <TabList>
-                  <Tab value="search" class="col-6"> <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
-                  <Tab value="sell" class="col-6"> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
+                  <Tab value="search" class="col-6 unbounded-font"> <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
+                  <Tab value="sell" class="col-6 unbounded-font"> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
                 </TabList>
                 <TabPanels >
                   <TabPanel value="search"> <CarSearchForm /> </TabPanel>
@@ -420,7 +430,6 @@ const provideRegularCars = async (page, perPage) => {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  
 }
 
 

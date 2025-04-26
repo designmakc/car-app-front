@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
@@ -8,6 +9,7 @@ import { definePreset } from '@primeuix/themes'
 import Lara from '@primeuix/themes/lara'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
+
 // Імпорт компонентів PrimeVue
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -29,6 +31,11 @@ import CascadeSelect from 'primevue/cascadeselect';
 import Select from 'primevue/select';
 import Toast from 'primevue/toast';
 import InputMask from 'primevue/inputmask';
+import SelectButton from 'primevue/selectbutton';
+import MultiSelect from 'primevue/multiselect';
+import Slider from 'primevue/slider';
+import Panel from 'primevue/panel';
+import ToggleButton from 'primevue/togglebutton';
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -54,7 +61,15 @@ const app = createApp(App)
 // Налаштовуємо PrimeVue
 app.use(PrimeVue, {
     ripple: true,
-    
+    pt: {
+        global: {
+          cssLayer: false,
+          font: {
+            family: "'Unbounded', sans-serif", // Основной шрифт
+            secondaryFamily: "'Roboto', sans-serif" // Второстепенный
+          }
+        }
+    },
     theme: {
         preset: MyPreset,
         options: {
@@ -88,5 +103,10 @@ app.component('CascadeSelect', CascadeSelect);
 app.component('Select', Select);
 app.component('Toast', Toast);
 app.component('InputMask', InputMask);
+app.component('SelectButton', SelectButton);
+app.component('MultiSelect', MultiSelect);
+app.component('Slider', Slider);
+app.component('Panel', Panel);
+app.component('ToggleButton', ToggleButton);
 // Монтуємо додаток
 app.mount('#app')
