@@ -28,7 +28,7 @@ import FloatLabel from 'primevue/floatlabel';
 import CascadeSelect from 'primevue/cascadeselect';
 import Select from 'primevue/select';
 import Toast from 'primevue/toast';
-
+import InputMask from 'primevue/inputmask';
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -86,5 +86,6 @@ app.component('FloatLabel', FloatLabel);
 app.component('CascadeSelect', CascadeSelect);
 app.component('Select', Select);
 app.component('Toast', Toast);
+app.component('InputMask', InputMask);
 // Монтуємо додаток
 app.mount('#app')
