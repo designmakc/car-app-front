@@ -7,17 +7,46 @@ html {
 }
 
 :root {
-  font-family: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
-    Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  font-weight: 400;
-  
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --font-family: 'Roboto', sans-serif;
+  --headings-font-family: 'Jost', sans-serif;
 }
 
+/* Базовий шрифт - Roboto */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Шрифт для заголовків - Jost */
+h1, h2, h3, h4, h5, h6, .jost-heading {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  
+}
+
+/* Додаткові стилі для заголовків */
+h1 {
+  font-size: 2.5rem;
+  
+}
+
+h2 {
+  font-size: 2rem;
+  
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* Клас для примусового застосування Jost */
+.jost-font {
+  font-family: 'Jost', sans-serif !important;
+}
+
+/* Клас для примусового застосування Roboto */
+.roboto-font {
+  font-family: 'Roboto', sans-serif !important;
+}
 /* Скидання стилів для всіх елементів */
 * {
   outline: none !important;

@@ -54,6 +54,7 @@ const app = createApp(App)
 // Налаштовуємо PrimeVue
 app.use(PrimeVue, {
     ripple: true,
+    
     theme: {
         preset: MyPreset,
         options: {

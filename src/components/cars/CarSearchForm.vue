@@ -42,35 +42,71 @@
         <label></label>
       </FloatLabel> 
     </div>
-        <div class="col-12 md:col-6">
-          <FloatLabel variant="in">
-            <InputNumber id="in_label" v-model="yearFrom" autocomplete="off" variant="filled" size="large" class="w-full" :min="1900" :max="new Date().getFullYear()" />
-          <label for="in_label">Рік випуску від</label>
-          </FloatLabel>
+        <div class="col-12 grid">
+          <div class="col-6 pr-2 pl-0">
+            <FloatLabel variant="in">
+              <InputNumber 
+                id="year_from" 
+                v-model="yearFrom" 
+                autocomplete="off" 
+                variant="filled" 
+                size="large" 
+                class="w-full min-w-0"
+                :min="1900" 
+                :max="new Date().getFullYear()" 
+              />
+              <label for="year_from">Рік випуску від</label>
+            </FloatLabel>
+          </div>
+          <div class="col-6 pl-2 pr-0">
+            <FloatLabel variant="in">
+              <InputNumber 
+                id="year_to" 
+                v-model="yearTo" 
+                autocomplete="off" 
+                variant="filled" 
+                size="large" 
+                class="w-full min-w-0"
+                :min="1900" 
+                :max="new Date().getFullYear()" 
+              />
+              <label for="year_to">Рік випуску до</label>
+            </FloatLabel>
+          </div>
         </div>
-        <div class="col-12 md:col-6">
-          <FloatLabel variant="in">
-            <InputNumber id="in_label" v-model="yearTo" autocomplete="off" variant="filled" size="large" class="w-full" :min="1900" :max="new Date().getFullYear()" />
-          <label for="in_label">Рік випуску до</label>
-          </FloatLabel>
-        </div>
-        <div class="col-12 md:col-6">
-          <FloatLabel variant="in">
-            <IconField>
-              <InputIcon class="pi pi-dollar" />
-              <InputNumber id="in_label" v-model="priceFrom" autocomplete="off" variant="filled" size="small md:large" class="w-full"/>
-            </IconField>
-          <label for="in_label">Ціна від</label>
-          </FloatLabel>
-        </div>
-        <div class="col-12 md:col-6">
-          <FloatLabel variant="in">
-            <IconField>
-              <InputIcon class="pi pi-dollar" />
-              <InputNumber id="in_label" v-model="priceTo" autocomplete="off" variant="filled" size="small md:large" class="w-full" />
-            </IconField>
-          <label for="in_label">Ціна до</label>
-          </FloatLabel>
+        <div class="col-12 grid">
+            <div class="col-6 pr-2 pl-0">
+            <FloatLabel variant="in">
+              <IconField class="w-full">
+                <InputIcon class="pi pi-dollar" />
+                <InputNumber 
+                  id="price_from" 
+                  v-model="priceFrom" 
+                  autocomplete="off" 
+                  variant="filled" 
+                  size="small md:large" 
+                  class="w-full min-w-0"
+                />
+              </IconField>
+              <label for="price_from">Ціна від</label>
+            </FloatLabel>
+          </div>
+            <div class="col-6 pl-2 pr-0">
+            <FloatLabel variant="in">
+              <IconField class="w-full">
+                <InputIcon class="pi pi-dollar" />
+                <InputNumber 
+                  id="price_to" 
+                  v-model="priceTo" 
+                  autocomplete="off" 
+                  variant="filled" 
+                  size="small md:large" 
+                  class="w-full min-w-0"
+                />
+              </IconField>
+              <label for="price_to">Ціна до</label>
+            </FloatLabel>
+          </div>
         </div>
         <div class="col-12">
           <Button label="Пошук авто" icon="pi pi-search" size="large" class="w-full p-button-primary" @click="handleSearch" />
@@ -174,4 +210,27 @@ const handleSearch = () => {
 
 
 </script>
+
+<style scoped>
+:deep(.p-inputnumber) {
+  width: 100%;
+}
+
+:deep(.p-inputnumber-input) {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+:deep(.p-float-label) {
+  width: 100%;
+}
+
+:deep(.p-input-icon-left) {
+  width: 100%;
+}
+
+:deep(.p-input-icon-left > .p-inputtext) {
+  width: 100%;
+}
+</style>
 

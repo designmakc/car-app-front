@@ -9,10 +9,10 @@
 <template>
   <div class="car-list">
     <!-- Скелетони під час початкового завантаження -->
-    <div v-if="loading && !cars.length" class="grid">
+    <div v-if="loading && !cars.length" class="grid justify-content-start">
       <div v-for="n in skeletonCount" 
            :key="n"
-           class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+           :class="gridClasses">
         <div class="border-round border-1 surface-border surface-card p-3">
           <Skeleton height="10rem" class="mb-3"></Skeleton>
           <Skeleton width="70%" height="1.5rem" class="mb-2"></Skeleton>
@@ -31,11 +31,11 @@
     </div>
 
     <!-- Адаптивна сітка з автомобілями (відображається після завантаження) -->
-    <div v-else class="grid">
+    <div v-else class="grid justify-content-start">
       <div v-for="car in displayedCars" 
            :key="car.id"
-           class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 transition-all duration-200">
-        <CarCard :car="car" />
+           :class="[gridClasses, 'p-2 transition-all duration-200']">
+        <CarCard v-bind="car" />
       </div>
     </div>
 
@@ -63,7 +63,7 @@
     <div v-if="!infiniteScroll && hasMoreCars && !loading" 
          class="flex justify-content-center my-4">
       <Button
-        label="Дивитися всі авто" 
+        label="Показати ще авто" 
         icon="pi pi-arrow-down"
         @click="loadMore"
         :loading="loading" 
@@ -82,7 +82,185 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import CarCard from './CarCard.vue'
 import ProgressSpinner from 'primevue/progressspinner'
 import Button from 'primevue/button'
-import Skeleton from 'primevue/skeleton' // Імпортуємо Skeleton
+import Skeleton from 'primevue/skeleton'
+
+// Імпортуємо тільки існуючі зображення
+import audiImage from '@/assets/cars/audi-a4.jpg'
+import bmwImage from '@/assets/cars/bmw-x5.jpg'
+import mercedesImage from '@/assets/cars/mercedes-c.jpg'
+import toyotaImage from '@/assets/cars/toyota-camry.jpg'
+
+// Демо-дані автомобілів
+const demoCarsList = [
+  {
+    id: 1,
+    user_id: 101,
+    brand: 'Audi',
+    model: 'A4',
+    year: 2019,
+    gearbox: 'Автомат',
+    fuel_type: 'Бензин',
+    engine_capacity: 2.0,
+    engine_unit: 'л',
+    body_type: 'Седан',
+    mileage: 45,
+    drive_type: 'Передній',
+    color: 'Сірий',
+    city: 'Київ',
+    price: 25999,
+    status: 'На майданчику',
+    is_top: true,
+    link: audiImage,
+    created_at: '2023-10-15T12:30:00'
+  },
+  {
+    id: 2,
+    user_id: 102,
+    brand: 'BMW',
+    model: 'X5',
+    year: 2020,
+    gearbox: 'Автомат',
+    fuel_type: 'Дизель',
+    engine_capacity: 3.0,
+    engine_unit: 'л',
+    body_type: 'Кросовер',
+    mileage: 30,
+    drive_type: 'Повний',
+    color: 'Чорний',
+    city: 'Львів',
+    price: 65000,
+    status: 'На майданчику',
+    is_top: false,
+    link: bmwImage,
+    created_at: '2023-11-05T15:45:00'
+  },
+  {
+    id: 3,
+    user_id: 103,
+    brand: 'Mercedes',
+    model: 'C-Class',
+    year: 2021,
+    gearbox: 'Автомат',
+    fuel_type: 'Бензин',
+    engine_capacity: 2.0,
+    engine_unit: 'л',
+    body_type: 'Седан',
+    mileage: 60,
+    drive_type: 'Задній',
+    color: 'Сріблястий',
+    city: 'Одеса',
+    price: 45500,
+    status: '',
+    is_top: true,
+    link: mercedesImage,
+    created_at: '2023-12-10T09:15:00'
+  },
+  {
+    id: 4,
+    user_id: 104,
+    brand: 'Toyota',
+    model: 'Camry',
+    year: 2018,
+    gearbox: 'Автомат',
+    fuel_type: 'Гібрид',
+    engine_capacity: 2.5,
+    engine_unit: 'л',
+    body_type: 'Седан',
+    mileage: 15,
+    drive_type: 'Передній',
+    color: 'Білий',
+    city: 'Харків',
+    price: 28999,
+    status: 'На майданчику',
+    is_top: false,
+    link: toyotaImage,
+    created_at: '2023-09-20T18:00:00'
+  },
+  {
+    id: 5,
+    user_id: 105,
+    brand: 'Audi',
+    model: 'Q7',
+    year: 2017,
+    gearbox: 'Автомат',
+    fuel_type: 'Дизель',
+    engine_capacity: 3.0,
+    engine_unit: 'л',
+    body_type: 'Кросовер',
+    mileage: 55,
+    drive_type: 'Повний',
+    color: 'Синій',
+    city: 'Дніпро',
+    price: 32500,
+    status: 'На майданчику',
+    is_top: true,
+    link: audiImage, // Повторно використовуємо існуюче зображення
+    created_at: '2023-08-15T10:20:00'
+  },
+  {
+    id: 6,
+    user_id: 106,
+    brand: 'BMW',
+    model: '3 Series',
+    year: 2020,
+    gearbox: 'Автомат',
+    fuel_type: 'Бензин',
+    engine_capacity: 2.0,
+    engine_unit: 'л',
+    body_type: 'Седан',
+    mileage: 25,
+    drive_type: 'Задній',
+    color: 'Чорний',
+    city: 'Запоріжжя',
+    price: 29999,
+    status: 'На майданчику',
+    is_top: false,
+    link: bmwImage, // Повторно використовуємо існуюче зображення
+    created_at: '2023-10-05T14:30:00'
+  },
+  {
+    id: 7,
+    user_id: 107,
+    brand: 'Mercedes',
+    model: 'GLC',
+    year: 2019,
+    gearbox: 'Автомат',
+    fuel_type: 'Дизель',
+    engine_capacity: 2.0,
+    engine_unit: 'л',
+    body_type: 'Кросовер',
+    mileage: 40,
+    drive_type: 'Повний',
+    color: 'Білий',
+    city: 'Київ',
+    price: 33500,
+    status: 'На майданчику',
+    is_top: true,
+    link: mercedesImage, // Повторно використовуємо існуюче зображення
+    created_at: '2023-11-20T11:10:00'
+  },
+  {
+    id: 8,
+    user_id: 108,
+    brand: 'Toyota',
+    model: 'RAV4',
+    year: 2021,
+    gearbox: 'Автомат',
+    fuel_type: 'Гібрид',
+    engine_capacity: 2.5,
+    engine_unit: 'л',
+    body_type: 'Кросовер',
+    mileage: 10,
+    drive_type: 'Повний',
+    color: 'Червоний',
+    city: 'Одеса',
+    price: 31999,
+    status: '',
+    is_top: false,
+    link: toyotaImage, // Повторно використовуємо існуюче зображення
+    created_at: '2023-12-01T09:45:00'
+  }
+]
 
 // Пропси з валідацією
 const props = defineProps({
@@ -109,7 +287,31 @@ const props = defineProps({
   // Функція для отримання даних
   provideCars: {
     type: Function,
-    required: true
+    required: false,
+    default: null
+  },
+  // Режим демо (для відображення демо-даних)
+  demo: {
+    type: Boolean,
+    default: true
+  },
+  // Кількість карток в ряд для різних розмірів екрану
+  grid: {
+    type: Object,
+    default: () => ({
+      xs: 1,  // <576px - одна картка
+      sm: 2,  // ≥576px - дві картки
+      md: 2,  // ≥768px - дві картки
+      lg: 3,  // ≥992px - три картки
+      xl: 3   // ≥1200px - чотири картки
+    }),
+    validator: (value) => {
+      return ['xs', 'sm', 'md', 'lg', 'xl'].every(size => 
+        typeof value[size] === 'number' && 
+        value[size] > 0 && 
+        value[size] <= 12
+      );
+    }
   }
 })
 
@@ -122,6 +324,19 @@ const loading = ref(false)
 const page = ref(1)
 const hasMoreCars = ref(true)
 
+// Функція для надання демо-даних
+const getDemodCars = async (currentPage, itemsPerPage) => {
+  // Імітуємо затримку API
+  await new Promise(resolve => setTimeout(resolve, 800))
+  
+  // Вираховуємо початковий та кінцевий індекси
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  
+  // Повертаємо частину демо-даних
+  return demoCarsList.slice(startIndex, endIndex)
+}
+
 // Обчислювані властивості
 const displayedCars = computed(() => {
   // Показуємо тільки завантажені машини, а не обрізаємо по page * perPage,
@@ -129,8 +344,19 @@ const displayedCars = computed(() => {
   return cars.value.slice(0, props.limit)
 })
 
+// Функція для надання авто в залежності від режиму (демо чи реальні дані)
+const actualProvideCarsFn = computed(() => {
+  return props.demo || !props.provideCars ? getDemodCars : props.provideCars
+})
+
 // Кількість скелетонів для відображення
 const skeletonCount = computed(() => props.perPage)
+
+// Обчислюємо класи для сітки
+const gridClasses = computed(() => {
+  const { xs, sm, md, lg, xl } = props.grid;
+  return `col-${12/xs} sm:col-${12/sm} md:col-${12/md} lg:col-${12/lg} xl:col-${12/xl}`;
+});
 
 // Методи
 const loadCars = async () => {
@@ -141,7 +367,7 @@ const loadCars = async () => {
   
   try {
     // Передаємо поточну сторінку та кількість на сторінку
-    const newCars = await props.provideCars(page.value, props.perPage)
+    const newCars = await actualProvideCarsFn.value(page.value, props.perPage)
     
     // Додаємо нові машини до списку
     cars.value = [...cars.value, ...newCars]
@@ -203,10 +429,28 @@ onUnmounted(() => {
   container-type: inline-size;
 }
 
-/* Видаляємо попереднє правило для .spinner-primary, оскільки стиль тепер інлайновий */
-/* 
-:deep(.spinner-primary .p-progressspinner-circle) {
-  stroke: var(--p-primary-color);
+.grid {
+  margin: -0.5rem; /* Компенсуємо padding карток */
 }
-*/
+
+:deep(.car-card) {
+  height: 100%; /* Щоб всі картки в ряду були однакової висоти */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+:deep(.car-card:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Адаптивні відступи */
+@media screen and (max-width: 576px) {
+  .grid {
+    margin: -0.25rem;
+  }
+  
+  .p-2 {
+    padding: 0.25rem;
+  }
+}
 </style> 
