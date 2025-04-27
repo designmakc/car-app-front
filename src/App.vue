@@ -1,11 +1,16 @@
 <!-- Based on: PrimeVue/Layouts -->
 <template>
   <div id="app" class="flex flex-column min-h-screen">
-    <Header class="w-full"/>
-    <div class="flex-grow-1 mx-auto w-full px-4 xl:px-0  " style="max-width: 1200px;">
-    <router-view></router-view>
-    </div>
-    <Footer class="w-full" />
+    <Header class="w-full fixed top-0 z-5 shadow-1" />
+    
+    <main class="flex-grow-1 mt-0 pt-0">
+      <!-- Контейнер с ограниченной шириной -->
+      <div class="grid mx-auto w-full" style="max-width: 1200px;">
+        <router-view class="col-12 " />
+      </div>
+    </main>
+    
+    <Footer class="w-full surface-ground mt-auto" />
   </div>
 </template>
 
@@ -37,5 +42,19 @@ body {
   padding: 0;
   width: 100vw;
   overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 0 0.5rem;
+  }
 }
 </style>

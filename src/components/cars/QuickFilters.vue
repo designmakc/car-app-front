@@ -1,7 +1,7 @@
 <template>
-  <div class="quick-filters mt-4">
+  <div class="flex flex-wrap gap-3 quick-filters mt-4">
     <div>
-      <h4 class="mb-1 text-lg font-semibold">Нові авто за</h4>
+      <h4 class="mb-3 text-lg font-semibold">Нові авто за</h4>
       <div class="flex flex-wrap gap-2 mb-2"> <!-- flex-wrap для переносу на малих екранах -->
         <Button type="button" class="p-button-rounded border-2" label="Сьогодні" severity="secondary" variant="outlined" badge="2" badgeSeverity="contrast" outlined />
 
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div>
-       <h4 class="mb-1 text-lg font-semibold">Популярні запити</h4>
+       <h4 class="mb-3 text-lg font-semibold">Популярні запити</h4>
        <div class="flex flex-wrap gap-2 mb-2">
         <Button type="button" label="Автомат до 5000$" severity="secondary" variant="outlined" class="p-button-rounded border-2"  />
         <Button type="button" label="5000-7000$" severity="secondary" variant="outlined" class="p-button-rounded border-2" />

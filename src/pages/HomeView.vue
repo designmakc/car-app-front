@@ -3,7 +3,7 @@
   <div class="home">
     <!-- Головний банер -->
     <section class="hero-section w-full relative">
-      <div class="container">
+      <div class="container py-4">
         
             <h1 class="text-4xl font-bold text-900">Купуй та продавай авто безпечно</h1>
          
@@ -28,14 +28,14 @@
     <!-- Секція з формою пошуку та статистикою -->
     <section class="flex search-stats-section pb-4 ">
       <div class="container">
-        <div class="grid">
+        <div class="grid ">
           <!-- Форма пошуку -->
           <div class="col-12 md:col-6 lg:col-6 mb-4 lg:mb-0">
             <div class="surface-card">
               <Tabs value="search">
                 <TabList>
-                  <Tab value="search" class="col-6 unbounded-font"> <i class="pi pi-search mr-2"></i> <span>Пошук авто</span> </Tab>
-                  <Tab value="sell" class="col-6 unbounded-font"> <i class="pi pi-plus-circle mr-2"></i> <span>Продати авто</span> </Tab>
+                  <Tab value="search" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-search mr-0 md:mr-2"></i> <span>Пошук авто</span> </Tab>
+                  <Tab value="sell" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-plus-circle mr-0 md:mr-2"></i> <span>Продати авто</span> </Tab>
                 </TabList>
                 <TabPanels >
                   <TabPanel value="search"> <CarSearchForm /> </TabPanel>
@@ -46,12 +46,13 @@
           </div>
 
           <!-- Статистика -->
-          <div class="col-12 md:col-6 lg:col-6">
-            <div class="surface-card">
+          <div class="col-12 md:col-6 lg:col-6 flex flex-column gap-4
+          ">
+            <div>
               <StatisticsBlock />
             </div>
             <!-- швидкий пошук -->
-            <div class="surface-card">
+            <div>
               <QuickFilters />
             </div>
           </div>
@@ -65,15 +66,16 @@
         <!-- Заголовок секції -->
         <div class="flex align-items-center justify-content-between mb-6">
           <div class="flex align-items-center gap-2">
-            <i class="pi pi-star-fill text-yellow-500 text-2xl"></i>
-            <h2 class="text-xl sm:text-xl md:text-2xl font-bold text-900 m-0">TOP пропозиції</h2>
+            <i class="pi pi-star-fill text-yellow-500 text-lg md:text-2xl"></i>
+            <h2 class="text-lg md:text-2xl font-bold text-900 m-0">TOP пропозиції</h2>
           </div>
           <Button 
-            label="Всі пропозиції" 
-            icon="pi pi-arrow-right" 
+            label="Всі" 
+            icon="pi pi-arrow-right "
+            
             iconPos="right"
             text
-            class="text-primary font-semibold"
+            class="text-primary "
           />
         </div>
 
