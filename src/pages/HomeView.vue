@@ -30,7 +30,7 @@
       <div class="container">
         <div class="grid ">
           <!-- Форма пошуку -->
-          <div class="col-12 md:col-6 lg:col-6 mb-4 lg:mb-0">
+          <div class="col-12 md:col-6 lg:col-6 mb-1 md:mb-4 lg:mb-0">
             <div class="surface-card">
               <Tabs value="search">
                 <TabList>
@@ -64,7 +64,7 @@
     <section class="top-offers-section w-full">
       <div class="container">
         <!-- Заголовок секції -->
-        <div class="flex align-items-center justify-content-between mb-6">
+        <div class="flex align-items-center justify-content-between mb-2 md:mb-4">
           <div class="flex align-items-center gap-2">
             <i class="pi pi-star-fill text-yellow-500 text-lg md:text-2xl"></i>
             <h2 class="text-lg md:text-2xl font-bold text-900 m-0">TOP пропозиції</h2>

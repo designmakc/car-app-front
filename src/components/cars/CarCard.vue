@@ -61,17 +61,17 @@
       <div class="flex flex-column" style="height: 160px">
         <div class="flex-grow-1 flex flex-column gap-1">
           <!-- Заголовок (тільки модель та рік) -->
-          <h3 class="text-lg font-semibold m-0 line-clamp-2" style="min-height: 40px">
+          <h3 class="text-lg font-semibold m-0 line-clamp-2 line-height-2" style="min-height: 40px">
             {{ brand }} {{ model }} {{ year }}
           </h3>
           
           <!-- Ціна -->
-          <div class="text-xl font-bold text-primary py-1">
+          <div class="text-xl font-bold text-primary unbounded-font pb-2">
             {{ formatPrice(price) }}
           </div>
 
           <!-- Характеристики авто -->
-          <div class="grid flex-grow-1 align-content-center">
+          <div class="grid flex-grow-0 ">
             <!-- Пробіг -->
             <div class="col-6 flex align-items-center gap-1">
               <i class="pi pi-gauge text-500 text-md"></i>

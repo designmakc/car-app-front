@@ -63,11 +63,13 @@
     <div v-if="!infiniteScroll && hasMoreCars && !loading" 
          class="flex justify-content-center my-4">
       <Button
-        label="Показати ще авто" 
+        label="Показати ще" 
         icon="pi pi-arrow-down"
         @click="loadMore"
         :loading="loading" 
         strokeWidth="20"
+        class="w-full surface-200 text-cyan-800 border-none"
+        
         size="large"
         :pt="{
           root: { class: 'transition-all duration-200' }

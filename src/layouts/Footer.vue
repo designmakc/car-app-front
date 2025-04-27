@@ -101,7 +101,7 @@
       <!-- Копірайт -->
       <Divider />
       <div class="text-500 text-sm">
-        © 2024 CAR MARKET. Всі права захищені
+        © {{ new Date().getFullYear() }} CAR MARKET. Всі права захищені
       </div>
     </div>
   </footer>

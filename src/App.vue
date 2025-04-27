@@ -10,7 +10,7 @@
       </div>
     </main>
     
-    <Footer class="w-full surface-ground mt-auto" />
+    <Footer class="w-full mt-auto" />
   </div>
 </template>
 
