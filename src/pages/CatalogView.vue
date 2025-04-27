@@ -26,6 +26,10 @@ const selectedSort = ref('date_desc');
 const activeFilters = ref([]);
 const filterRef = ref(null);
 
+const hasActiveFilters = computed(() => {
+    return activeFilters.value && activeFilters.value.length > 0;
+});
+
 const removeFilter = (filter) => {
     if (filterRef.value) {
         filterRef.value.removeFilter(filter);
@@ -63,16 +67,18 @@ const removeFilter = (filter) => {
                 <!-- Список авто (права колонка) -->
                 <div class="col-12 lg:col-9">
                     <!-- Активні фільтри -->
-                    <div v-if="activeFilters.length" class="mb-4">
-                        <div class="flex align-items-center flex-wrap gap-2">
-                            <Chip v-for="filter in activeFilters"
-                                 :key="`${filter.type}-${filter.value}`"
-                                 :label="filter.label"
-                                 class="p-2"
-                                 :removable="true"
-                                 @remove="removeFilter(filter)" />
+                    <template v-if="hasActiveFilters">
+                        <div class="mb-4">
+                            <div class="flex align-items-center flex-wrap gap-2">
+                                <Chip v-for="filter in activeFilters"
+                                     :key="`${filter.type}-${filter.value}`"
+                                     :label="filter.label"
+                                     class="p-2"
+                                     :removable="true"
+                                     @remove="removeFilter(filter)" />
+                            </div>
                         </div>
-                    </div>
+                    </template>
 
                     <!-- Сортування -->
                     <div class="flex justify-content-between align-items-center mb-4">

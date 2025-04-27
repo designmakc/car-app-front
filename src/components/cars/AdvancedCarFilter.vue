@@ -320,50 +320,100 @@ const activeFilters = computed(() => {
   return filtersArray;
 });
 
-// Додайте спостерігач за змінами фільтрів
-watch([filters, StatusValue], () => {
-  emit('update:activeFilters', activeFilters.value);
-}, { deep: true });
-
 const removeFilter = (filter) => {
+  let updated = false;
+
   switch (filter.type) {
     case 'status':
       StatusValue.value = 'all';
+      updated = true;
       break;
     case 'brand':
       filters.value.brand = null;
-      filters.value.model = null; // Скидаємо також модель
+      filters.value.model = null;
+      updated = true;
       break;
     case 'model':
       filters.value.model = null;
+      updated = true;
       break;
     case 'mileage':
-      filters.value.mileage[filter.value] = false;
+      if (filter.value) {
+        filters.value.mileage = {
+          ...filters.value.mileage,
+          [filter.value]: false
+        };
+        updated = true;
+      } else {
+        filters.value.mileage = {};
+        updated = true;
+      }
       break;
     case 'fuel_type':
-      filters.value.fuel_type[filter.value] = false;
+      if (filter.value) {
+        filters.value.fuel_type = {
+          ...filters.value.fuel_type,
+          [filter.value]: false
+        };
+        updated = true;
+      } else {
+        filters.value.fuel_type = {};
+        updated = true;
+      }
       break;
     case 'drive_type':
-      filters.value.drive_type[filter.value] = false;
+      if (filter.value) {
+        filters.value.drive_type = {
+          ...filters.value.drive_type,
+          [filter.value]: false
+        };
+        updated = true;
+      } else {
+        filters.value.drive_type = {};
+        updated = true;
+      }
       break;
     case 'color':
-      filters.value.color = filters.value.color.filter(c => c !== filter.value);
+      if (filter.value) {
+        filters.value.color = filters.value.color.filter(c => c !== filter.value);
+        updated = true;
+      } else {
+        filters.value.color = [];
+        updated = true;
+      }
       break;
     case 'price':
       filters.value.price = null;
       filters.value.price_from = null;
       filters.value.price_to = null;
+      updated = true;
       break;
     case 'year':
       filters.value.year = null;
       filters.value.year_from = null;
       filters.value.year_to = null;
+      updated = true;
       break;
     case 'exchange':
       filters.value.exchange_available = false;
+      updated = true;
       break;
   }
+
+  if (updated) {
+    // Перераховуємо активні фільтри
+    emit('update:activeFilters', activeFilters.value);
+  }
 };
+
+// Додаємо спостерігач за змінами фільтрів
+watch(
+  filters,
+  () => {
+    emit('update:activeFilters', activeFilters.value);
+  },
+  { deep: true }
+);
 
 const updateFilters = debounce(() => {
   const queryParams = {};
@@ -519,6 +569,11 @@ onMounted(() => {
       }
     });
   }
+});
+
+// Експортуємо функцію removeFilter
+defineExpose({
+  removeFilter
 });
 </script>
 
