@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import Breadcrumb from 'primevue/breadcrumb';
 import SelectButton from 'primevue/selectbutton';
+import Chip from 'primevue/chip';
 import Tag from 'primevue/tag';
 import AdvancedCarFilter from '@/components/cars/AdvancedCarFilter.vue';
 import CarList from '@/components/cars/CarList.vue';
@@ -22,18 +23,13 @@ const sortOptions = [
 
 const selectedSort = ref('date_desc');
 
-const activeFilters = computed(() => {
-    // TODO: Отримати активні фільтри з AdvancedCarFilter
-    return [
-        { label: 'Ціна: $10000 - $20000', value: 'price' },
-        { label: 'Рік: 2020 - 2023', value: 'year' },
-        { label: 'Пробіг: до 50 тис. км', value: 'mileage' }
-    ];
-});
+const activeFilters = ref([]);
+const filterRef = ref(null);
 
 const removeFilter = (filter) => {
-    // TODO: Реалізувати логіку видалення фільтру
-    console.log('Removing filter:', filter);
+    if (filterRef.value) {
+        filterRef.value.removeFilter(filter);
+    }
 };
 </script>
 
@@ -57,7 +53,11 @@ const removeFilter = (filter) => {
             <div class="grid">
                 <!-- Фільтри (ліва колонка) -->
                 <div class="col-12 lg:col-3">
-                    <AdvancedCarFilter class="sticky top-0" />
+                    <AdvancedCarFilter 
+                        ref="filterRef"
+                        v-model:activeFilters="activeFilters"
+                        class="sticky top-0" 
+                    />
                 </div>
 
                 <!-- Список авто (права колонка) -->
@@ -65,12 +65,11 @@ const removeFilter = (filter) => {
                     <!-- Активні фільтри -->
                     <div v-if="activeFilters.length" class="mb-4">
                         <div class="flex align-items-center flex-wrap gap-2">
-                            <Tag v-for="filter in activeFilters" 
-                                 :key="filter.value" 
-                                 :value="filter.label" 
-                                 severity="info"
+                            <Chip v-for="filter in activeFilters"
+                                 :key="`${filter.type}-${filter.value}`"
+                                 :label="filter.label"
                                  class="p-2"
-                                :removable="true"
+                                 :removable="true"
                                  @remove="removeFilter(filter)" />
                         </div>
                     </div>

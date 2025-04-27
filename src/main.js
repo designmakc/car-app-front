@@ -36,6 +36,7 @@ import MultiSelect from 'primevue/multiselect';
 import Slider from 'primevue/slider';
 import Panel from 'primevue/panel';
 import ToggleButton from 'primevue/togglebutton';
+import Chip from 'primevue/chip';
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -108,5 +109,6 @@ app.component('MultiSelect', MultiSelect);
 app.component('Slider', Slider);
 app.component('Panel', Panel);
 app.component('ToggleButton', ToggleButton);
+app.component('Chip', Chip);
 // Монтуємо додаток
 app.mount('#app')
