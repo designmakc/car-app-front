@@ -85,7 +85,8 @@
           :perPage="8" 
           :infiniteScroll="true"
           :provide-cars="provideCars"
-          class="mt-3"
+          :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
+           class="mt-3"
         />
       </div>
     </section>

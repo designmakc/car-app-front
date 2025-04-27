@@ -1,5 +1,5 @@
 <template>
-  <div class="header-wrapper surface-900 sticky top-0 z-5 w-full ">
+  <div class="header-wrapper surface-900 w-full ">
     <div class="container">
       <!-- Desktop Header -->
       <div class="hidden lg:flex justify-content-between align-items-center py-4 ">
@@ -70,12 +70,7 @@ import Button from 'primevue/button'
 </script>
 
 <style scoped>
-.header-wrapper {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border-bottom: 1px solid var(--surface-800);
-}
+
 
 .container {
   max-width: 1200px;

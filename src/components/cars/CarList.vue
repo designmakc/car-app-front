@@ -303,7 +303,7 @@ const props = defineProps({
       sm: 2,  // ≥576px - дві картки
       md: 2,  // ≥768px - дві картки
       lg: 3,  // ≥992px - три картки
-      xl: 3   // ≥1200px - чотири картки
+      xl: 4   // ≥1200px - чотири картки
     }),
     validator: (value) => {
       return ['xs', 'sm', 'md', 'lg', 'xl'].every(size => 
