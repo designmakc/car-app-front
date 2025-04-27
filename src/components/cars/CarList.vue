@@ -2,10 +2,47 @@
   CarList компонент
   Базується на:
   - Grid (PrimeFlex) для адаптивної сітки
-  - Button з PrimeVue для кнопки "Дивитися всі"
-  - ProgressSpinner з PrimeVue для індикатора завантаження
-  - Skeleton з PrimeVue для відображення стану завантаження
+  - CarCard для відображення карточок автомобілів
+  - ProgressSpinner (PrimeVue) для індикатора завантаження
+  - Button (PrimeVue) для кнопки "Показати ще"
+  - Skeleton (PrimeVue) для стану завантаження
+
+  Функціональність:
+  - Адаптивна сітка з налаштуванням кількості колонок
+  - Безкінечний скрол або кнопка "Показати ще"
+  - Стан завантаження зі скелетонами
+  - Обмеження кількості карток
+  - Підтримка демо-режиму з тестовими даними
+
+  @props {Object} grid - Налаштування сітки для різних розмірів екрану
+    @param {Number} xs - Кількість колонок для екранів <576px (default: 1)
+    @param {Number} sm - Кількість колонок для екранів ≥576px (default: 2)
+    @param {Number} md - Кількість колонок для екранів ≥768px (default: 2)
+    @param {Number} lg - Кількість колонок для екранів ≥992px (default: 3)
+    @param {Number} xl - Кількість колонок для екранів ≥1200px (default: 4)
+  @props {Number} limit - Максимальна кількість авто для відображення (default: 12)
+  @props {Number} perPage - Кількість авто для підвантаження за раз (default: 8)
+  @props {Boolean} infiniteScroll - Режим безкінечного скролу (default: false)
+  @props {Function} provideCars - Функція для отримання даних (optional)
+  @props {Boolean} demo - Режим демо з тестовими даними (default: true)
+
+  @emits {Object} load-more - Подія при завантаженні нової порції даних
+    @param {Number} page - Номер поточної сторінки
+    @param {Number} totalItems - Загальна кількість завантажених елементів
+    @param {Boolean} hasMore - Чи є ще елементи для завантаження
+  @emits {Boolean} loading-change - Подія зміни стану завантаження
+
+  @example
+  <CarList 
+    :limit="8" 
+    :perPage="4" 
+    :infiniteScroll="false"
+    :grid="{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }"
+    :provide-cars="provideCars"
+  />
 -->
+
+
 <template>
   <div class="car-list">
     <!-- Скелетони під час початкового завантаження -->

@@ -70,7 +70,7 @@ const removeFilter = (filter) => {
                                  :value="filter.label" 
                                  severity="info"
                                  class="p-2"
-                                 :removable="true"
+                                :removable="true"
                                  @remove="removeFilter(filter)" />
                         </div>
                     </div>
@@ -86,7 +86,8 @@ const removeFilter = (filter) => {
 
                     <!-- Список авто -->
                     <div class="car-list">
-                        <CarList />
+                        <CarList 
+                        :grid="{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }"/>
                     </div>
                 </div>
             </div>

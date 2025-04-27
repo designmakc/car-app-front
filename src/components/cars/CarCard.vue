@@ -1,3 +1,58 @@
+<!-- 
+  CarCard компонент
+  Базується на:
+  - Card (PrimeVue) для базової структури
+  - Button (PrimeVue) для кнопки "У обране"
+  - Tag (PrimeVue) для статусів
+  - Skeleton (PrimeVue) для стану завантаження
+
+  Функціональність:
+  - Відображення основної інформації про автомобіль
+  - Додавання/видалення з обраного
+  - Відображення статусів (TOP, На майданчику)
+  - Адаптивний дизайн
+  - Анімації при наведенні
+  - Підтримка скелетон-завантаження
+
+  @props {Number} id - Унікальний ідентифікатор автомобіля
+  @props {Number} user_id - ID користувача-власника
+  @props {String} brand - Марка автомобіля
+  @props {String} model - Модель автомобіля
+  @props {Number|String} year - Рік випуску
+  @props {String} gearbox - Тип коробки передач
+  @props {String} fuel_type - Тип палива
+  @props {Number|String} engine_capacity - Об'єм двигуна
+  @props {String} engine_unit - Одиниця виміру об'єму (default: 'л')
+  @props {String} body_type - Тип кузова
+  @props {Number|String} mileage - Пробіг
+  @props {String} drive_type - Тип приводу
+  @props {String} color - Колір
+  @props {String} city - Місто
+  @props {Number|String} price - Ціна
+  @props {String} status - Статус автомобіля
+  @props {Boolean|Number} is_top - Чи є оголошення TOP
+  @props {String} link - Посилання на фото
+  @props {String} created_at - Дата створення
+
+  @emits {Number} favorite-toggle - Подія при додаванні/видаленні з обраного
+    @param {Number} id - ID автомобіля
+    @param {Boolean} isFavorite - Новий стан обраного
+
+  @example
+  <CarCard
+    :id="1"
+    brand="BMW"
+    model="X5"
+    :year="2023"
+    :price="45000"
+    status="На майданчику"
+    :is_top="true"
+    city="Київ"
+  />
+-->
+
+
+
 <template>
   <!-- Картка автомобіля -->
   <Card class="car-card shadow-1 hover:shadow-2 transition-all border-round-xl" :pt="{
@@ -61,7 +116,7 @@
       <div class="flex flex-column" style="height: 160px">
         <div class="flex-grow-1 flex flex-column gap-1">
           <!-- Заголовок (тільки модель та рік) -->
-          <h3 class="text-lg font-semibold m-0 line-clamp-2 line-height-2" style="min-height: 40px">
+          <h3 class="text-lg font-semibold m-0 line-clamp-2 line-height-1" style="min-height: 40px">
             {{ brand }} {{ model }} {{ year }}
           </h3>
           

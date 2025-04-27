@@ -1,4 +1,38 @@
 <!-- Based on: PrimeVue/Form -->
+<!-- 
+  CarSearchForm компонент
+  Базується на:
+  - Select (PrimeVue) для вибору марки/моделі
+  - InputNumber (PrimeVue) для цін та років
+  - FloatLabel (PrimeVue) для лейблів
+  - IconField (PrimeVue) для іконок
+  - Button (PrimeVue) для кнопки пошуку
+
+  Функціональність:
+  - Пошук автомобілів за основними параметрами
+  - Каскадний вибір марки та моделі
+  - Фільтрація за ціною та роком
+  - Валідація введених даних
+  - Адаптивний дизайн
+  - Підтримка мобільного відображення
+
+  @props {String} mode - Режим форми ('search' | 'filter') (default: 'search')
+
+  @emits {Object} search - Подія при відправці форми пошуку
+    @param {Object} brand - Обрана марка
+    @param {Object} model - Обрана модель
+    @param {Number} yearFrom - Рік від
+    @param {Number} yearTo - Рік до
+    @param {Number} priceFrom - Ціна від
+    @param {Number} priceTo - Ціна до
+
+  @example
+  <CarSearchForm
+    mode="search"
+    @search="handleSearch"
+  />
+-->
+
 <template>
   <div class="car-search-form">
         <!-- Форма пошуку -->
@@ -210,6 +244,8 @@ const handleSearch = () => {
     priceTo: priceTo.value
   })
 }
+
+
 
 
 
