@@ -558,6 +558,14 @@ const handleBrandChange = () => {
   filters.value.model = null;
 };
 
+const toggleColor = (colorValue) => {
+  if (filters.value.color.includes(colorValue)) {
+    filters.value.color = filters.value.color.filter(c => c !== colorValue);
+  } else {
+    filters.value.color.push(colorValue);
+  }
+};
+
 onMounted(() => {
   StatusValue.value = filters.value.status ? 'in_stock' : 'all';
   
@@ -576,6 +584,7 @@ defineExpose({
   removeFilter
 });
 </script>
+
 
 <template>
   <div class="md:col-4 lg:hidden">
@@ -770,7 +779,16 @@ defineExpose({
               <div class="grid">
                 <div v-for="color in colors" :key="color.value" class="col-6 mb-2">
                   <div class="flex align-items-center">
-                    <Checkbox v-model="filters.color" :value="color.value" :binary="false" />
+                    <div 
+                      class="color-checkbox" 
+                      :class="{ 'selected': filters.color.includes(color.value) }"
+                      @click="toggleColor(color.value)"
+                    >
+                      <div 
+                        class="color-circle"
+                        :style="{ backgroundColor: color.value }"
+                      ></div>
+                    </div>
                     <label class="ml-2">{{ color.label }}</label>
                   </div>
                 </div>
@@ -941,20 +959,7 @@ defineExpose({
               </div>
             </div>
 
-            <!-- Пробіг -->
-            <div class="field">
-              <label>Пробіг (тис. км)</label>
-              <div class="flex flex-wrap gap-2">
-                <ToggleButton 
-                  v-for="option in mileageOptions"
-                  :key="option.value"
-                  v-model="filters.mileage[option.value]"
-                  :onLabel="option.label"
-                  :offLabel="option.label" 
-                  :value="option.value"
-                />
-              </div>
-            </div>
+            
 
           </div>
         </Panel>
@@ -975,6 +980,7 @@ defineExpose({
             </div>
           </div>
 
+          <!-- Тип приводу -->
           <div class="field mb-4">
             <label>Тип приводу</label>
             <div class="flex flex-wrap gap-2">
@@ -988,22 +994,59 @@ defineExpose({
               />
             </div>
           </div>
+
+          <!-- Пробіг -->
+          <div class="field">
+              <label>Пробіг (тис. км)</label>
+              <div class="flex flex-wrap gap-2">
+                <ToggleButton 
+                  v-for="option in mileageOptions"
+                  :key="option.value"
+                  v-model="filters.mileage[option.value]"
+                  :onLabel="option.label"
+                  :offLabel="option.label" 
+                  :value="option.value"
+                />
+              </div>
+            </div>
         </Panel>
 
-        <!-- Додаткові параметри -->
-        <Panel header="Додаткові параметри" toggleable class="w-full">
+        <!-- Колір -->
+        <Panel header="Колір" toggleable class="w-full">
+          <!-- Колір -->
           <div class="field mb-4">
-            <label>Колір</label>
+            <!-- <label>Колір</label> -->
             <div class="grid">
               <div v-for="color in colors" :key="color.value" class="col-6 mb-2">
                 <div class="flex align-items-center">
-                  <Checkbox v-model="filters.color" :value="color.value" :binary="false" />
+                  <div 
+                    class="color-checkbox" 
+                    :class="{ 'selected': filters.color.includes(color.value) }"
+                    @click="toggleColor(color.value)"
+                  >
+                    <div 
+                      class="color-circle"
+                      :style="{ backgroundColor: color.value }"
+                    ></div>
+                  </div>
                   <label class="ml-2">{{ color.label }}</label>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Можливий обмін -->
+          <div class="field mb-4">
+            <div class="flex align-items-center">
+              <Checkbox v-model="filters.exchange_available" :binary="true" />
+              <label class="ml-2">Можливий обмін</label>
+            </div>
+          </div>
+        </Panel>
+
+        <!-- Додаткові параметри -->
+        <Panel header="Додаткові параметри" toggleable class="w-full">
+          <!-- Можливий обмін -->
           <div class="field mb-4">
             <div class="flex align-items-center">
               <Checkbox v-model="filters.exchange_available" :binary="true" />
@@ -1055,5 +1098,26 @@ defineExpose({
 
 :deep(.p-input-icon-left > .p-inputtext) {
   width: 100%;
+}
+
+.color-checkbox {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--p-surface-200);
+  cursor: pointer;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+.color-checkbox.selected {
+  border-color: var(--p-primary-color);
+  border-width: 4px;
+}
+
+.color-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
 </style>
