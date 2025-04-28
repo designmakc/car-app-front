@@ -27,83 +27,226 @@
 -->
 
 <template>
-  <!-- Контейнер навбара, закріплений внизу, flex-розмітка -->
-  <div class="mobile-navbar-bg fixed bottom-0 left-0 w-full surface-900 flex justify-content-between align-items-center px-1 py-1 z-5" style="height:60px;">
-    <!-- Активна кнопка абсолютно позиціонується поверх навбара -->
-    <div
-      class="absolute"
-      :style="activeBtnStyle"
-    >
-      <button
-        class="flex align-items-center justify-content-center border-circle z-3 transition-all duration-300 bg-primary-500 active-animate"
-        style="width: 4rem;height:4rem; border:none; transform: translateY(-6px); opacity: 1;"
-        aria-label="navItems[activeIndex].label"
-      >
-        <span class="pi text-white flex align-items-center justify-content-center" :class="navItems[activeIndex].icon" style="font-size:1.5rem;width:24px;height:24px;"></span>
-      </button>
-      <span class="block bg-primary-500 border-circle mx-auto " style="width:10px;height:10px;margin-top:0.2rem;"></span>
-    </div>
-    <!-- Всі кнопки меню -->
-    <div class="flex w-full justify-content-between align-items-center px-4 relative" style="z-index:2;">
-      <template v-for="(item, idx) in navItems" :key="item.key">
-        <div class="flex-1 flex justify-content-center">
-          <!-- Якщо це активний пункт — залишаємо порожнє місце -->
-          <span v-if="activeIndex === idx" style="width:48px;height:48px;display:inline-block;"></span>
-          <!-- Неактивні іконки -->
-          <button
-            v-else
-            class="flex align-items-center justify-content-center border-circle transition-all duration-300 p-0 bg-transparent text-white alpha-80 border-none outline-none w-3rem h-3rem hover:bg-primary-400 focus:bg-primary-600"
-            @click="setActive(idx)"
-            aria-label="item.label"
-          >
-            <span class="pi flex align-items-center justify-content-center" :class="item.icon" style="font-size:1.5rem;width:24px;height:24px;"></span>
-          </button>
-        </div>
+  <!-- Контейнер навбара з фіксованою позицією внизу екрану -->
+  <div class="mobile-navbar block lg:hidden fixed bottom-0 left-0 w-full z-5">
+    <!-- Фоновий елемент з blur-ефектом для сучасного вигляду -->
+    <div class="navbar-bg-blur absolute w-full h-full"></div>
+    
+    <!-- Основний контейнер з кнопками -->
+    <div class="navbar-container flex justify-content-between align-items-center py-2 px-0 relative">
+      
+      <!-- Індикатор активного елемента, який рухається між кнопками -->
+      <div class="active-indicator absolute" :style="indicatorStyle"></div>
+      
+      <!-- Кнопки навігації -->
+      <template v-for="(item, index) in navItems" :key="item.key">
+        <button 
+          class="nav-button flex flex-column align-items-center justify-content-center relative p-0"
+          :class="{ 'nav-active': activeIndex === index }"
+          @click="setActive(index)"
+          :aria-label="item.label"
+        >
+          <!-- Іконка -->
+          <div class="icon-container flex align-items-center justify-content-center">
+            <i class="pi" :class="item.icon"></i>
+            
+            <!-- Індикатор бейджа (якщо є) -->
+            <span 
+              v-if="badges[item.key]" 
+              class="badge flex align-items-center justify-content-center"
+            >
+              {{ badges[item.key] }}
+            </span>
+          </div>
+          
+          <!-- Підпис під іконкою -->
+          <span class="nav-label text-xs mt-1">{{ item.label }}</span>
+        </button>
       </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 
-// PrimeIcons використовуються через prop icon="pi pi-*"
+// Елементи навігації
 const navItems = [
-  { key: 'add', icon: 'pi pi-plus', label: 'Додати' },
-  { key: 'fav', icon: 'pi pi-heart', label: 'Обране' },
-  { key: 'home', icon: 'pi pi-home', label: 'Головна' },
-  { key: 'search', icon: 'pi pi-search', label: 'Пошук' },
-  { key: 'profile', icon: 'pi pi-user', label: 'Профіль' }
+  { key: 'home', icon: 'pi-home', label: 'Головна' },
+  { key: 'add', icon: 'pi-plus', label: 'Додати' },
+  { key: 'search', icon: 'pi-search', label: 'Пошук' },
+  { key: 'favorites', icon: 'pi-heart', label: 'Обране' },
+  { key: 'profile', icon: 'pi-user', label: 'Профіль' }
 ]
 
-const activeIndex = ref(2) // За замовчуванням "Головна"
+// Активний елемент (початково "Головна")
+const activeIndex = ref(0)
 
-function setActive(idx) {
-  activeIndex.value = idx
+// Кількість бейджів (для обраного)
+const badges = reactive({
+  favorites: 2
+})
+
+// Функція для зміни активного елемента з анімацією
+function setActive(index) {
+  // Запускаємо делікатну анімацію при зміні
+  if (activeIndex.value !== index) {
+    const buttons = document.querySelectorAll('.nav-button')
+    buttons[activeIndex.value].classList.add('leaving')
+    buttons[index].classList.add('entering')
+    
+    // Видаляємо класи анімації після завершення
+    setTimeout(() => {
+      buttons.forEach(btn => {
+        btn.classList.remove('leaving', 'entering')
+      })
+    }, 400)
+  }
+  
+  // Оновлюємо активний елемент
+  activeIndex.value = index
+  
+  // Емітимо подію для батьківського компонента
+  emit('change', navItems[index].key)
 }
 
-// Стиль для позиціонування активної кнопки над відповідним пунктом
-const activeBtnStyle = computed(() => {
-  // 5 пунктів, кожен займає 20%, кнопка по центру відповідного пункту
-  const percent = activeIndex.value * 20 + 10 // 10% — центр кожного пункту
+// Розрахунок позиції індикатора активного елемента 
+const indicatorStyle = computed(() => {
+  // Ширина одного елемента навігації (100% / кількість елементів)
+  const itemWidth = 100 / navItems.length
+  
+  // Позиція (відсоток від лівого краю) з центруванням та врахуванням падінгу
+  const position = activeIndex.value * itemWidth
+  
   return {
-    left: `calc(${percent}% - 24px)`, // 24px — половина ширини кнопки
-    top: '-18px',
-    transition: 'left 0.3s cubic-bezier(0.4,0,0.2,1)',
-    zIndex: 3
+    left: `calc(${position}% + ${itemWidth/2}%)`,
+    width: '30px',
+    transform: 'translateX(-15px)', // Центрування індикатора (половина його ширини)
+    transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
   }
 })
+
+// Емітимо події для батьківського компонента
+const emit = defineEmits(['change'])
 </script>
 
 <style scoped>
-.mobile-navbar-bg {
-  height: 60px;
-  background: var(--p-surface-900);
-  border-radius: 0;
+.mobile-navbar {
+  height: 70px;
+  overflow: hidden;
+  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
 }
 
-.active-animate {
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s, background 0.3s;
+/* Напівпрозорий фон з розмиттям для сучасного look & feel */
+.navbar-bg-blur {
+  backdrop-filter: blur(10px);
+  background: var(--p-surface-900); 
+  border-top: 1px solid var(--p-surface-200);
+}
+
+.navbar-container {
+  height: 100%;
+}
+
+/* Стилізація кнопок навігації */
+.nav-button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* Індикатор активної кнопки */
+.active-indicator {
+  bottom: 0;
+  height: 3px;
+  width: 30px; /* Збільшена ширина для кращої видимості */
+  border-radius: 4px 4px 0 0;
+  background: var(--p-orange-500);
+  position: absolute;
+  transform: translateX(0); /* Видалено трансформацію, тепер позиціонування через left */
+}
+
+/* Контейнер для іконок */
+.icon-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+/* Стилізація іконок */
+.pi {
+  font-size: 1.4rem;
+  color: var(--p-surface-200);
+  transition: color 0.3s, transform 0.4s;
+}
+
+/* Активна іконка */
+.nav-active .pi {
+  color: var(--p-orange-500);
+  transform: scale(1.15);
+}
+
+/* Підпис під іконкою */
+.nav-label {
+  font-family: 'Roboto', sans-serif;
+  color: var(--p-surface-400);
+  transition: color 0.3s, opacity 0.3s;
+  opacity: 0.8;
+}
+
+/* Активний підпис */
+.nav-active .nav-label {
+  color: var(--p-orange-500);
+  opacity: 1;
+  font-weight: 500;
+}
+
+/* Бейдж для сповіщень */
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  background: var(--p-orange-500);
+  color: white;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+/* Анімації при натисканні */
+.entering {
+  animation: bounce 0.4s;
+}
+
+.leaving {
+  animation: slide-out 0.3s;
+}
+
+/* Пульсуюча анімація для бейджів */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Анімація для активної кнопки */
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  80% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+/* Анімація для неактивної кнопки */
+@keyframes slide-out {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(5px); opacity: 0.5; }
 }
 </style>
 

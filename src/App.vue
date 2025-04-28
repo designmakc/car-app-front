@@ -10,8 +10,9 @@
       </div>
     </main>
 
-    <!-- MobileNavbar тільки для мобільних пристроїв -->
-    <MobileNavbar class="d-md-none" />
+    
+    <!-- MobileNavbar для sm та md екранів -->
+    <MobileNavbar class="block lg:hidden" /> 
     <Footer class="w-full mt-auto" />
   </div>
 </template>
