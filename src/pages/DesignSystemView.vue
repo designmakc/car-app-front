@@ -240,7 +240,7 @@
       
       <div class="surface-card p-4 shadow-1 border-round">
         <div class="mb-4">
-          <h1 class="text-6xl">Заголовок H1</h1>
+          <h1>Заголовок H1</h1>
           <code class="text-sm text-600">text-6xl</code>
         </div>
         <div class="mb-4">

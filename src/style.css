@@ -24,11 +24,24 @@ h1, h2, h3, h4, h5, h6, .Unbounded-heading {
   font-weight: 600;
   line-height: 1.1;
   margin: auto;
-  
-  
-  
-  
 }
+
+h1 {
+  font-size: 1.5rem;         /* text-2xl */
+  font-weight: 700;          /* font-bold */
+  margin-bottom: 0.5rem;     /* mb-2 */
+  line-height: 2rem;         /* line-height для text-2xl */
+  color: var(--text-color, #22223b); /* PrimeFlex змінна або дефолт */
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 2.25rem;      /* lg:text-4xl */
+    margin-bottom: 1rem;     /* lg:mb-4 */
+    line-height: 2.5rem;     /* line-height для text-4xl */
+  }
+}
+
 /* Клас для примусового застосування Jost */
 .unbounded-font {
   font-family: 'Unbounded', sans-serif !important;
@@ -39,31 +52,21 @@ h1, h2, h3, h4, h5, h6, .Unbounded-heading {
 .roboto -font {
   font-family: 'Roboto', sans-serif !important;
 }
+
 /* Скидання стилів для всіх елементів */
 * {
   outline: none !important;
   -webkit-tap-highlight-color: transparent;
 }
 
-
-
-
-
 /* Відступи */
-
-
-
-
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  
 }
 
 /* PrimeVue компоненти */
-
-
 .p-button:focus {
   outline: none !important;
   box-shadow: none !important;
@@ -77,6 +80,12 @@ body {
 .p-badge {
   min-height: 1.5rem !important;
   min-width: 1.5rem !important;
+}
+
+.p-dropdown-items .p-dropdown-item-group {
+  color: #3b82f6; /* синій, як у PrimeVue primary */
+  font-weight: 600;
+  background: #f5f7fa;
 }
 
 

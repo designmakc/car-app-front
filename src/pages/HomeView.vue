@@ -5,7 +5,7 @@
     <section class="hero-section w-full relative">
       <div class="container py-4">
         
-            <h1 class="text-4xl font-bold text-900">Купуй та продавай авто безпечно</h1>
+            <h1>Купуй та продавай авто безпечно</h1>
          
       </div>
     </section>
@@ -118,6 +118,31 @@
 </template>
 
 <script setup>
+/*
+JSON-SCHEMA (topCars, regularCars):
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "number" },
+    "title": { "type": "string" },
+    "price": { "type": "number" },
+    "image": { "type": "string" },
+    "mileage": { "type": "number" },
+    "transmission": { "type": "string" },
+    "engine": { "type": "string" },
+    "location": { "type": "string" },
+    "publishedAt": { "type": "string" }
+  },
+  "required": ["id", "title", "price", "image"]
+}
+
+DEMO ДАНІ (topCars, regularCars): див. нижче у файлі
+
+ФУНКЦІЯ-ПРОВАЙДЕР (provideCars, provideRegularCars):
+// Очікуваний API: GET /api/cars?type=top|regular&page=1&perPage=8
+// Response: { data: Car[], total: number }
+*/
+
 import { ref } from 'vue'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'

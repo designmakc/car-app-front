@@ -117,6 +117,81 @@
 </template>
 
 <script setup>
+/*
+ОЧІКУВАНИЙ API-ФОРМАТ:
+GET /api/cars?limit=12&page=1
+Response: {
+  data: [
+    {
+      id: number,
+      user_id: number,
+      brand: string,
+      model: string,
+      year: number,
+      gearbox: string,
+      fuel_type: string,
+      engine_capacity: number,
+      engine_unit: string,
+      body_type: string,
+      mileage: number,
+      drive_type: string,
+      color: string,
+      city: string,
+      price: number,
+      status: string,
+      is_top: boolean,
+      link: string,
+      created_at: string
+    }
+  ],
+  total: number
+}
+
+JSON-SCHEMA (demoCarsList):
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "number" },
+      "user_id": { "type": "number" },
+      "brand": { "type": "string" },
+      "model": { "type": "string" },
+      "year": { "type": "number" },
+      "gearbox": { "type": "string" },
+      "fuel_type": { "type": "string" },
+      "engine_capacity": { "type": "number" },
+      "engine_unit": { "type": "string" },
+      "body_type": { "type": "string" },
+      "mileage": { "type": "number" },
+      "drive_type": { "type": "string" },
+      "color": { "type": "string" },
+      "city": { "type": "string" },
+      "price": { "type": "number" },
+      "status": { "type": "string" },
+      "is_top": { "type": "boolean" },
+      "link": { "type": "string" },
+      "created_at": { "type": "string" }
+    },
+    "required": ["id", "brand", "model", "year", "price"]
+  }
+}
+
+DEMO ДАНІ (demoCarsList): // Див. нижче у файлі
+
+PROPS:
+- limit: number (default: 12)
+- perPage: number (default: 8)
+- infiniteScroll: boolean (default: false)
+- provideCars: function (optional)
+- demo: boolean (default: true)
+- grid: object (default: { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
+
+EMITS:
+- (load-more): (page: number, totalItems: number, hasMore: boolean) => void // Подія при завантаженні нової порції даних
+- (loading-change): (loading: boolean) => void // Подія зміни стану завантаження
+*/
+
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import CarCard from './CarCard.vue'
 import ProgressSpinner from 'primevue/progressspinner'

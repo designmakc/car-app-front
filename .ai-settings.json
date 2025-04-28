@@ -104,5 +104,28 @@
     "typescript": "preferred",
     "eslint": "required",
     "prettier": "required"
+  },
+  "demoData": {
+    "components": "Демо-дані мають бути локально у компоненті (const demoData = ...), як приклад.",
+    "pages": "Для сторінок використовувати окремий файл mock/*.json.",
+    "jsonSchema": "Для кожного mock-файлу додавати json-schema у вигляді коментаря для опису структури.",
+    "apiStructure": "Дані мають точно відповідати майбутній API-структурі.",
+    "validation": "У формах лише UI-валидація (required, maxlength).",
+    "filters": "Фільтри — заглушки з @input/@change, emit('update:filters').",
+    "apiMethods": "API-запити — пусті методи з коментарями // TODO: API call.",
+    "router": "Маршрутизація — заглушки для useRouter, router.push('/mock').",
+    "backendComments": "Обов'язково додавати коментарі для бекендера: над компонентом — очікувані пропси, над методами — опис ендпоінтів, біля emit — очікувані події.",
+    "laravelNotes": "Для Laravel: позначати, де Blade, де Vue, додавати коментарі про X-CSRF-TOKEN, multipart/form-data, очікувані HTTP-коди помилок.",
+    "forbidden": [
+      "Не підключати реальні API",
+      "Не імпортувати бібліотеки для HTTP-запитів",
+      "Не реалізовувати авторизацію/сесії",
+      "Не оптимізувати завантаження даних (prefetch, cache)"
+    ],
+    "testing": [
+      "Всі props мають працювати з демо-даними",
+      "emit події виводяться в консоль",
+      "Адаптивність перевірена через DevTools"
+    ]
   }
 } 

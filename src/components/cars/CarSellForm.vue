@@ -124,6 +124,47 @@
 </template>
 
 <script setup>
+/*
+ОЧІКУВАНИЙ API-ФОРМАТ:
+POST /api/cars/sell
+Body: {
+  brand: string,         // required
+  brandCode: string,     // required
+  model: string,         // required
+  year: number,          // required
+  price: number,         // required
+  phone: string          // required, формат +38 999 999 99 99
+}
+
+JSON-SCHEMA (demoData):
+{
+  "type": "object",
+  "properties": {
+    "brand": { "type": "string" },
+    "brandCode": { "type": "string" },
+    "model": { "type": "string" },
+    "year": { "type": "number" },
+    "price": { "type": "number" },
+    "phone": { "type": "string" }
+  },
+  "required": ["brand", "brandCode", "model", "year", "price", "phone"]
+}
+
+DEMO ДАНІ (для прикладу):
+*/
+const demoData = {
+  brand: 'Toyota',
+  brandCode: 'toyota',
+  model: 'Camry',
+  year: 2020,
+  price: 25000,
+  phone: '+38 067 123 45 67'
+}
+/*
+EMITS:
+- (submit): (carData: object) => void // Подія при успішній валідації форми
+*/
+
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import FloatLabel from 'primevue/floatlabel'
@@ -214,8 +255,11 @@ const validateAndSubmit = () => {
       price: price.value,
       phone: phone.value
     }
-    
-    // Переходимо на сторінку з детальною формою, передаючи дані через query параметри
+    // emit('submit', carData) // Бекендер: ця подія має бути оброблена сторінкою
+    console.log('EMIT submit', carData) // Для тестування: вивід у консоль
+
+    // Заглушка для маршрутизації (бекендер: тут буде router.push)
+    // TODO: API call (бекендер: тут буде реальний запит)
     router.push({
       path: '/sell-car-details',
       query: carData

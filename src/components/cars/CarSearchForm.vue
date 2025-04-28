@@ -172,6 +172,45 @@
 </template>
 
 <script setup>
+/*
+ОЧІКУВАНИЙ API-ФОРМАТ:
+POST /api/cars/search
+Body: {
+  brand?: string,
+  model?: string,
+  yearFrom?: number,
+  yearTo?: number,
+  priceFrom?: number,
+  priceTo?: number
+}
+
+JSON-SCHEMA (demoData):
+{
+  "type": "object",
+  "properties": {
+    "brand": { "type": "string" },
+    "model": { "type": "string" },
+    "yearFrom": { "type": "number" },
+    "yearTo": { "type": "number" },
+    "priceFrom": { "type": "number" },
+    "priceTo": { "type": "number" }
+  }
+}
+
+DEMO ДАНІ (для прикладу):
+*/
+const demoData = {
+  brand: 'BMW',
+  model: 'X5',
+  yearFrom: 2018,
+  yearTo: 2022,
+  priceFrom: 20000,
+  priceTo: 60000
+}
+/*
+EMITS:
+- (search): (filters: object) => void // Подія при натисканні кнопки пошуку
+*/
 
 import { ref, computed } from 'vue'
 
@@ -235,14 +274,18 @@ const priceTo = ref(null)
 
 
 const handleSearch = () => {
-  console.log('Пошук автомобілів:', {
+  const filters = {
     brand: selectedBrand.value,
     model: selectedModel.value,
     yearFrom: yearFrom.value,
     yearTo: yearTo.value,
     priceFrom: priceFrom.value,
     priceTo: priceTo.value
-  })
+  }
+  // emit('search', filters) // Бекендер: ця подія має бути оброблена сторінкою
+  console.log('EMIT search', filters) // Для тестування: вивід у консоль
+
+  // TODO: API call (бекендер: тут буде реальний запит)
 }
 
 
