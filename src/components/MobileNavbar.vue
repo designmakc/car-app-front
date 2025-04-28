@@ -141,7 +141,7 @@ const emit = defineEmits(['change'])
 .navbar-bg-blur {
   backdrop-filter: blur(10px);
   background: var(--p-surface-900); 
-  border-top: 1px solid var(--p-surface-200);
+  
 }
 
 .navbar-container {
