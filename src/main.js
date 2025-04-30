@@ -37,6 +37,7 @@ import Slider from 'primevue/slider';
 import Panel from 'primevue/panel';
 import ToggleButton from 'primevue/togglebutton';
 import Chip from 'primevue/chip';
+import ToastService from 'primevue/toastservice';
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -110,5 +111,6 @@ app.component('Slider', Slider);
 app.component('Panel', Panel);
 app.component('ToggleButton', ToggleButton);
 app.component('Chip', Chip);
+app.use(ToastService);
 // Монтуємо додаток
 app.mount('#app')
