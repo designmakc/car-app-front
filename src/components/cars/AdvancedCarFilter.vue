@@ -769,14 +769,20 @@ const closeMobileFilters = () => {
               <div v-for="color in colors" :key="color.value" class="col-6 mb-2">
                 <div class="flex align-items-center">
                   <div 
-                    class="color-checkbox" 
-                    :class="{ 'selected': filters.color.includes(color.value) }"
+                    class="color-checkbox relative" 
+                    :class="{ 'color-selected': filters.color.includes(color.value) }"
                     @click="toggleColor(color.value)"
+                    :style="{ borderColor: filters.color.includes(color.value) ? color.value : 'var(--p-surface-200)' }"
                   >
                     <div 
                       class="color-circle"
                       :style="{ backgroundColor: color.value }"
                     ></div>
+                    <span v-if="filters.color.includes(color.value)" 
+                       class="flex align-items-center justify-content-center absolute" 
+                       style="top: 0; left: 0; right: 0; bottom: 0; z-index: 1;">
+                      <i class="pi pi-check text-0 font-bold bg-primary border-circle p-1"></i>
+                    </span>
                   </div>
                   <label class="ml-2">{{ color.label }}</label>
                 </div>
@@ -852,8 +858,7 @@ const closeMobileFilters = () => {
   transition: all 0.2s ease;
 }
 
-.color-checkbox.selected {
-  border-color: var(--p-primary-color);
+.color-checkbox.color-selected {
   border-width: 4px;
 }
 
