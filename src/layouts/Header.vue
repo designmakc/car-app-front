@@ -1,8 +1,9 @@
 <template>
-  <div class="header-wrapper surface-900 w-full ">
+  <div class="header-wrapper surface-900 w-full">
     <div class="container">
       <!-- Desktop Header -->
       <div class="hidden lg:flex justify-content-between align-items-center py-4 ">
+        
         <div class="flex align-items-center gap-4">
           <router-link to="/" class="no-underline flex align-items-center">
             <img src="@/assets/logo-orang2.svg" alt="CarMarket Logo" height="40" />
@@ -10,22 +11,11 @@
           <span class="text-500 font-base text-sm ">Авторинок<br>без меж ©</span>
         </div>
 
-        <nav class="flex gap-2 align-items-center font-base font-normal text-sm font-weight-400">
-          <router-link to="/catalog">
-            <Button label="Каталог автомобілів" class="p-button-text text-500 hover:text-white  " />
-          </router-link>
-
-          <router-link to="/about">
-            <Button label="Про авторинок" class="p-button-text text-500 hover:text-white font-weight-normal" />
-          </router-link>
-
-          <router-link to="/terms">
-            <Button label="Умови розміщення" class="p-button-text text-500 hover:text-white font-weight-normal" />
-          </router-link>
-
-          <router-link to="/design-system">
-            <Button label="Авто в кредит" class="p-button-text text-500 hover:text-white font-weight-normal" />
-          </router-link>
+        <nav class="flex gap-4 align-items-center font-base font-normal text-sm font-weight-400">
+          <IconField>
+              <InputIcon class="pi pi-search" />
+              <InputText v-model="value1" placeholder="Пошук по каталогу" size="large"/>
+          </IconField>
           
           <div class="flex gap-2 align-items-center">
             <Button label="Обране" icon="pi pi-heart-fill" class="p-button-rounded p-button-outlined border-2 border-primary text-white hover:surface-800" badge="1" badgeSeverity="success" aria-label="Обране" />
@@ -33,7 +23,12 @@
             <Button icon="pi pi-user" severity="success" rounded aria-label="Мій кабінет" />
           </div>
         </nav>
+        
+        
       </div>
+      
+        
+      
 
       <!-- Tablet Header -->
       <div class="hidden md:flex lg:hidden justify-content-between align-items-center py-2">
@@ -61,12 +56,43 @@
           <Button icon="pi pi-bars" class="p-button-rounded p-button-text text-500 hover:text-white" aria-label="Меню" />
         </div>
       </div>
+    
+    </div>
+    
+    <!-- Menubar на всю ширину з контейнером всередині -->
+    <div class="w-full bg-primary-200">
+      <div class="menubar-wrapper max-w-7xl box-border">
+        <Menubar
+          :model="items"
+          class="border-none shadow-none bg-transparent"
+        >
+          <template #item="{ item, props, hasSubmenu, root }">
+            <a v-ripple class="flex items-center" v-bind="props.action">
+              <span :class="item.icon" class="text-orange-900 mr-2" />
+              <span class="text-orange-900 ">{{ item.label }}</span>
+              <i v-if="hasSubmenu" :class="['pi pi-angle-down ml-auto', { 'pi-angle-down': root, 'pi-angle-right': !root }]" />
+            </a>
+          </template>
+        </Menubar>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Button from 'primevue/button'
+import Menubar from 'primevue/menubar'
+
+const items = [
+  {
+    label: 'Головна',
+    icon: 'pi pi-home'
+  },
+  {
+    label: 'Контакти',
+    icon: 'pi pi-phone'
+  }
+]
 </script>
 
 <style scoped>
@@ -76,6 +102,14 @@ import Button from 'primevue/button'
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+
+.menubar-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 0rem;  
   box-sizing: border-box;
 }
 
@@ -107,4 +141,6 @@ import Button from 'primevue/button'
   outline: none;
   box-shadow: none;
 }
+
+
 </style> 
