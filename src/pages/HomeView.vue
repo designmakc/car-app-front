@@ -85,6 +85,7 @@
           :perPage="8" 
           :infiniteScroll="true"
           :provide-cars="provideCars"
+          :demo="false"
           :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
            class="mt-3"
         />
@@ -107,7 +108,8 @@
         <CarList 
           :limit="16" 
           :perPage="4" 
-          :infiniteScroll="false" 
+          :infiniteScroll="false"
+          :demo="true"
           :provide-cars="provideRegularCars"
           class="mt-3"
         />
@@ -172,6 +174,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Київ',
+    is_top: true,
     publishedAt: '2024-03-15'
   },
   {
@@ -183,6 +186,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 3.0',
     location: 'Львів',
+    is_top: true,
     publishedAt: '2024-03-14'
   },
   {
@@ -194,6 +198,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Одеса',
+    is_top: true,
     publishedAt: '2024-03-13'
   },
   {
@@ -205,6 +210,7 @@ const topCars = ref([
     transmission: 'Механіка',
     engine: 'Бензин 1.4',
     location: 'Харків',
+    is_top: true,
     publishedAt: '2024-03-12'
   },
   {
@@ -216,6 +222,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Гібрид 2.5',
     location: 'Дніпро',
+    is_top: true,
     publishedAt: '2024-03-11'
   },
   {
@@ -227,6 +234,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.0',
     location: 'Запоріжжя',
+    is_top: true,
     publishedAt: '2024-03-10'
   },
   {
@@ -238,6 +246,7 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 1.6',
     location: 'Вінниця',
+    is_top: true,
     publishedAt: '2024-03-09'
   },
   {
@@ -249,17 +258,46 @@ const topCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.5',
     location: 'Полтава',
+    is_top: true,
     publishedAt: '2024-03-08'
   }
 ])
 
 // Функція-провайдер для TOP пропозицій
 const provideCars = async (page, perPage) => {
-  // Емуляція затримки мережі
   await new Promise(resolve => setTimeout(resolve, 500))
   const start = (page - 1) * perPage
   const end = start + perPage
-  return topCars.value.slice(start, end)
+  return topCars.value.slice(start, end).map(car => {
+    const [brand = '', ...rest] = car.title.split(' ')
+    const year = rest.pop()
+    const model = rest.join(' ')
+    let engine_capacity = null, engine_unit = 'л', fuel_type = ''
+    if (car.engine) {
+      const match = car.engine.match(/([А-Яа-яA-Za-z]+)\s?([\d.]+)/)
+      if (match) {
+        fuel_type = match[1]
+        engine_capacity = match[2]
+      }
+    }
+    return {
+      id: car.id,
+      brand,
+      model,
+      year,
+      gearbox: car.transmission,
+      fuel_type,
+      engine_capacity,
+      engine_unit,
+      mileage: car.mileage,
+      city: car.location,
+      price: car.price,
+      is_top: car.is_top,
+      link: car.image,
+      created_at: car.publishedAt,
+      status: 'На майданчику'
+    }
+  })
 }
 
 // Приклади даних для звичайних пропозицій (Авто на майданчику)
@@ -273,6 +311,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-01'
   },
   {
@@ -284,6 +323,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-02'
   },
   {
@@ -295,6 +335,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-03'
   },
   {
@@ -317,6 +358,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-05'
   },
   {
@@ -328,6 +370,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-06'
   },
   {
@@ -339,6 +382,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-07'
   },
   {
@@ -350,6 +394,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Житомир',
+    top: false,
     publishedAt: '2024-03-08'
   },
   {
@@ -361,6 +406,7 @@ const regularCars = ref([
     transmission: 'Механіка',
     engine: 'Бензин 1.8',
     location: 'Київ',
+    top: false,
     publishedAt: '2024-03-09'
   },
   {
@@ -372,6 +418,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 1.5',
     location: 'Львів',
+    top: false,
     publishedAt: '2024-03-10'
   },
   {
@@ -383,6 +430,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.0',
     location: 'Одеса',
+    top: false,
     publishedAt: '2024-03-11'
   },
   {
@@ -394,6 +442,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.0',
     location: 'Харків',
+    top: false,
     publishedAt: '2024-03-12'
   },
   {
@@ -405,6 +454,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 2.0',
     location: 'Дніпро',
+    top: false,
     publishedAt: '2024-03-13'
   },
   {
@@ -416,6 +466,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Дизель 1.6',
     location: 'Запоріжжя',
+    top: false,
     publishedAt: '2024-03-14'
   },
   {
@@ -427,6 +478,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.4',
     location: 'Вінниця',
+    top: false,
     publishedAt: '2024-03-15'
   },
   {
@@ -438,6 +490,7 @@ const regularCars = ref([
     transmission: 'Автомат',
     engine: 'Бензин 2.5',
     location: 'Полтава',
+    top: false,
     publishedAt: '2024-03-16'
   }
 ])
