@@ -82,7 +82,7 @@ const closeMobileFilters = () => {
 };
 
 // Функція для отримання всіх автомобілів для каталогу
-const provideCatalogCars = async (page = 1, perPage = 8) => {
+const provideCatalogCars = async (page = 1, perPage = 12) => {
   try {
     // Емулюємо затримку мережі
     await new Promise(resolve => setTimeout(resolve, 500))
@@ -228,7 +228,7 @@ const provideCatalogCars = async (page = 1, perPage = 8) => {
                     </div>
 
                     <!-- Список авто -->
-                    <div class="car-list">
+                    <div class="car-list pb-8">
                         <CarList 
                         :grid="{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }"
                         :provide-cars="provideCatalogCars"
@@ -241,12 +241,7 @@ const provideCatalogCars = async (page = 1, perPage = 8) => {
             </div>
         </div>
 
-        <!-- Футер -->
-        <footer class="surface-ground mt-8 p-8">
-            <div class="container">
-                <!-- TODO: Додати компонент Footer -->
-            </div>
-        </footer>
+        
     </div>
 </template>
 

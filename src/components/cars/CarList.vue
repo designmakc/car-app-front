@@ -217,7 +217,7 @@ const props = defineProps({
   perPage: {
     type: Number,
     required: false,
-    default: 8,
+    default: 12,
     validator: (value) => value > 0 && value <= 20
   },
   // Режим підвантаження: безкінечний скрол чи кнопка

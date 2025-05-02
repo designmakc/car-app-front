@@ -27,15 +27,60 @@
                 
                 > 
                   <!-- Кастомний шаблон для кожного результату -->
-                  <template #option="slotProps" class="cursor-pointer" >
-                    <div class="flex w-full align-content-center overflow-visible gap-2 ">
-                      <img :src="slotProps.option.image" alt="Фото авто" class="col-2  border-2 border-300 m-0 p-0 border-round w-2 h-2 object-cover">
-                      <div class="flex flex-column justify-content-start col-4 grid gap-2">
-                        <span class="flex-none font-bold">{{ slotProps.option.label }}</span>
-                        <span class="flex-grow-1 text-xs text-500">{{ slotProps.option.year }}</span>
-                        
+                  <template #option="slotProps">
+                    <div class="
+                      flex align-items-center gap-2 md:gap-3 
+                      w-full 
+                      p-2
+                      hover:surface-100
+                      
+                        ">
+                      <img 
+                        :src="slotProps.option.image" 
+                        :alt="`${slotProps.option.label} ${slotProps.option.year}`"
+                        class="
+                          w-6rem h-6rem md:w-6rem md:h-6rem
+                          border-2 border-300
+                          border-round
+                          object-cover
+                          flex-shrink-0
+                          transition-transform
+                          hover:scale-105
+                        "
+                      />
+                      
+                      <div class="
+                        flex-grow-1 
+                        flex justify-content-between align-items-center 
+                        gap-2 md:gap-3
+                      ">
+                        <div class="flex flex-column gap-1">
+                          <span class="
+                            font-semibold 
+                            text-900 
+                            line-height-3
+                            text-sm md:text-base
+                          ">
+                            {{ slotProps.option.label }}
+                          </span>
+                          <span class="
+                            text-xs md:text-sm 
+                            text-500
+                          ">
+                            {{ slotProps.option.year }}
+                          </span>
+                        </div>
+
+                        <span class="
+                          font-bold 
+                          text-primary 
+                          whitespace-nowrap
+                          text-right
+                          text-sm md:text-base
+                        ">
+                          {{ slotProps.option.price }}
+                        </span>
                       </div>
-                      <span class="flex-none col ml-auto font-bold text-primary">{{ slotProps.option.price }}</span>
                     </div>
                   </template>
 
@@ -44,7 +89,7 @@
                     <div class="flex justify-content-center p-2">
                       <Button
                         label="Дивитись всі результати"
-                        class="w-full cursor-pointer"
+                        class="cursor-pointer w-full"
                         @click="goToCatalog"
                         @keyup.enter="goToCatalog"
                         icon="pi pi-angle-double-right"
@@ -133,7 +178,7 @@
                 {
                   'text-white': !context.active,
                   'hover:text-orange-500': !context.active,
-                  'border-noround': !context.active
+                  'border-noround md:border-round-md': !context.active
                   
                 }
               ]
