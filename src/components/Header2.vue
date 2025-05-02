@@ -63,7 +63,7 @@
           <!-- Праве меню -->
           <div class="flex gap-1 md:gap-3 align-items-center">
 
-            <div class="flex gap-5 px-4 ">
+            <div class="flex gap-4 px-4 ">
             <OverlayBadge
                 v-if="favoritesCount > 0"
                 :value="favoritesCount"
@@ -96,6 +96,9 @@
                 @click="$router.push('/auth/login')"
                 aria-label="Увійти"
                 label="Увійти"
+                class="px-2 sm:px-3"
+                size="normal"
+                
                 
             />
               
@@ -105,6 +108,9 @@
               severity="success"
               @click="$router.push('/add-car')"
               label="Продати" 
+              class="px-2 sm:px-3"
+              size="normal" 
+
             />
           </div>
         </div>
@@ -126,7 +132,8 @@
               class: [
                 {
                   'text-white': !context.active,
-                  'hover:text-orange-500': !context.active
+                  'hover:text-orange-500': !context.active,
+                  'border-noround': !context.active
                   
                 }
               ]

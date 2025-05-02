@@ -86,7 +86,7 @@
           :infiniteScroll="false"
           :provide-cars="provideCars"
           :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
-          class="mt-3"
+           class="mt-3"
         />
       </div>
     </section>

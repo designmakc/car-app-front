@@ -120,9 +120,9 @@
 <template>
   <Toast />
   <!-- Картка автомобіля -->
-  <Card class="car-card shadow-1 hover:shadow-2 transition-all border-round-xl" :pt="{
+  <Card class="car-card shadow-1 hover:shadow-2 transition-all border-round-2xl" :pt="{
     root: { class: ['flex flex-column', { 'border-primary border-3': is_top }] },
-    content: { class: 'p-0 flex-grow-1 flex flex-column border-round-bottom-xl' }
+    content: { class: 'p-0 flex-grow-1 flex flex-column border-round-bottom-2xl' }
   }">
     <!-- Header з фото -->
     <template #header>
