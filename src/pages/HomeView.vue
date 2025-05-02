@@ -83,11 +83,10 @@
         <CarList 
           :limit="8" 
           :perPage="8" 
-          :infiniteScroll="true"
+          :infiniteScroll="false"
           :provide-cars="provideCars"
-          :demo="false"
           :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
-           class="mt-3"
+          class="mt-3"
         />
       </div>
     </section>
@@ -115,10 +114,10 @@
         <!-- Список автомобілів з кнопкою -->
         <CarList 
           :limit="16" 
-          :perPage="4" 
+          :perPage="8" 
           :infiniteScroll="false"
-          :demo="true"
           :provide-cars="provideRegularCars"
+          :grid="{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }"
           class="mt-3"
         />
       </div>
@@ -166,352 +165,54 @@ import StatisticsBlock from '../components/cars/StatisticsBlock.vue'
 import QuickFilters from '../components/cars/QuickFilters.vue'
 import CarList from '../components/cars/CarList.vue'
 import CarCard from '../components/cars/CarCard.vue'
-import carDemoImage from '@/assets/cars/car-demo.png'
-import Message from 'primevue/message';
+import Message from 'primevue/message'
 import PopularBrands from '../components/cars/PopularBrands.vue'
+import { demoCars } from '@/data/demo/cars.js'
 
 const activeTab = ref(0)
 
-// Приклади даних для TOP пропозицій
-const topCars = ref([
-  {
-    id: 1,
-    title: 'Audi A4 2020',
-    price: 25999,
-    image: carDemoImage,
-    mileage: 45,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Київ',
-    is_top: true,
-    publishedAt: '2024-03-15'
-  },
-  {
-    id: 2,
-    title: 'BMW X5 2021',
-    price: 65000,
-    image: carDemoImage,
-    mileage: 30,
-    transmission: 'Автомат',
-    engine: 'Бензин 3.0',
-    location: 'Львів',
-    is_top: true,
-    publishedAt: '2024-03-14'
-  },
-  {
-    id: 3,
-    title: 'Mercedes-Benz E-Class 2019',
-    price: 45500,
-    image: carDemoImage,
-    mileage: 60,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Одеса',
-    is_top: true,
-    publishedAt: '2024-03-13'
-  },
-  {
-    id: 4,
-    title: 'Volkswagen Golf 2022',
-    price: 28999,
-    image: carDemoImage,
-    mileage: 15,
-    transmission: 'Механіка',
-    engine: 'Бензин 1.4',
-    location: 'Харків',
-    is_top: true,
-    publishedAt: '2024-03-12'
-  },
-  {
-    id: 5,
-    title: 'Toyota Camry 2021',
-    price: 32500,
-    image: carDemoImage,
-    mileage: 25,
-    transmission: 'Автомат',
-    engine: 'Гібрид 2.5',
-    location: 'Дніпро',
-    is_top: true,
-    publishedAt: '2024-03-11'
-  },
-  {
-    id: 6,
-    title: 'Honda CR-V 2020',
-    price: 29999,
-    image: carDemoImage,
-    mileage: 40,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.0',
-    location: 'Запоріжжя',
-    is_top: true,
-    publishedAt: '2024-03-10'
-  },
-  {
-    id: 7,
-    title: 'Hyundai Tucson 2022',
-    price: 33500,
-    image: carDemoImage,
-    mileage: 20,
-    transmission: 'Автомат',
-    engine: 'Дизель 1.6',
-    location: 'Вінниця',
-    is_top: true,
-    publishedAt: '2024-03-09'
-  },
-  {
-    id: 8,
-    title: 'Mazda CX-5 2021',
-    price: 31999,
-    image: carDemoImage,
-    mileage: 35,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.5',
-    location: 'Полтава',
-    is_top: true,
-    publishedAt: '2024-03-08'
+// Функція для отримання TOP пропозицій
+const provideCars = async (page = 1, perPage = 8) => {
+  try {
+    // Емулюємо затримку мережі
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    // Фільтруємо тільки TOP пропозиції
+    const topCars = demoCars.filter(car => car.is_top === true)
+    const startIndex = (page - 1) * perPage
+    const endIndex = startIndex + perPage
+    
+    // Повертаємо дані у потрібному форматі
+    return topCars.slice(startIndex, endIndex).map(car => ({
+      ...car,
+      link: car.images[0]?.url || ''
+    }))
+  } catch (error) {
+    console.error('Error in provideCars:', error)
+    return []
   }
-])
-
-// Функція-провайдер для TOP пропозицій
-const provideCars = async (page, perPage) => {
-  await new Promise(resolve => setTimeout(resolve, 500))
-  const start = (page - 1) * perPage
-  const end = start + perPage
-  return topCars.value.slice(start, end).map(car => {
-    const [brand = '', ...rest] = car.title.split(' ')
-    const year = rest.pop()
-    const model = rest.join(' ')
-    let engine_capacity = null, engine_unit = 'л', fuel_type = ''
-    if (car.engine) {
-      const match = car.engine.match(/([А-Яа-яA-Za-z]+)\s?([\d.]+)/)
-      if (match) {
-        fuel_type = match[1]
-        engine_capacity = match[2]
-      }
-    }
-    return {
-      id: car.id,
-      brand,
-      model,
-      year,
-      gearbox: car.transmission,
-      fuel_type,
-      engine_capacity,
-      engine_unit,
-      mileage: car.mileage,
-      city: car.location,
-      price: car.price,
-      is_top: car.is_top,
-      link: car.image,
-      created_at: car.publishedAt,
-      status: 'На майданчику'
-    }
-  })
 }
 
-// Приклади даних для звичайних пропозицій (Авто на майданчику)
-const regularCars = ref([
-  {
-    id: 101,
-    title: 'Jeep Grand Cherokee 2020',
-    price: 19999,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-01'
-  },
-  {
-    id: 102,
-    title: 'Citroen Berlingo пасс. 2009',
-    price: 19999,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-02'
-  },
-  {
-    id: 103,
-    title: 'Dodge Journey 2018',
-    price: 12100,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-03'
-  },
-  {
-    id: 104,
-    title: 'Ford Fusion 2010',
-    price: 19999,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    publishedAt: '2024-03-04'
-  },
-  {
-    id: 105,
-    title: 'Hyundai Kona 2022',
-    price: 19999,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-05'
-  },
-  {
-    id: 106,
-    title: 'Jeep Grand Cherokee 2015',
-    price: 23500,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-06'
-  },
-  {
-    id: 107,
-    title: 'Jeep Grand Cherokee 2015',
-    price: 23500,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-07'
-  },
-  {
-    id: 108,
-    title: 'Jeep Grand Cherokee 2015',
-    price: 23500,
-    image: carDemoImage, 
-    mileage: 240,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Житомир',
-    top: false,
-    publishedAt: '2024-03-08'
-  },
-  {
-    id: 109,
-    title: 'Skoda Octavia 2018',
-    price: 17800,
-    image: carDemoImage, 
-    mileage: 150,
-    transmission: 'Механіка',
-    engine: 'Бензин 1.8',
-    location: 'Київ',
-    top: false,
-    publishedAt: '2024-03-09'
-  },
-  {
-    id: 110,
-    title: 'Renault Megane 2019',
-    price: 16500,
-    image: carDemoImage, 
-    mileage: 120,
-    transmission: 'Автомат',
-    engine: 'Дизель 1.5',
-    location: 'Львів',
-    top: false,
-    publishedAt: '2024-03-10'
-  },
-  {
-    id: 111,
-    title: 'Nissan Qashqai 2017',
-    price: 18200,
-    image: carDemoImage, 
-    mileage: 90,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.0',
-    location: 'Одеса',
-    top: false,
-    publishedAt: '2024-03-11'
-  },
-  {
-    id: 112,
-    title: 'Kia Sportage 2019',
-    price: 21000,
-    image: carDemoImage, 
-    mileage: 80,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.0',
-    location: 'Харків',
-    top: false,
-    publishedAt: '2024-03-12'
-  },
-  {
-    id: 113,
-    title: 'Ford Kuga 2018',
-    price: 20500,
-    image: carDemoImage, 
-    mileage: 110,
-    transmission: 'Автомат',
-    engine: 'Дизель 2.0',
-    location: 'Дніпро',
-    top: false,
-    publishedAt: '2024-03-13'
-  },
-  {
-    id: 114,
-    title: 'Peugeot 3008 2019',
-    price: 22300,
-    image: carDemoImage, 
-    mileage: 75,
-    transmission: 'Автомат',
-    engine: 'Дизель 1.6',
-    location: 'Запоріжжя',
-    top: false,
-    publishedAt: '2024-03-14'
-  },
-  {
-    id: 115,
-    title: 'Mitsubishi Outlander 2017',
-    price: 19600,
-    image: carDemoImage, 
-    mileage: 130,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.4',
-    location: 'Вінниця',
-    top: false,
-    publishedAt: '2024-03-15'
-  },
-  {
-    id: 116,
-    title: 'Subaru Forester 2018',
-    price: 24000,
-    image: carDemoImage, 
-    mileage: 95,
-    transmission: 'Автомат',
-    engine: 'Бензин 2.5',
-    location: 'Полтава',
-    top: false,
-    publishedAt: '2024-03-16'
+// Функція для отримання звичайних пропозицій
+const provideRegularCars = async (page = 1, perPage = 8) => {
+  try {
+    // Емулюємо затримку мережі
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    // Фільтруємо всі автомобілі, які мають статус "На майданчику"
+    const regularCars = demoCars.filter(car => car.status === "На майданчику")
+    const startIndex = (page - 1) * perPage
+    const endIndex = startIndex + perPage
+    
+    // Повертаємо дані у потрібному форматі
+    return regularCars.slice(startIndex, endIndex).map(car => ({
+      ...car,
+      link: car.images[0]?.url || ''
+    }))
+  } catch (error) {
+    console.error('Error in provideRegularCars:', error)
+    return []
   }
-])
-
-// Функція-провайдер для звичайних пропозицій
-const provideRegularCars = async (page, perPage) => {
-  // Емуляція затримки мережі
-  await new Promise(resolve => setTimeout(resolve, 500)) 
-  const start = (page - 1) * perPage
-  const end = start + perPage
-  // Важливо: повертаємо тільки частину даних для поточної сторінки
-  return regularCars.value.slice(start, end)
 }
 
 </script>

@@ -204,178 +204,6 @@ import bmwImage from '@/assets/cars/bmw-x5.jpg'
 import mercedesImage from '@/assets/cars/mercedes-c.jpg'
 import toyotaImage from '@/assets/cars/toyota-camry.jpg'
 
-// Демо-дані автомобілів
-const demoCarsList = [
-  {
-    id: 1,
-    user_id: 101,
-    brand: 'Audi',
-    model: 'A4',
-    year: 2019,
-    gearbox: 'Автомат',
-    fuel_type: 'Бензин',
-    engine_capacity: 2.0,
-    engine_unit: 'л',
-    body_type: 'Седан',
-    mileage: 45,
-    drive_type: 'Передній',
-    color: 'Сірий',
-    city: 'Київ',
-    price: 25999,
-    status: 'На майданчику',
-    is_top: true,
-    link: audiImage,
-    created_at: '2023-10-15T12:30:00'
-  },
-  {
-    id: 2,
-    user_id: 102,
-    brand: 'BMW',
-    model: 'X5',
-    year: 2020,
-    gearbox: 'Автомат',
-    fuel_type: 'Дизель',
-    engine_capacity: 3.0,
-    engine_unit: 'л',
-    body_type: 'Кросовер',
-    mileage: 30,
-    drive_type: 'Повний',
-    color: 'Чорний',
-    city: 'Львів',
-    price: 65000,
-    status: 'На майданчику',
-    is_top: false,
-    link: bmwImage,
-    created_at: '2023-11-05T15:45:00'
-  },
-  {
-    id: 3,
-    user_id: 103,
-    brand: 'Mercedes',
-    model: 'C-Class',
-    year: 2021,
-    gearbox: 'Автомат',
-    fuel_type: 'Бензин',
-    engine_capacity: 2.0,
-    engine_unit: 'л',
-    body_type: 'Седан',
-    mileage: 60,
-    drive_type: 'Задній',
-    color: 'Сріблястий',
-    city: 'Одеса',
-    price: 45500,
-    status: '',
-    is_top: true,
-    link: mercedesImage,
-    created_at: '2023-12-10T09:15:00'
-  },
-  {
-    id: 4,
-    user_id: 104,
-    brand: 'Toyota',
-    model: 'Camry',
-    year: 2018,
-    gearbox: 'Автомат',
-    fuel_type: 'Гібрид',
-    engine_capacity: 2.5,
-    engine_unit: 'л',
-    body_type: 'Седан',
-    mileage: 15,
-    drive_type: 'Передній',
-    color: 'Білий',
-    city: 'Харків',
-    price: 28999,
-    status: 'На майданчику',
-    is_top: false,
-    link: toyotaImage,
-    created_at: '2023-09-20T18:00:00'
-  },
-  {
-    id: 5,
-    user_id: 105,
-    brand: 'Audi',
-    model: 'Q7',
-    year: 2017,
-    gearbox: 'Автомат',
-    fuel_type: 'Дизель',
-    engine_capacity: 3.0,
-    engine_unit: 'л',
-    body_type: 'Кросовер',
-    mileage: 55,
-    drive_type: 'Повний',
-    color: 'Синій',
-    city: 'Дніпро',
-    price: 32500,
-    status: 'На майданчику',
-    is_top: true,
-    link: audiImage, // Повторно використовуємо існуюче зображення
-    created_at: '2023-08-15T10:20:00'
-  },
-  {
-    id: 6,
-    user_id: 106,
-    brand: 'BMW',
-    model: '3 Series',
-    year: 2020,
-    gearbox: 'Автомат',
-    fuel_type: 'Бензин',
-    engine_capacity: 2.0,
-    engine_unit: 'л',
-    body_type: 'Седан',
-    mileage: 25,
-    drive_type: 'Задній',
-    color: 'Чорний',
-    city: 'Запоріжжя',
-    price: 29999,
-    status: 'На майданчику',
-    is_top: false,
-    link: bmwImage, // Повторно використовуємо існуюче зображення
-    created_at: '2023-10-05T14:30:00'
-  },
-  {
-    id: 7,
-    user_id: 107,
-    brand: 'Mercedes',
-    model: 'GLC',
-    year: 2019,
-    gearbox: 'Автомат',
-    fuel_type: 'Дизель',
-    engine_capacity: 2.0,
-    engine_unit: 'л',
-    body_type: 'Кросовер',
-    mileage: 40,
-    drive_type: 'Повний',
-    color: 'Білий',
-    city: 'Київ',
-    price: 33500,
-    status: 'На майданчику',
-    is_top: true,
-    link: mercedesImage, // Повторно використовуємо існуюче зображення
-    created_at: '2023-11-20T11:10:00'
-  },
-  {
-    id: 8,
-    user_id: 108,
-    brand: 'Toyota',
-    model: 'RAV4',
-    year: 2021,
-    gearbox: 'Автомат',
-    fuel_type: 'Гібрид',
-    engine_capacity: 2.5,
-    engine_unit: 'л',
-    body_type: 'Кросовер',
-    mileage: 10,
-    drive_type: 'Повний',
-    color: 'Червоний',
-    city: 'Одеса',
-    price: 31999,
-    status: '',
-    is_top: false,
-    link: toyotaImage, // Повторно використовуємо існуюче зображення
-    created_at: '2023-12-01T09:45:00'
-  }
-]
-
 // Пропси з валідацією
 const props = defineProps({
   // Максимальна кількість авто для відображення
@@ -438,29 +266,14 @@ const loading = ref(false)
 const page = ref(1)
 const hasMoreCars = ref(true)
 
-// Функція для надання демо-даних
-const getDemodCars = async (currentPage, itemsPerPage) => {
-  // Імітуємо затримку API
-  await new Promise(resolve => setTimeout(resolve, 800))
-  
-  // Вираховуємо початковий та кінцевий індекси
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  
-  // Повертаємо частину демо-даних
-  return demoCarsList.slice(startIndex, endIndex)
-}
-
 // Обчислювані властивості
 const displayedCars = computed(() => {
-  // Показуємо тільки завантажені машини, а не обрізаємо по page * perPage,
-  // оскільки пагінація тепер обробляється кнопкою/скролом
-  return cars.value.slice(0, props.limit)
+  return cars.value
 })
 
-// Функція для надання авто в залежності від режиму (демо чи реальні дані)
+// Функція для надання авто в залежності від режиму
 const actualProvideCarsFn = computed(() => {
-  return props.demo || !props.provideCars ? getDemodCars : props.provideCars
+  return props.provideCars
 })
 
 // Кількість скелетонів для відображення

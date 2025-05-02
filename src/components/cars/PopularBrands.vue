@@ -42,7 +42,7 @@ Response: { data: Array<{name: string, count: number}>, total: number }
 
 import { ref, computed, onMounted } from 'vue'
 import Panel from 'primevue/panel'
-
+import { demoPopularBrands } from '@/data/demo/cars'
 
 const brands = ref([])
 const loading = ref(false)
@@ -59,22 +59,10 @@ const fetchPopularBrands = async () => {
     // brands.value = data.data
     // totalBrands.value = data.total
 
-    // Демо-дані
-    await new Promise(resolve => setTimeout(resolve, 500))
-    brands.value = [
-      { name: 'Audi', count: 5 },
-      { name: 'BMW', count: 24 },
-      { name: 'Chery', count: 22 },
-      { name: 'Ford', count: 43 },
-      { name: 'Geely', count: 25 },
-      { name: 'Hyundai', count: 35 },
-      { name: 'Kia', count: 37 },
-      { name: 'Lada (ВАЗ)', count: 10 },
-      { name: 'Mercedes-Benz', count: 12 },
-      { name: 'Nissan', count: 22 },
-      { name: 'Toyota', count: 15 }
-    ]
-    totalBrands.value = 395
+    // Використовуємо демо-дані
+    await new Promise(resolve => setTimeout(resolve, 500)) // Імітація затримки API
+    brands.value = demoPopularBrands
+    totalBrands.value = demoPopularBrands.length
   } catch (error) {
     console.error('Помилка при завантаженні брендів:', error)
   } finally {

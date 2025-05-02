@@ -9,6 +9,7 @@ import CarList from '@/components/cars/CarList.vue';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
+import { demoCars } from '@/data/demo/cars.js';
 
 const items = [
     { label: 'Головна', url: '/' },
@@ -79,6 +80,28 @@ const openMobileFilters = () => {
 const closeMobileFilters = () => {
     showMobileFilters.value = false;
 };
+
+// Функція для отримання всіх автомобілів для каталогу
+const provideCatalogCars = async (page = 1, perPage = 8) => {
+  try {
+    // Емулюємо затримку мережі
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    // Фільтруємо всі автомобілі за статусом "На майданчику"
+    const catalogCars = demoCars.filter(car => car.status === "На майданчику")
+    const startIndex = (page - 1) * perPage
+    const endIndex = startIndex + perPage
+    
+    // Повертаємо дані у потрібному форматі
+    return catalogCars.slice(startIndex, endIndex).map(car => ({
+      ...car,
+      link: car.images[0]?.url || ''
+    }))
+  } catch (error) {
+    console.error('Error in provideCatalogCars:', error)
+    return []
+  }
+}
 </script>
 
 <template>
@@ -207,7 +230,12 @@ const closeMobileFilters = () => {
                     <!-- Список авто -->
                     <div class="car-list">
                         <CarList 
-                        :grid="{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }"/>
+                        :grid="{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }"
+                        :provide-cars="provideCatalogCars"
+                        :limit="20"
+                        :perPage="8"
+                        :infiniteScroll="true"
+                        />
                     </div>
                 </div>
             </div>

@@ -210,6 +210,7 @@ import InputText from 'primevue/inputtext'
 import Badge from 'primevue/badge'
 import { useRouter } from 'vue-router'
 import AutoComplete from 'primevue/autocomplete'
+import { demoSearchSuggestions } from '@/data/demo/cars'
 
 const router = useRouter()
 
@@ -334,16 +335,13 @@ const items = ref([])
 
 /**
  * Пошук по демо-даним (UI-фільтрація)
- * @param {Object} event - подія автозаповнення
+ * TODO: Замінити на API-запит
+ * GET /api/search/suggestions?query=${event.query}
  */
 function search(event) {
-  // TODO: API call.
-  // UI-фільтрація по демо-даним
-  items.value = demoData.filter(item =>
+  items.value = demoSearchSuggestions.filter(item =>
     item.label.toLowerCase().includes(event.query.toLowerCase())
   )
-  // emit('update:filters') — якщо потрібно фільтрувати глобально
-  // console.log('emit: update:filters', event.query)
 }
 
 function goToCatalog() {
