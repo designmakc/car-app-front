@@ -162,16 +162,13 @@
 
 <script setup>
 // Імпорти необхідних компонентів та хуків
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import Skeleton from 'primevue/skeleton'
-import { useFavoritesStore } from '@/stores/favorites'
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
-// Ініціалізація store
-const favorites = useFavoritesStore()
 
 // Визначення пропсів компонента згідно структури БД
 const props = defineProps({
@@ -247,42 +244,34 @@ const props = defineProps({
   }
 })
 
-// Стан для відстеження обраного статусу
-const isFavorite = ref(favorites.items.some(item => item.id === props.id))
+// Замість store використовуємо API
+const isFavorite = ref(false)
 
-// Функція для перемикання статусу обраного
-const toggleFavorite = (event) => {
-  event.stopPropagation() // Запобігає спрацюванню інших обробників
-  
-  const carData = {
-    id: props.id,
-    brand: props.brand,
-    model: props.model,
-    year: props.year,
-    price: props.price,
-    image: props.link
+// Перевірка чи авто у обраному
+const checkIsFavorite = async () => {
+  try {
+    // TODO: API call
+    // const response = await fetch(`/api/favorites/check/${props.car.id}`)
+    // const { isFavorite: status } = await response.json()
+    // isFavorite.value = status
+  } catch (error) {
+    console.error('Помилка при перевірці обраного:', error)
   }
-  
-  if (isFavorite.value) {
-    favorites.remove(props.id)
-    toast.add({ 
-      severity: 'info', 
-      summary: 'Видалено з обраного', 
-      detail: `${props.brand} ${props.model} ${props.year}`, 
-      life: 3000 
-    })
-  } else {
-    favorites.add(carData)
-    toast.add({ 
-      severity: 'success', 
-      summary: 'Додано до обраного', 
-      detail: `${props.brand} ${props.model} ${props.year}`, 
-      life: 3000 
-    })
-  }
-  
-  isFavorite.value = !isFavorite.value
 }
+
+// Додавання/видалення з обраного
+const toggleFavorite = async () => {
+  try {
+    // TODO: API call
+    // const method = isFavorite.value ? 'DELETE' : 'POST'
+    // await fetch(`/api/favorites/${props.car.id}`, { method })
+    isFavorite.value = !isFavorite.value
+  } catch (error) {
+    console.error('Помилка при оновленні обраного:', error)
+  }
+}
+
+onMounted(checkIsFavorite)
 
 // Функція форматування ціни
 const formatPrice = (price) => {

@@ -23,6 +23,7 @@ import Footer from './layouts/Footer.vue'
 //import Header from './layouts/Header.vue'
 import Header2 from './components/Header2.vue'
 import MobileNavbar from './components/MobileNavbar.vue'
+import PopularBrands from './components/cars/PopularBrands.vue'
 </script>
 
 <style>

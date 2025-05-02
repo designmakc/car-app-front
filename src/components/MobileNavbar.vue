@@ -68,12 +68,8 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
-import { useFavoritesStore } from '@/stores/favorites'
+import { ref, computed, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
-// Ініціалізація store
-const favorites = useFavoritesStore()
 
 // Імпорт роутера
 const router = useRouter()
@@ -90,9 +86,26 @@ const navItems = [
 // Активний елемент (початково "Головна")
 const activeIndex = ref(0)
 
+// Замість store використовуємо API
+const favoritesCount = ref(0)
+
+// Отримання кількості обраних
+const getFavoritesCount = async () => {
+  try {
+    // TODO: API call
+    // const response = await fetch('/api/favorites/count')
+    // const { count } = await response.json()
+    // favoritesCount.value = count
+  } catch (error) {
+    console.error('Помилка при отриманні кількості обраних:', error)
+  }
+}
+
+onMounted(getFavoritesCount)
+
 // Кількість бейджів (для обраного)
 const badges = computed(() => ({
-  favorites: favorites.count || 0
+  favorites: favoritesCount.value || 0
 }))
 
 // Функція для зміни активного елемента з анімацією

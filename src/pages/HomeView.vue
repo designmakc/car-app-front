@@ -92,6 +92,14 @@
       </div>
     </section>
 
+    <!-- Популярні марки -->
+    <section class="popular-brands-section w-full pt-6">
+      <div class="container">
+
+        <PopularBrands />
+      </div>
+    </section>
+
     <!-- Авто на майданчику -->
     <section class="regular-offers-section w-full pt-6">
       <div class="container">
@@ -160,6 +168,7 @@ import CarList from '../components/cars/CarList.vue'
 import CarCard from '../components/cars/CarCard.vue'
 import carDemoImage from '@/assets/cars/car-demo.png'
 import Message from 'primevue/message';
+import PopularBrands from '../components/cars/PopularBrands.vue'
 
 const activeTab = ref(0)
 

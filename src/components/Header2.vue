@@ -65,8 +65,8 @@
 
             <div class="flex gap-5 px-4 ">
             <OverlayBadge
-                v-if="favorites.count > 0"
-                :value="favorites.count"
+                v-if="favoritesCount > 0"
+                :value="favoritesCount"
                 severity="danger"
                 @click="$router.push('/favorites')"
                 class="cursor-pointer">
@@ -203,17 +203,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TabMenu from 'primevue/tabmenu'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Badge from 'primevue/badge'
 import { useRouter } from 'vue-router'
 import AutoComplete from 'primevue/autocomplete'
-import { useFavoritesStore } from '@/stores/favorites'
 
 const router = useRouter()
-const favorites = useFavoritesStore()
 
 // Демо-дані
 const searchQuery = ref('')
@@ -352,17 +350,22 @@ function goToCatalog() {
   router.push('/catalog')
 }
 
-const isFavorite = ref(false)
+// Замість store використовуємо API
+const favoritesCount = ref(0)
 
-const toggleFavorite = (event) => {
-  isFavorite.value = !isFavorite.value
-  if (isFavorite.value) {
-    favorites.add()
-  } else {
-    favorites.remove()
+// Отримання кількості обраних
+const getFavoritesCount = async () => {
+  try {
+    // TODO: API call
+    // const response = await fetch('/api/favorites/count')
+    // const { count } = await response.json()
+    // favoritesCount.value = count
+  } catch (error) {
+    console.error('Помилка при отриманні кількості обраних:', error)
   }
-  event.stopPropagation()
 }
+
+onMounted(getFavoritesCount)
 </script>
 
 <style scoped>
