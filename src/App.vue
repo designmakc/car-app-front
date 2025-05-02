@@ -1,7 +1,7 @@
 <!-- Based on: PrimeVue/Layouts -->
 <template>
   <div id="app" class="flex flex-column">
-    <Header class="w-full" />
+    <Header2 class="w-full" />
     
     <main>
       <!-- Контейнер с ограниченной шириной -->
@@ -20,7 +20,8 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import Footer from './layouts/Footer.vue'
-import Header from './layouts/Header.vue'
+//import Header from './layouts/Header.vue'
+import Header2 from './components/Header2.vue'
 import MobileNavbar from './components/MobileNavbar.vue'
 </script>
 

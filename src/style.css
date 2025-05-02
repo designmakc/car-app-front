@@ -15,7 +15,12 @@ html {
   --headings-font-family: 'Unbounded', sans-serif;
 }
 
-
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
 
 /* Базовий шрифт - Roboto */
 body {
@@ -37,6 +42,8 @@ h1 {
   line-height: 2rem;         /* line-height для text-2xl */
   color: var(--text-color, #22223b); /* PrimeFlex змінна або дефолт */
 }
+
+
 
 @media (min-width: 1024px) {
   h1 {

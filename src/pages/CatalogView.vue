@@ -92,7 +92,7 @@ const closeMobileFilters = () => {
 
         <div class="container mt-4">
             <!-- Breadcrumb -->
-            <Breadcrumb :home="home" :model="items" class="mb-4 surface-ground p-2 border-round" />
+            <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round" />
 
             <!-- Заголовок -->
             <h1>Каталог автомобілів</h1>

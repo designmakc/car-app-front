@@ -38,6 +38,11 @@ import Panel from 'primevue/panel';
 import ToggleButton from 'primevue/togglebutton';
 import Chip from 'primevue/chip';
 import ToastService from 'primevue/toastservice';
+import MegaMenu from 'primevue/megamenu';
+import IftaLabel from 'primevue/iftalabel';
+import AutoComplete from 'primevue/autocomplete';
+import OverlayBadge from 'primevue/overlaybadge';
+
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -127,6 +132,10 @@ app.component('Panel', Panel);
 app.component('ToggleButton', ToggleButton);
 app.component('Chip', Chip);
 app.use(ToastService);
+app.component('MegaMenu', MegaMenu);
+app.component('IftaLabel', IftaLabel); 
+app.component('AutoComplete', AutoComplete);
+app.component('OverlayBadge', OverlayBadge);
 // Монтуємо додаток
 app.mount('#app')
 
