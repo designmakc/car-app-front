@@ -1,5 +1,5 @@
-
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import router from './router'
@@ -23,25 +23,25 @@ import Menubar from 'primevue/menubar'
 import Textarea from 'primevue/textarea'
 import Checkbox from 'primevue/checkbox'
 import RadioButton from 'primevue/radiobutton'
-import Ripple from 'primevue/ripple';
-import IconField from 'primevue/iconfield';
-import InputIcon from 'primevue/inputicon';
-import FloatLabel from 'primevue/floatlabel';
-import CascadeSelect from 'primevue/cascadeselect';
-import Select from 'primevue/select';
-import Toast from 'primevue/toast';
-import InputMask from 'primevue/inputmask';
-import SelectButton from 'primevue/selectbutton';
-import MultiSelect from 'primevue/multiselect';
-import Slider from 'primevue/slider';
-import Panel from 'primevue/panel';
-import ToggleButton from 'primevue/togglebutton';
-import Chip from 'primevue/chip';
-import ToastService from 'primevue/toastservice';
-import MegaMenu from 'primevue/megamenu';
-import IftaLabel from 'primevue/iftalabel';
-import AutoComplete from 'primevue/autocomplete';
-import OverlayBadge from 'primevue/overlaybadge';
+import Ripple from 'primevue/ripple'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import FloatLabel from 'primevue/floatlabel'
+import CascadeSelect from 'primevue/cascadeselect'
+import Select from 'primevue/select'
+import Toast from 'primevue/toast'
+import InputMask from 'primevue/inputmask'
+import SelectButton from 'primevue/selectbutton'
+import MultiSelect from 'primevue/multiselect'
+import Slider from 'primevue/slider'
+import Panel from 'primevue/panel'
+import ToggleButton from 'primevue/togglebutton'
+import Chip from 'primevue/chip'
+import ToastService from 'primevue/toastservice'
+import MegaMenu from 'primevue/megamenu'
+import IftaLabel from 'primevue/iftalabel'
+import AutoComplete from 'primevue/autocomplete'
+import OverlayBadge from 'primevue/overlaybadge'
 
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
@@ -65,15 +65,17 @@ const MyPreset = definePreset(Lara, {
 // Створюємо та налаштовуємо додаток
 const app = createApp(App)
 
+const pinia = createPinia()
+app.use(pinia)
+
 // Налаштовуємо PrimeVue
 app.use(PrimeVue, {
     ripple: true,
     pt: {
         global: {
-          //cssLayer: false, // Розкоментуйте, якщо ви точно знаєте, навіщо це потрібно для PT
           font: {
-            family: "'Unbounded', sans-serif", // Основной шрифт
-            secondaryFamily: "'Roboto', sans-serif" // Второстепенный
+            family: "'Unbounded', sans-serif",
+            secondaryFamily: "'Roboto', sans-serif"
           }
         }
     },
@@ -81,28 +83,16 @@ app.use(PrimeVue, {
         preset: MyPreset,
         options: {
             prefix: 'p',
-            darkModeSelector: '.fake-dark-selector' // trying to also force a non-usage of the dark mode
-            
+            darkModeSelector: '.fake-dark-selector'
         }
     }
-});
-
-// Підключаємо роутер   
-            
-            // Встановлюємо darkModeSelector в null, щоб повністю відключити темну тему
-            // Вона не буде активуватися ні системно, ні за класом
-            //darkModeSelector: null,
-            // Налаштування шарів CSS (зазвичай краще залишити або налаштувати тут, а не в pt.global)
-            // cssLayer: {
-            //   name: 'primevue', // або інше ім'я шару
-            //   order: 'primevue, defaults' // порядок шарів
-            // }
+})
 
 // Підключаємо роутер
-app.use(router);
+app.use(router)
 
 // Реєструємо сервіс ToastService
-app.use(ToastService);
+app.use(ToastService)
 
 // Реєстрація компонентів
 app.component('Button', Button)
@@ -117,28 +107,27 @@ app.component('Menubar', Menubar)
 app.component('Textarea', Textarea)
 app.component('Checkbox', Checkbox)
 app.component('RadioButton', RadioButton)
-app.directive('ripple', Ripple);
-app.component('IconField', IconField);
-app.component('InputIcon', InputIcon);
-app.component('FloatLabel', FloatLabel);
-app.component('CascadeSelect', CascadeSelect);
-app.component('Select', Select);
-app.component('Toast', Toast);
-app.component('InputMask', InputMask);
-app.component('SelectButton', SelectButton);
-app.component('MultiSelect', MultiSelect);
-app.component('Slider', Slider);
-app.component('Panel', Panel);
-app.component('ToggleButton', ToggleButton);
-app.component('Chip', Chip);
-app.use(ToastService);
-app.component('MegaMenu', MegaMenu);
-app.component('IftaLabel', IftaLabel); 
-app.component('AutoComplete', AutoComplete);
-app.component('OverlayBadge', OverlayBadge);
+app.directive('ripple', Ripple)
+app.component('IconField', IconField)
+app.component('InputIcon', InputIcon)
+app.component('FloatLabel', FloatLabel)
+app.component('CascadeSelect', CascadeSelect)
+app.component('Select', Select)
+app.component('Toast', Toast)
+app.component('InputMask', InputMask)
+app.component('SelectButton', SelectButton)
+app.component('MultiSelect', MultiSelect)
+app.component('Slider', Slider)
+app.component('Panel', Panel)
+app.component('ToggleButton', ToggleButton)
+app.component('Chip', Chip)
+app.component('MegaMenu', MegaMenu)
+app.component('IftaLabel', IftaLabel)
+app.component('AutoComplete', AutoComplete)
+app.component('OverlayBadge', OverlayBadge)
+
 // Монтуємо додаток
 app.mount('#app')
 
-
-document.documentElement.classList.remove('dark');
-document.body.classList.remove('dark');
+document.documentElement.classList.remove('dark')
+document.body.classList.remove('dark')

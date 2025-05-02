@@ -23,7 +23,7 @@
                 :suggestions="items"
                 @complete="search"
                 optionLabel="label"
-                size="small"
+                size="normal"
                 
                 > 
                   <!-- Кастомний шаблон для кожного результату -->
@@ -65,12 +65,17 @@
 
             <div class="flex gap-5 px-4 ">
             <OverlayBadge
-                value="2"
+                v-if="favorites.count > 0"
+                :value="favorites.count"
                 severity="danger"
-                @click="$router.push('/')"
+                @click="$router.push('/favorites')"
                 class="cursor-pointer">
                 <i class="pi pi-heart text-white text-xl lg:text-2xl" />
             </OverlayBadge>
+            
+            <i v-else 
+               @click="$router.push('/favorites')"
+               class="pi pi-heart text-white text-xl lg:text-2xl cursor-pointer" />
             
             
             
@@ -165,7 +170,16 @@
         </template>
         </MegaMenu>
 
-       
+        <!-- <TabMenu 
+          :model="categories" 
+          class="border-none w-full custom-tab-menu"
+        >
+          <template #item="{ item, props }">
+            <a v-ripple v-bind="props.action" class="flex align-items-center gap-2 px-4 py-3">
+              <span :class="{ 'text-white': props.active, 'font-normal': !props.active }">{{ item.label }}</span>
+            </a>
+          </template>
+        </TabMenu> -->
       </div>
     </div>
 
@@ -196,8 +210,10 @@ import InputText from 'primevue/inputtext'
 import Badge from 'primevue/badge'
 import { useRouter } from 'vue-router'
 import AutoComplete from 'primevue/autocomplete'
+import { useFavoritesStore } from '@/stores/favorites'
 
 const router = useRouter()
+const favorites = useFavoritesStore()
 
 // Демо-дані
 const searchQuery = ref('')
@@ -334,6 +350,18 @@ function search(event) {
 
 function goToCatalog() {
   router.push('/catalog')
+}
+
+const isFavorite = ref(false)
+
+const toggleFavorite = (event) => {
+  isFavorite.value = !isFavorite.value
+  if (isFavorite.value) {
+    favorites.add()
+  } else {
+    favorites.remove()
+  }
+  event.stopPropagation()
 }
 </script>
 

@@ -54,6 +54,7 @@
 
 
 <template>
+  <Toast />
   <!-- Картка автомобіля -->
   <Card class="car-card shadow-1 hover:shadow-2 transition-all border-round-xl" :pt="{
     root: { class: ['flex flex-column', { 'border-primary border-3': is_top }] },
@@ -166,15 +167,11 @@ import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import Skeleton from 'primevue/skeleton'
-
-// Стан для відстеження обраного статусу
-const isFavorite = ref(false)
-
-// Функція для перемикання статусу обраного
-const toggleFavorite = (event) => {
-  isFavorite.value = !isFavorite.value
-  event.stopPropagation() // Запобігає спрацюванню інших обробників
-}
+import { useFavoritesStore } from '@/stores/favorites'
+import { useToast } from "primevue/usetoast";
+import Toast from 'primevue/toast';
+// Ініціалізація store
+const favorites = useFavoritesStore()
 
 // Визначення пропсів компонента згідно структури БД
 const props = defineProps({
@@ -250,6 +247,43 @@ const props = defineProps({
   }
 })
 
+// Стан для відстеження обраного статусу
+const isFavorite = ref(favorites.items.some(item => item.id === props.id))
+
+// Функція для перемикання статусу обраного
+const toggleFavorite = (event) => {
+  event.stopPropagation() // Запобігає спрацюванню інших обробників
+  
+  const carData = {
+    id: props.id,
+    brand: props.brand,
+    model: props.model,
+    year: props.year,
+    price: props.price,
+    image: props.link
+  }
+  
+  if (isFavorite.value) {
+    favorites.remove(props.id)
+    toast.add({ 
+      severity: 'info', 
+      summary: 'Видалено з обраного', 
+      detail: `${props.brand} ${props.model} ${props.year}`, 
+      life: 3000 
+    })
+  } else {
+    favorites.add(carData)
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Додано до обраного', 
+      detail: `${props.brand} ${props.model} ${props.year}`, 
+      life: 3000 
+    })
+  }
+  
+  isFavorite.value = !isFavorite.value
+}
+
 // Функція форматування ціни
 const formatPrice = (price) => {
   if (!price) return 'Ціна не вказана'
@@ -262,6 +296,9 @@ const formatDate = (dateString) => {
   const options = { day: 'numeric', month: 'short' }
   return new Date(dateString).toLocaleDateString('uk-UA', options)
 }
+
+const toast = useToast();
+
 </script>
 
 <style scoped>

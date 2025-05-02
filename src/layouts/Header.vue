@@ -1,6 +1,6 @@
 <template>
   <div class="header-wrapper surface-900 w-full">
-    <div class="container">
+    <div class="container grid mx-auto w-full max-w-full">
       <!-- Desktop Header -->
       <div class="hidden lg:flex justify-content-between align-items-center py-4 ">
         
@@ -98,14 +98,6 @@ const items = [
 <style scoped>
 
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
-
 .menubar-wrapper {
   max-width: 1200px;
   margin: 0 auto;
@@ -113,11 +105,7 @@ const items = [
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 576px) {
-  .container {
-    padding: 0 1.5rem;
-  }
-}
+
 
 /* Стилі для кнопок */
 

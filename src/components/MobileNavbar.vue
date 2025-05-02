@@ -69,6 +69,14 @@
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import { useFavoritesStore } from '@/stores/favorites'
+import { useRouter } from 'vue-router'
+
+// Ініціалізація store
+const favorites = useFavoritesStore()
+
+// Імпорт роутера
+const router = useRouter()
 
 // Елементи навігації
 const navItems = [
@@ -83,9 +91,9 @@ const navItems = [
 const activeIndex = ref(0)
 
 // Кількість бейджів (для обраного)
-const badges = reactive({
-  favorites: 2
-})
+const badges = computed(() => ({
+  favorites: favorites.count || 0
+}))
 
 // Функція для зміни активного елемента з анімацією
 function setActive(index) {
@@ -105,6 +113,26 @@ function setActive(index) {
   
   // Оновлюємо активний елемент
   activeIndex.value = index
+  
+  // Навігація в залежності від обраного пункту
+  const route = navItems[index].key
+  switch(route) {
+    case 'home':
+      router.push('/')
+      break
+    case 'add':
+      router.push('/add-car')
+      break
+    case 'search':
+      router.push('/search')
+      break
+    case 'favorites':
+      router.push('/favorites')
+      break
+    case 'profile':
+      router.push('/profile')
+      break
+  }
   
   // Емітимо подію для батьківського компонента
   emit('change', navItems[index].key)
