@@ -176,7 +176,7 @@ const provideCars = async (page = 1, perPage = 8) => {
   try {
     // Емулюємо затримку мережі
     await new Promise(resolve => setTimeout(resolve, 500))
-    
+
     // Фільтруємо тільки TOP пропозиції
     const topCars = demoCars.filter(car => car.is_top === true)
     const startIndex = (page - 1) * perPage
