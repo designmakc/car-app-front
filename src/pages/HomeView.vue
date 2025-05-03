@@ -1,5 +1,6 @@
 <!-- Based on: PrimeVue/Layouts -->
 <template>
+  <Mainlayout>
   <div class="home">
     <!-- Головний банер -->
     <section class="hero-section w-full relative">
@@ -124,9 +125,11 @@
     </section>
     
   </div>
+  </Mainlayout>
 </template>
 
 <script setup>
+import Mainlayout from '@/layouts/Mainlayout.vue'
 /*
 JSON-SCHEMA (topCars, regularCars):
 {

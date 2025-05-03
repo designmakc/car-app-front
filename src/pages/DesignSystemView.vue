@@ -1,5 +1,6 @@
 <!-- Design System Page -->
 <template>
+  <Mainlayout>
   <div class="design-system-container p-8">
     <!-- Кольорова палітра -->
     <section class="mb-6">
@@ -527,9 +528,11 @@
       </div>
     </section>
   </div>
+  </Mainlayout>
 </template>
 
 <script setup>
+import Mainlayout from '@/layouts/Mainlayout.vue'
 import CarCard from '@/components/cars/CarCard.vue'
 import CarList from '@/components/cars/CarList.vue'
 import QuickFilters from '@/components/cars/QuickFilters.vue'

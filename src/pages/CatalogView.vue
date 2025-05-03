@@ -1,4 +1,5 @@
 <script setup>
+import Mainlayout from '@/layouts/Mainlayout.vue'
 import { ref, computed } from 'vue';
 import Breadcrumb from 'primevue/breadcrumb';
 import SelectButton from 'primevue/selectbutton';
@@ -105,6 +106,7 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
 </script>
 
 <template>
+  <Mainlayout>
     <div class="catalog-page">
         <!-- Хедер -->
         <header class="surface-0 shadow-1 relative">
@@ -243,6 +245,7 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
 
         
     </div>
+  </Mainlayout>
 </template>
 
 <style scoped>
