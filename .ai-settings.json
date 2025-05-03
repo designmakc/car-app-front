@@ -17,6 +17,23 @@
       "script": "second",
       "style": "last"
     },
+    "layout": {
+      "mainLayout": {
+        "required": true,
+        "usage": "Всі сторінки повинні бути обгорнуті в <Mainlayout>",
+        "structure": [
+          "<!-- Based on: PrimeVue/Layouts -->",
+          "<template>",
+          "  <Mainlayout>",
+          "    <div class=\"page-name\">",
+          "      <!-- Контент сторінки -->",
+          "    </div>",
+          "  </Mainlayout>",
+          "</template>"
+        ],
+        "import": "import Mainlayout from '@/layouts/Mainlayout.vue'"
+      }
+    },
     "requirements": {
       "props": {
         "type": "required",

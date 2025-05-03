@@ -110,12 +110,12 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
     <div class="catalog-page">
         <!-- Хедер -->
         <header class="surface-0 shadow-1 relative">
-            <div class="container">
+            <div class="">
                 <!-- TODO: Додати компонент Header -->
             </div>
         </header>
 
-        <div class="container mt-4">
+        <div class="mt-4">
             <!-- Breadcrumb -->
             <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round" />
 
@@ -249,11 +249,7 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
 </template>
 
 <style scoped>
-.container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
+
 
 @media screen and (max-width: 992px) {
     .sticky {

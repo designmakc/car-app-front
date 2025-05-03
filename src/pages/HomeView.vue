@@ -1,130 +1,128 @@
 <!-- Based on: PrimeVue/Layouts -->
 <template>
   <Mainlayout>
-  <div class="home">
-    <!-- Головний банер -->
-    <section class="hero-section w-full relative">
-      <div class="container py-4">
-        
-            <h1>Купуй та продавай авто безпечно</h1>
-         
+    <div class="home">
+      <!-- Головний банер -->
+      <section class="hero-section w-full relative">
+        <div class="py-4">
+          <h1>Купуй та продавай авто безпечно</h1>
+        </div>
+      </section>
+      <div class="">
+        <Message 
+          severity="info" 
+          :closable="true" 
+          :variant="simple" 
+          icon="pi pi-info-circle" 
+          class="mb-4" 
+          :pt="{
+            text: 'font-normal text-sm md:text-base',
+            content: 'gap-2'
+          }"
+        >
+          <span>Шановні користувачі! Наш сайт працює в тестовому режимі. Дякуємо за розуміння.</span>
+        </Message>
       </div>
-    </section>
-    <div class="container">
-      <Message 
-        severity="info" 
-        :closable="true" 
-        :variant="simple" 
-        icon="pi pi-info-circle" 
-        class="mb-4" 
-        :pt="{
-          text: 'font-normal text-sm md:text-base',
-          content: 'gap-2'
-        }"
-      >
-        <span>Шановні користувачі! Наш сайт працює в тестовому режимі. Дякуємо за розуміння.</span>
-      </Message>
-    </div>
 
-    <!-- Секція з формою пошуку та статистикою -->
-    <section class="flex search-stats-section pb-4 ">
-      <div class="container">
-        <div class="grid ">
-          <!-- Форма пошуку -->
-          <div class="col-12 md:col-6 lg:col-6 mb-1 md:mb-4 lg:mb-0">
-            <div class="surface-card">
-              <Tabs value="search">
-                <TabList>
-                  <Tab value="search" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-search mr-0 md:mr-2"></i> <span>Пошук авто</span> </Tab>
-                  <Tab value="sell" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-plus-circle mr-0 md:mr-2"></i> <span>Продати авто</span> </Tab>
-                </TabList>
-                <TabPanels >
-                  <TabPanel value="search"> <CarSearchForm /> </TabPanel>
-                  <TabPanel value="sell"> <CarSellForm /> </TabPanel>
-                </TabPanels>
-              </Tabs>
+      <!-- Секція з формою пошуку та статистикою -->
+      <section class="flex search-stats-section pb-4 ">
+        <div class="">
+          <div class="grid ">
+            <!-- Форма пошуку -->
+            <div class="col-12 md:col-6 lg:col-6 mb-1 md:mb-4 lg:mb-0">
+              <div class="surface-card">
+                <Tabs value="search">
+                  <TabList>
+                    <Tab value="search" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-search mr-0 md:mr-2"></i> <span>Пошук авто</span> </Tab>
+                    <Tab value="sell" class="col-6 unbounded-font text-xs md:text-sm lg:text-base"> <i class="pi pi-plus-circle mr-0 md:mr-2"></i> <span>Продати авто</span> </Tab>
+                  </TabList>
+                  <TabPanels >
+                    <TabPanel value="search"> <CarSearchForm /> </TabPanel>
+                    <TabPanel value="sell"> <CarSellForm /> </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </div>
             </div>
-          </div>
 
-          <!-- Статистика -->
-          <div class="col-12 md:col-6 lg:col-6 flex flex-column gap-4
-          ">
-            <div>
-              <StatisticsBlock />
-            </div>
-            <!-- швидкий пошук -->
-            <div>
-              <QuickFilters />
+            <!-- Статистика -->
+            <div class="col-12 md:col-6 lg:col-6 flex flex-column gap-4
+            ">
+              <div>
+                <StatisticsBlock />
+              </div>
+              <!-- швидкий пошук -->
+              <div>
+                <QuickFilters />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- TOP пропозиції -->
-    <section class="top-offers-section w-full">
-      <div class="container">
-        <!-- Заголовок секції -->
-        <div class="flex align-items-center justify-content-between mb-2 md:mb-4">
-          <div class="flex align-items-center gap-2">
-            <i class="pi pi-star-fill text-yellow-500 text-lg md:text-2xl"></i>
-            <h2 class="text-lg md:text-2xl font-bold text-900 m-0">TOP пропозиції</h2>
+      <!-- TOP пропозиції -->
+      <section class="top-offers-section w-full">
+        <div class="">
+          <!-- Заголовок секції -->
+          <div class="flex align-items-center justify-content-between mb-2 md:mb-4">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-star-fill text-yellow-500 text-lg md:text-2xl"></i>
+              <h2 class="text-lg md:text-2xl font-bold text-900 m-0">TOP пропозиції</h2>
+            </div>
+            <Button 
+              label="Всі" 
+              icon="pi pi-arrow-right "
+              
+              iconPos="right"
+              text
+              class="text-primary "
+            />
           </div>
-          <Button 
-            label="Всі" 
-            icon="pi pi-arrow-right "
-            
-            iconPos="right"
-            text
-            class="text-primary "
+
+          <!-- Список TOP автомобілів -->
+          <CarList 
+            :limit="8" 
+            :perPage="8" 
+            :infiniteScroll="false"
+            :provide-cars="provideCars"
+            :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
+             class="mt-3"
           />
         </div>
+      </section>
 
-        <!-- Список TOP автомобілів -->
-        <CarList 
-          :limit="8" 
-          :perPage="8" 
-          :infiniteScroll="false"
-          :provide-cars="provideCars"
-          :grid="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }"
-           class="mt-3"
-        />
-      </div>
-    </section>
+      <!-- Популярні марки -->
+      <section class="popular-brands-section w-full pt-6">
+        <div class="">
 
-    <!-- Популярні марки -->
-    <section class="popular-brands-section w-full pt-6">
-      <div class="container">
-
-        <PopularBrands />
-      </div>
-    </section>
-
-    <!-- Авто на майданчику -->
-    <section class="regular-offers-section w-full pt-6">
-      <div class="container">
-        <!-- Заголовок секції -->
-        <div class="flex align-items-center justify-content-between mb-6">
-          <div class="flex align-items-center gap-2">
-            <i class="pi pi-car text-primary text-2xl"></i>
-            <h2 class="text-xl sm:text-xl md:text-2xl font-bold text-900 m-0">Авто на майданчику</h2>
-          </div>
-          <!-- Можна додати кнопку "Всі авто", якщо потрібно -->
+          <PopularBrands />
         </div>
+      </section>
 
-        <!-- Список автомобілів з кнопкою -->
-        <CarList 
-          :limit="16" 
-          :perPage="8" 
-          :infiniteScroll="false"
-          :provide-cars="provideRegularCars"
-          :grid="{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }"
-          class="mt-3"
-        />
-      </div>
-    </section>
-    
-  </div>
+      <!-- Авто на майданчику -->
+      <section class="regular-offers-section w-full pt-6">
+        <div class="">
+          <!-- Заголовок секції -->
+          <div class="flex align-items-center justify-content-between mb-6">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-car text-primary text-2xl"></i>
+              <h2 class="text-xl sm:text-xl md:text-2xl font-bold text-900 m-0">Авто на майданчику</h2>
+            </div>
+            <!-- Можна додати кнопку "Всі авто", якщо потрібно -->
+          </div>
+
+          <!-- Список автомобілів з кнопкою -->
+          <CarList 
+            :limit="16" 
+            :perPage="8" 
+            :infiniteScroll="false"
+            :provide-cars="provideRegularCars"
+            :grid="{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }"
+            class="mt-3"
+          />
+        </div>
+      </section>
+      
+    </div>
   </Mainlayout>
 </template>
 
@@ -221,18 +219,8 @@ const provideRegularCars = async (page = 1, perPage = 8) => {
 </script>
 
 <style scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
 
-
-
-@media screen and (max-width: 576px) {
-
-  
-}
 
 /* Стилі для Tabs */
 

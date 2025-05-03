@@ -3,7 +3,7 @@
     <!-- Верхня панель -->
     <div class="surface-900">
       <div class="container">
-        <div class="flex align-items-center justify-content-between py-3 surface-900">
+        <div class="flex align-items-center justify-content-between py-3">
           <!-- Логотип -->
           <div class="flex align-items-center gap-3">
             
@@ -163,14 +163,14 @@
     </div>
 
     <!-- Нижня панель з категоріями -->
-    <div class="bg-primary ">
+    <div class="bg-primary">
       <div class="container">
         <MegaMenu
         class="px-0"
           :model="categories"
           :pt="{
             root: {
-              class: 'bg-primary-500 py-1 ' // фон всього меню
+              class: 'bg-primary-500 py-1'
             },
             
             itemContent: ({ context }) => ({
@@ -196,7 +196,7 @@
 
             },
             rootList: {
-              class: 'surface-900 lg:bg-primary max-w-full w-full border-none'
+              class: 'surface-900 lg:bg-primary border-none'
             },
             
             button: {
@@ -419,6 +419,10 @@ onMounted(getFavoritesCount)
 </script>
 
 <style scoped>
-
-
+.footer-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 2rem 0 1rem 0;
+  background-color: var(--surface-900);
+}
 </style> 

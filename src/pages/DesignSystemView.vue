@@ -1,7 +1,7 @@
 <!-- Design System Page -->
 <template>
   <Mainlayout>
-  <div class="design-system-container p-8">
+  <div class=" p-8">
     <!-- Кольорова палітра -->
     <section class="mb-6">
       <h2 class="text-4xl font-bold mb-4">Кольорова палітра</h2>
@@ -579,8 +579,5 @@ const demoCars = [
 </script>
 
 <style>
-.design-system-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
 </style> 

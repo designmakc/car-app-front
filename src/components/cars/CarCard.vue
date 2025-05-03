@@ -537,7 +537,7 @@ const handleTouchEnd = () => {
 }
 
 .image-indicators {
-  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
 }
 
 .indicator-dot {

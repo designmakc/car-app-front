@@ -4,13 +4,11 @@
     <Header class="w-full" />
     
     <main>
-      <!-- Контейнер с ограниченной шириной -->
-      <div class="mx-auto w-full max-w-7xl px-4">
+      <div class="container">
         <slot />
       </div>
     </main>
 
-    
     <!-- MobileNavbar для sm та md екранів -->
     <MobileNavbar class="block lg:hidden" /> 
     <Footer class="w-full mt-auto" />

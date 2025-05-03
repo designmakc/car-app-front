@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer-wrapper surface-900">
+  <footer class="w-full surface-900 py-5 md:py-6">
     <div class="container">
       <!-- Логотип та опис -->
       <div class="mb-4">
@@ -112,20 +112,6 @@ import Divider from 'primevue/divider';
 </script>
 
 <style scoped>
-.footer-wrapper {
-  width: 100%;
-  margin: 0;
-  padding: 2rem 0 1rem 0;
-  background-color: var(--surface-900);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
 /* Стилі для посилань */
 a {
   transition: color 0.2s ease;
@@ -133,17 +119,6 @@ a {
 
 a:hover {
   color: var(--primary-color);
-}
-
-/* Адаптивні стилі */
-@media screen and (max-width: 576px) {
-  .footer-wrapper {
-    padding: 1.5rem 0 1rem 0;
-  }
-  
-  .container {
-    padding: 0 1.5rem;
-  }
 }
 
 /* Стилі для іконок */
