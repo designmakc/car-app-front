@@ -15,20 +15,52 @@ html {
   --headings-font-family: 'Unbounded', sans-serif;
 }
 
+/* Аналог Tailwind-отступов для контейнера */
 .container {
   width: 100%;
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
   box-sizing: border-box;
+  
+  /* px-4 (1rem) по умолчанию для мобильных */
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
+/* sm (640px) */
+@media (min-width: 640px) {
+  .container {
+    /* px-6 (1.5rem) */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* md (768px) */
 @media (min-width: 768px) {
   .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    /* px-8 (2rem) */
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* lg (1024px) */
+@media (min-width: 1024px) {
+  .container {
+    /* px-10 (2.5rem) */
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* xl (1280px) */
+@media (min-width: 1280px) {
+  .container {
+    /* px-12 (3rem) */
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 
