@@ -52,25 +52,30 @@
                         </Panel>
                     </div>
                     
-                    <div class="col-9 right-side p-0"> 
-                        <div class="w-full surface-ground border-round-lg overflow-hidden">
+                    <div class="col-12 md:col-9 order-1 md:order-2 p-0"> 
+                        <div class="w-full surface-ground border-round-lg overflow-hidden mb-4 md:mb-0">
                             <div class="relative w-full md:h-30rem surface-section overflow-hidden">
+                                <div class="photo-counter">
+                                    <span class="font-medium">{{ currentImageIndex + 1 }}</span>
+                                    <span class="text-300">/</span>
+                                    <span class="text-300">{{ carImages.length }}</span>
+                                </div>
+
                                 <div ref="imageContainer" 
-                                    class="flex w-full h-full gap-1 overflow-x-auto scroll-smooth scrollbar-none"
-                                    style="scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none;">
+                                    class="flex gap-1 w-full h-full overflow-x-auto scroll-smooth scrollbar-none"
+                                    style="scroll-snap-type: x mandatory;">
                                     <div v-for="(image, index) in carImages" 
                                         :key="index"
                                         class="flex-none h-full image-slide"
                                         :style="{ 
-                                            width: `${imageWidths[index]}px`,
+                                            width: isMobile ? '100%' : `${imageWidths[index]}px`,
                                             'scroll-snap-align': 'start'
                                         }"
                                     >
                                         <img :src="image.url" 
                                             :alt="`${car.brand} ${car.model}`"
-                                            class="h-full w-auto max-w-none" 
+                                            class="mobile-image md:desktop-image" 
                                             @load="handleImageLoad($event, index)"
-                                            style="display: block;"
                                         />
                                     </div>
                                 </div>
@@ -88,12 +93,21 @@
                                     />
                                 </div>
 
-                                <div class="absolute bottom-3 right-3 bg-black-alpha-50 text-white px-3 py-2 border-round-xl text-sm">
+                                <div class="absolute top-3 right-3 bg-black-alpha-50 text-white px-3 py-2 border-round-xl text-sm z-5">
                                     {{ currentImageIndex + 1 }}/{{ carImages.length }}
+                                </div>
+
+                                <div class="md:hidden flex gap-2 justify-content-center absolute bottom-0 left-0 right-0 mb-2">
+                                    <div v-for="(_, index) in carImages" 
+                                        :key="index"
+                                        class="photo-indicator cursor-pointer"
+                                        :class="{ 'active': index === currentImageIndex }"
+                                        @click="scrollToImage(index)"
+                                    ></div>
                                 </div>
                             </div>
 
-                            <div class="hidden md:flex py-1 gap-1 surface-section overflow-x-auto scrollbar-none">
+                            <div class="hidden md:flex gap-1 py-1 surface-section overflow-x-auto scrollbar-none">
                                 <div v-for="(image, index) in carImages" 
                                     :key="index"
                                     @click="scrollToImage(index)"
@@ -149,33 +163,46 @@ const isMobile = ref(window.innerWidth <= 768);
 
 const handleImageLoad = (event, index) => {
     const img = event.target;
-    // Використовуємо фактичну ширину відрендереного зображення
-    const renderedWidth = img.offsetWidth || img.clientWidth;
     
-    imageWidths.value[index] = renderedWidth;
-    if (index === currentImageIndex.value) {
-        imageWidth.value = renderedWidth;
+    if (!isMobile.value) {
+        // Для десктопу - розрахунок на основі висоти контейнера
+        const renderedWidth = img.offsetWidth || img.clientWidth;
+        imageWidths.value[index] = renderedWidth;
     }
-
-    // Для відлагодження
-    console.log(`Image ${index} rendered width:`, renderedWidth);
+    // Для мобільних - ширина не потрібна, використовуємо 100%
 };
 
-// Додаємо обробник для оновлення розмірів при зміні розміру вікна
-const updateImageSizes = () => {
-    const images = document.querySelectorAll('.image-slide img');
-    images.forEach((img, index) => {
-        if (img.complete) {
-            const renderedWidth = img.offsetWidth || img.clientWidth;
-            imageWidths.value[index] = renderedWidth;
-        }
-    });
-};
-
-// Додаємо обробник зміни розміру вікна
 const handleResize = () => {
     isMobile.value = window.innerWidth <= 768;
 };
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
+
+const carParams = computed(() => [
+    { label: 'Рік випуску авто', value: car.value.year },
+    { label: 'Пробіг', value: `${car.value.mileage} тис. км` },
+    { label: 'Двигун', value: `${car.value.fuel_type} ${car.value.engine_capacity} ${car.value.engine_unit}` },
+    { label: 'Коробка передач', value: car.value.gearbox },
+    { label: 'Тип приводу', value: car.value.drive_type },
+    { label: 'Тип кузову', value: car.value.body_type },
+    { label: 'Колір', value: car.value.color },
+    { label: 'Місто', value: car.value.city }
+]);
+
+const items = [
+    { label: 'Головна', url: '/' },
+    { label: 'Каталог', url: '/catalog' },
+    { label: 'Деталі автомобіля', url: route.path }
+];
+
+const home = { icon: 'pi pi-home', url: '/' };
 
 // Оновлюємо функцію скролу для точного позиціонування
 const scrollToImage = (indexOrDirection) => {
@@ -200,61 +227,6 @@ const scrollToImage = (indexOrDirection) => {
     });
     currentImageIndex.value = newIndex;
 };
-
-// Оновлюємо обробник скролу
-const handleScroll = () => {
-    if (!imageContainer.value) return;
-    
-    const scrollPosition = imageContainer.value.scrollLeft;
-    let accumulatedWidth = 0;
-    let newIndex = 0;
-
-    // Знаходимо індекс поточного зображення на основі позиції скролу
-    for (let i = 0; i < imageWidths.value.length; i++) {
-        if (accumulatedWidth + (imageWidths.value[i] / 2) > scrollPosition) {
-            newIndex = i;
-            break;
-        }
-        accumulatedWidth += imageWidths.value[i];
-    }
-    
-    if (newIndex !== currentImageIndex.value) {
-        currentImageIndex.value = newIndex;
-    }
-};
-
-onMounted(() => {
-    if (imageContainer.value) {
-        imageContainer.value.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', updateImageSizes);
-    }
-});
-
-onUnmounted(() => {
-    if (imageContainer.value) {
-        imageContainer.value.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', updateImageSizes);
-    }
-});
-
-const carParams = computed(() => [
-    { label: 'Рік випуску авто', value: car.value.year },
-    { label: 'Пробіг', value: `${car.value.mileage} тис. км` },
-    { label: 'Двигун', value: `${car.value.fuel_type} ${car.value.engine_capacity} ${car.value.engine_unit}` },
-    { label: 'Коробка передач', value: car.value.gearbox },
-    { label: 'Тип приводу', value: car.value.drive_type },
-    { label: 'Тип кузову', value: car.value.body_type },
-    { label: 'Колір', value: car.value.color },
-    { label: 'Місто', value: car.value.city }
-]);
-
-const items = [
-    { label: 'Головна', url: '/' },
-    { label: 'Каталог', url: '/catalog' },
-    { label: 'Деталі автомобіля', url: route.path }
-];
-
-const home = { icon: 'pi pi-home', url: '/' };
 </script>
 
 <style scoped>
@@ -392,70 +364,44 @@ const home = { icon: 'pi pi-home', url: '/' };
 /* Медіа-запит для мобільних пристроїв */
 @media screen and (max-width: 768px) {
     .main-image-wrapper {
-        height: auto; /* Прибираємо фіксовану висоту */
-    }
-
-    .image-wrapper {
-        width: 100%;
-        height: auto; /* Прибираємо фіксовану висоту */
-        justify-content: center;
-    }
-
-    .image-wrapper img {
-        width: auto;
         height: auto;
-        max-height: 100%;
-        max-width: 100%;
-    }
-
-    .main-image-container {
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch; /* Для плавного скролу на iOS */
     }
 
     .image-slide {
-        flex: 0 0 100% !important;
-        width: 100% !important;
+        width: 100% !important; /* Перевизначаємо inline стилі */
+        aspect-ratio: 4/3;
+    }
+
+    .mobile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* Приховуємо превью */
+    .thumbnails-container {
+        display: none;
     }
 
     /* Зменшуємо розмір кнопок навігації */
     .nav-button {
         width: 2.5rem;
         height: 2.5rem;
-        margin: 0 0.5rem;
     }
 
-    /* Зменшуємо розмір мініатюр */
-    .thumbnail {
-        width: 80px;
-        height: 54px;
-    }
-
-    /* Зменшуємо відступи в контейнері мініатюр */
-    .thumbnails-container {
-        padding: 0.5rem;
-        gap: 0.25rem;
-    }
-
-    /* Приховуємо превью на мобільних */
-    .thumbnails-container {
-        display: none;
+    .photo-counter {
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
     }
 }
 
 /* Для дуже маленьких екранів */
 @media screen and (max-width: 480px) {
-    .main-image-wrapper {
-        height: auto; /* Прибираємо фіксовану висоту */
-    }
     .nav-button {
         width: 2rem;
         height: 2rem;
-    }
-
-    .thumbnail {
-        width: 60px;
-        height: 40px;
     }
 }
 
@@ -475,5 +421,37 @@ const home = { icon: 'pi pi-home', url: '/' };
 /* Приховуємо скролбар для Chrome, Safari та Opera */
 .scrollbar-none::-webkit-scrollbar {
     display: none;
+}
+
+/* Стилі для десктопного зображення */
+.desktop-image {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Стилі для мобільного зображення */
+.mobile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Стилі для лічильника */
+.photo-counter {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    z-index: 5;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
 }
 </style> 
