@@ -1,0 +1,479 @@
+<template>
+    <Mainlayout>
+        <div class="car-details-page">
+            <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round mt-4" />
+
+            <main class="">
+                <div class="flex justify-content-between flex-column md:flex-row gap-3">
+                    <div class="flex flex-column align-items-start gap-2 w-full md:w-auto">
+                        <h1 class="m-0 text-2xl md:text-4xl">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
+                        <div class="flex align-items-center gap-3 flex-wrap">
+                            <div class="text-primary text-2xl md:text-3xl font-bold unbounded-font py-2">{{ car.price }}$</div>
+                            <div class="flex gap-2 flex-wrap">
+                                <Tag icon="pi pi-hammer" value="Торг" severity="secondary" class="py-1"></Tag>
+                                <Tag icon="pi pi-sync" value="Обмін" severity="info" class="py-1"></Tag>
+                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success" class="py-1"></Tag>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row md:flex-column justify-content-between md:align-items-end gap-2">
+                        <Button label="Додати в обрані" icon="pi pi-heart" severity="secondary" class="w-auto"/>
+                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" />
+                    </div>
+                </div>
+
+                <div class="flex grid-cols-12 gap-3 pt-4">
+                    <div class="col-3 left-side p-0 pb-3">
+                        <Panel header="Основні параметри" class="mb-4">
+                            <template v-for="(param, index) in carParams" :key="index">
+                                <div class="flex w-full pr-2 mb-3">
+                                    <div class="flex align-items-end justify-content-between w-full">
+                                        <span class="text-600">{{ param.label }}</span>
+                                        <div class="flex align-items-end gap-1 flex-grow-1 ml-2">
+                                            <div class="brand-dots flex-grow-1"></div>
+                                            <span class="font-medium">{{ param.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </Panel>
+                        <Panel header="Основні параметри" class="mb-4">
+                            <template v-for="(param, index) in carParams" :key="index">
+                                <div class="flex w-full pr-2 mb-3">
+                                    <div class="flex align-items-end justify-content-between w-full">
+                                        <span class="text-600">{{ param.label }}</span>
+                                        <div class="flex align-items-end gap-1 flex-grow-1 ml-2">
+                                            <div class="brand-dots flex-grow-1"></div>
+                                            <span class="font-medium">{{ param.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </Panel>
+                    </div>
+                    
+                    <div class="col-9 right-side p-0"> 
+                        <div class="w-full surface-ground border-round-lg overflow-hidden">
+                            <div class="relative w-full md:h-30rem surface-section overflow-hidden">
+                                <div ref="imageContainer" 
+                                    class="flex w-full h-full gap-1 overflow-x-auto scroll-smooth scrollbar-none"
+                                    style="scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none;">
+                                    <div v-for="(image, index) in carImages" 
+                                        :key="index"
+                                        class="flex-none h-full image-slide"
+                                        :style="{ 
+                                            width: `${imageWidths[index]}px`,
+                                            'scroll-snap-align': 'start'
+                                        }"
+                                    >
+                                        <img :src="image.url" 
+                                            :alt="`${car.brand} ${car.model}`"
+                                            class="h-full w-auto max-w-none" 
+                                            @load="handleImageLoad($event, index)"
+                                            style="display: block;"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="absolute top-50 left-0 right-0 -mt-4 flex justify-content-between pointer-events-none">
+                                    <Button icon="pi pi-chevron-left" 
+                                        class="nav-button pointer-events-auto mx-2"
+                                        @click="scrollToImage('prev')"
+                                        :disabled="currentImageIndex === 0"
+                                    />
+                                    <Button icon="pi pi-chevron-right" 
+                                        class="nav-button pointer-events-auto mx-2"
+                                        @click="scrollToImage('next')"
+                                        :disabled="currentImageIndex === carImages.length - 1"
+                                    />
+                                </div>
+
+                                <div class="absolute bottom-3 right-3 bg-black-alpha-50 text-white px-3 py-2 border-round-xl text-sm">
+                                    {{ currentImageIndex + 1 }}/{{ carImages.length }}
+                                </div>
+                            </div>
+
+                            <div class="hidden md:flex py-1 gap-1 surface-section overflow-x-auto scrollbar-none">
+                                <div v-for="(image, index) in carImages" 
+                                    :key="index"
+                                    @click="scrollToImage(index)"
+                                    class="flex-none cursor-pointer overflow-hidden transition-opacity transition-duration-200"
+                                    :class="[
+                                        index === currentImageIndex 
+                                            ? 'border-2 border-primary opacity-100' 
+                                            : 'opacity-70 hover:opacity-90'
+                                    ]"
+                                    style="width: 100px; height: 67px; position: relative;"
+                                >
+                                    <div class="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center overflow-hidden">
+                                        <img :src="image.url" 
+                                            :alt="`${car.brand} ${car.model} - ${index + 1}`"
+                                            class="w-auto h-full" 
+                                            style="min-width: 100%; object-fit: cover;"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </Mainlayout>
+</template>
+
+<script setup>
+import Mainlayout from '@/layouts/Mainlayout.vue';
+import { useRoute } from 'vue-router';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { demoCars } from '@/data/demo/cars';
+
+const route = useRoute();
+const carId = Number(route.params.id);
+
+// Знаходимо автомобіль за ID
+const car = computed(() => demoCars.find(c => c.id === carId) || demoCars[0]);
+
+// Підготовка зображень для галереї
+const carImages = computed(() => car.value.images || []);
+
+const currentImageIndex = ref(0);
+const currentImage = computed(() => carImages.value[currentImageIndex.value] || carImages.value[0]);
+
+const imageContainer = ref(null);
+
+const imageWidths = ref([]);
+const imageWidth = ref(0);
+
+const isMobile = ref(window.innerWidth <= 768);
+
+const handleImageLoad = (event, index) => {
+    const img = event.target;
+    // Використовуємо фактичну ширину відрендереного зображення
+    const renderedWidth = img.offsetWidth || img.clientWidth;
+    
+    imageWidths.value[index] = renderedWidth;
+    if (index === currentImageIndex.value) {
+        imageWidth.value = renderedWidth;
+    }
+
+    // Для відлагодження
+    console.log(`Image ${index} rendered width:`, renderedWidth);
+};
+
+// Додаємо обробник для оновлення розмірів при зміні розміру вікна
+const updateImageSizes = () => {
+    const images = document.querySelectorAll('.image-slide img');
+    images.forEach((img, index) => {
+        if (img.complete) {
+            const renderedWidth = img.offsetWidth || img.clientWidth;
+            imageWidths.value[index] = renderedWidth;
+        }
+    });
+};
+
+// Додаємо обробник зміни розміру вікна
+const handleResize = () => {
+    isMobile.value = window.innerWidth <= 768;
+};
+
+// Оновлюємо функцію скролу для точного позиціонування
+const scrollToImage = (indexOrDirection) => {
+    if (!imageContainer.value) return;
+
+    let newIndex;
+    if (typeof indexOrDirection === 'number') {
+        newIndex = indexOrDirection;
+    } else {
+        newIndex = indexOrDirection === 'next' 
+            ? Math.min(currentImageIndex.value + 1, carImages.value.length - 1)
+            : Math.max(currentImageIndex.value - 1, 0);
+    }
+
+    const scrollPosition = imageWidths.value
+        .slice(0, newIndex)
+        .reduce((acc, width) => acc + width, 0);
+
+    imageContainer.value.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+    });
+    currentImageIndex.value = newIndex;
+};
+
+// Оновлюємо обробник скролу
+const handleScroll = () => {
+    if (!imageContainer.value) return;
+    
+    const scrollPosition = imageContainer.value.scrollLeft;
+    let accumulatedWidth = 0;
+    let newIndex = 0;
+
+    // Знаходимо індекс поточного зображення на основі позиції скролу
+    for (let i = 0; i < imageWidths.value.length; i++) {
+        if (accumulatedWidth + (imageWidths.value[i] / 2) > scrollPosition) {
+            newIndex = i;
+            break;
+        }
+        accumulatedWidth += imageWidths.value[i];
+    }
+    
+    if (newIndex !== currentImageIndex.value) {
+        currentImageIndex.value = newIndex;
+    }
+};
+
+onMounted(() => {
+    if (imageContainer.value) {
+        imageContainer.value.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', updateImageSizes);
+    }
+});
+
+onUnmounted(() => {
+    if (imageContainer.value) {
+        imageContainer.value.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', updateImageSizes);
+    }
+});
+
+const carParams = computed(() => [
+    { label: 'Рік випуску авто', value: car.value.year },
+    { label: 'Пробіг', value: `${car.value.mileage} тис. км` },
+    { label: 'Двигун', value: `${car.value.fuel_type} ${car.value.engine_capacity} ${car.value.engine_unit}` },
+    { label: 'Коробка передач', value: car.value.gearbox },
+    { label: 'Тип приводу', value: car.value.drive_type },
+    { label: 'Тип кузову', value: car.value.body_type },
+    { label: 'Колір', value: car.value.color },
+    { label: 'Місто', value: car.value.city }
+]);
+
+const items = [
+    { label: 'Головна', url: '/' },
+    { label: 'Каталог', url: '/catalog' },
+    { label: 'Деталі автомобіля', url: route.path }
+];
+
+const home = { icon: 'pi pi-home', url: '/' };
+</script>
+
+<style scoped>
+.brand-dots {
+    border-bottom: 1px dotted var(--surface-400);
+    margin: 0 0.3rem;
+}
+
+.car-gallery-container {
+    width: 100%;
+    background: var(--surface-ground);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.main-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: var(--surface-section);
+    overflow: hidden;
+}
+
+.main-image-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+}
+
+.image-slide {
+    scroll-snap-align: start;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.image-slide img {
+    display: block;
+    height: 100%;
+    width: auto;
+}
+
+.image-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-wrapper img {
+    height: 100%;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+}
+
+.navigation-buttons {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.nav-button {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: none !important;
+    color: var(--primary-color) !important;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+}
+
+.thumbnails-container {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    background: var(--surface-section);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.thumbnail {
+    position: relative;
+    width: 100px;
+    height: 67px;
+    overflow: hidden;
+}
+
+.thumbnail img {
+    height: 100%;
+    width: auto;
+    min-width: 100%;
+    object-fit: cover;
+}
+
+/* Прибираємо старі стилі, які могли впливати на розтягування */
+.transform-center,
+.min-w-full,
+.min-h-full {
+    display: none;
+}
+
+/* Медіа-запит для мобільних пристроїв */
+@media screen and (max-width: 768px) {
+    .main-image-wrapper {
+        height: auto; /* Прибираємо фіксовану висоту */
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: auto; /* Прибираємо фіксовану висоту */
+        justify-content: center;
+    }
+
+    .image-wrapper img {
+        width: auto;
+        height: auto;
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+    .main-image-container {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; /* Для плавного скролу на iOS */
+    }
+
+    .image-slide {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+    }
+
+    /* Зменшуємо розмір кнопок навігації */
+    .nav-button {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 0 0.5rem;
+    }
+
+    /* Зменшуємо розмір мініатюр */
+    .thumbnail {
+        width: 80px;
+        height: 54px;
+    }
+
+    /* Зменшуємо відступи в контейнері мініатюр */
+    .thumbnails-container {
+        padding: 0.5rem;
+        gap: 0.25rem;
+    }
+
+    /* Приховуємо превью на мобільних */
+    .thumbnails-container {
+        display: none;
+    }
+}
+
+/* Для дуже маленьких екранів */
+@media screen and (max-width: 480px) {
+    .main-image-wrapper {
+        height: auto; /* Прибираємо фіксовану висоту */
+    }
+    .nav-button {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .thumbnail {
+        width: 60px;
+        height: 40px;
+    }
+}
+
+/* Прибираємо всі можливі відступи */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Приховуємо скролбар для всіх браузерів */
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* Приховуємо скролбар для Chrome, Safari та Opera */
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+</style> 

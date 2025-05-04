@@ -42,6 +42,8 @@ import MegaMenu from 'primevue/megamenu'
 import IftaLabel from 'primevue/iftalabel'
 import AutoComplete from 'primevue/autocomplete'
 import OverlayBadge from 'primevue/overlaybadge'
+import Breadcrumb from 'primevue/breadcrumb'
+import Galleria from 'primevue/galleria'
 
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
@@ -125,7 +127,8 @@ app.component('MegaMenu', MegaMenu)
 app.component('IftaLabel', IftaLabel)
 app.component('AutoComplete', AutoComplete)
 app.component('OverlayBadge', OverlayBadge)
-
+app.component('Breadcrumb', Breadcrumb)
+app.component('Galleria', Galleria)
 // Монтуємо додаток
 app.mount('#app')
 

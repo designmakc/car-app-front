@@ -204,18 +204,17 @@
 
     <!-- Контент картки -->
     <template #content>
-      <div class="flex flex-column" style="height: 160px">
-        <div class="flex-grow-1 flex flex-column gap-1">
-          <!-- Заголовок (тільки модель та рік) -->
-          <h3 class="text-lg font-semibold m-0 line-clamp-2 line-height-1" style="min-height: 40px">
-            {{ brand }} {{ model }} {{ year }}
-          </h3>
-          
-          <!-- Ціна -->
-          <div class="text-xl font-bold text-primary unbounded-font pb-2">
-            {{ formatPrice(price) }}
+      <RouterLink 
+        :to="{ name: 'car-details', params: { id: id }}" 
+        class="car-content-link"
+      >
+        <div class="flex flex-column gap-3">
+          <!-- Заголовок -->
+          <div class="flex align-items-center justify-content-between">
+            <h3 class="m-0 text-lg font-semibold">{{ brand }} {{ model }}</h3>
+            <span class="text-lg font-bold">{{ formattedPrice }}</span>
           </div>
-
+          
           <!-- Характеристики авто -->
           <div class="grid flex-grow-0 ">
             <!-- Пробіг -->
@@ -240,11 +239,11 @@
             </div>
           </div>
         </div>
+      </RouterLink>
 
-        <!-- Час публікації -->
-        <div class="text-xs text-500 flex align-items-center pt-1 gap-1">
-          <span>{{ formatDate(created_at) }}</span>
-        </div>
+      <!-- Час публікації -->
+      <div class="text-xs text-500 flex align-items-center pt-1 gap-1">
+        <span>{{ formatDate(created_at) }}</span>
       </div>
     </template>
   </Card>
@@ -259,6 +258,7 @@ import Tag from 'primevue/tag'
 import Skeleton from 'primevue/skeleton'
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
+import { RouterLink } from 'vue-router'
 
 // Визначення пропсів компонента згідно структури БД
 const props = defineProps({
@@ -595,5 +595,16 @@ const handleTouchEnd = () => {
 
 .image-transition-right {
   transform: translateX(100%);
+}
+
+.car-content-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    flex: 1;
+}
+
+.car-content-link:hover {
+    color: inherit;
 }
 </style>

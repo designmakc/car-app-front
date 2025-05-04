@@ -82,7 +82,7 @@ h1 {
   font-weight: 700;          /* font-bold */
   margin-bottom: 0.5rem;     /* mb-2 */
   line-height: 2rem;         /* line-height для text-2xl */
-  color: var(--text-color, #22223b); /* PrimeFlex змінна або дефолт */
+  color: var(--p-text-color, #22223b); /* PrimeFlex змінна або дефолт */
 }
 
 
@@ -95,7 +95,7 @@ h1 {
   }
 }
 
-/* Клас для примусового застосування Jost */
+/* Клас для примусового застосування Unbounded */
 .unbounded-font {
   font-family: 'Unbounded', sans-serif !important;
   letter-spacing: 0.05em;
