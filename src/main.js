@@ -44,6 +44,7 @@ import AutoComplete from 'primevue/autocomplete'
 import OverlayBadge from 'primevue/overlaybadge'
 import Breadcrumb from 'primevue/breadcrumb'
 import Galleria from 'primevue/galleria'
+import Toolbar from 'primevue/toolbar';
 
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
@@ -129,6 +130,7 @@ app.component('AutoComplete', AutoComplete)
 app.component('OverlayBadge', OverlayBadge)
 app.component('Breadcrumb', Breadcrumb)
 app.component('Galleria', Galleria)
+app.component('Toolbar', Toolbar)
 // Монтуємо додаток
 app.mount('#app')
 

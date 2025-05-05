@@ -1646,6 +1646,64 @@ export const demoCars = [
       }
     ],
     created_at: '2024-02-24T14:50:00Z'
+  },
+  {
+    id: 26,
+    user_id: 26,
+    brand: 'Porsche',
+    model: 'Macan',
+    year: 2023,
+    gearbox: 'Автомат',
+    fuel_type: 'Бензин',
+    engine_capacity: 2.0,
+    engine_unit: 'л',
+    body_type: 'Кросовер',
+    mileage: 8,
+    drive_type: 'Повний',
+    color: 'Синій металік',
+    city: 'Київ',
+    price: 68000,
+    status: 'На майданчику',
+    is_top: true,
+    images: [
+      {
+        id: 145,
+        url: 'https://cdn0.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534652950hd.webp',
+        is_main: true,
+        order: 0
+      },
+      {
+        id: 146,
+        url: 'https://cdn3.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534652968hd.webp',
+        is_main: false,
+        order: 1
+      },
+      {
+        id: 147,
+        url: 'https://cdn0.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534653020hd.webp',
+        is_main: false,
+        order: 2
+      },
+      {
+        id: 148,
+        url: 'https://cdn2.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534652987hd.webp',
+        is_main: false,
+        order: 3
+      },
+      {
+        id: 149,
+        url: 'https://cdn1.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534653016hd.webp',
+        is_main: false,
+        order: 4
+      },
+      {
+        id: 150,
+        url: 'https://cdn1.riastatic.com/photosnew/auto/photo/mitsubishi_lancer__534653006hd.webp',
+        is_main: false,
+        order: 5
+      }
+    ],
+    created_at: '2024-03-20T09:30:00Z'
   }
 ]
 
@@ -1656,8 +1714,8 @@ export const demoSearchSuggestions = [
     label: 'Toyota Camry',
     value: 'toyota-camry',
     image: 'https://cdn3.riastatic.com/photosnew/auto/photo/toyota_camry__478169610f.jpg',
-    year: 2020,
-    price: '18 500 $'
+    year: 2019,
+    price: '15 200 $'
   },
   {
     id: 2,
