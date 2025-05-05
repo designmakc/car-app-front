@@ -3,7 +3,7 @@
         <div class="car-details-page">
             <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round mt-4" />
 
-            <main class="">
+            <main >
                 <div class="flex justify-content-between flex-column md:flex-row gap-3">
                     <div class="flex flex-column align-items-start gap-2 w-full md:w-auto">
                         <h1 class="m-0 text-2xl md:text-4xl">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
@@ -22,37 +22,61 @@
                     </div>
                 </div>
 
-                <div class="flex grid-cols-12 gap-3 pt-4">
-                    <div class="col-3 left-side p-0 pb-3">
-                        <Panel header="Основні параметри" class="mb-4">
-                            <template v-for="(param, index) in carParams" :key="index">
-                                <div class="flex w-full pr-2 mb-3">
-                                    <div class="flex align-items-end justify-content-between w-full">
-                                        <span class="text-600">{{ param.label }}</span>
-                                        <div class="flex align-items-end gap-1 flex-grow-1 ml-2">
-                                            <div class="brand-dots flex-grow-1"></div>
-                                            <span class="font-medium">{{ param.value }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </Panel>
-                        <Panel header="Основні параметри" class="mb-4">
-                            <template v-for="(param, index) in carParams" :key="index">
-                                <div class="flex w-full pr-2 mb-3">
-                                    <div class="flex align-items-end justify-content-between w-full">
-                                        <span class="text-600">{{ param.label }}</span>
-                                        <div class="flex align-items-end gap-1 flex-grow-1 ml-2">
-                                            <div class="brand-dots flex-grow-1"></div>
-                                            <span class="font-medium">{{ param.value }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </Panel>
-                    </div>
+                <div class="flex flex-row flex-wrap md:flex-nowrap grid mt-1 md:mt-4">
                     
-                    <div class="col-12 md:col-9 order-1 md:order-2 p-0"> 
+                        <div class="col-12 md:col-3 md:pl-0 mt-3 md:mt-0 md:flex-order-0 flex-order-1">
+                            <Panel header="Основні параметри" class="mb-4">
+                                <template v-for="(param, index) in carParams" :key="index">
+                                    <div class="flex w-full pr-2 mb-3">
+                                        <div class="flex align-items-end justify-content-between w-full">
+                                            <span class="text-600">{{ param.label }}</span>
+                                            <div class="flex align-items-end gap-1 flex-grow-1 ml-2">
+                                                <div class="brand-dots flex-grow-1"></div>
+                                                <span class="font-medium">{{ param.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </Panel>
+                            <Panel header="Контактна інформація" class="mb-4">
+                                
+                                    <div class="text-2xl font-bold text-700 mb-1">Сергій</div>
+                                    <div class="flex align-items-center gap-2 mb-2">
+                                        <span class="text-600 text-sm w-12rem">Дата реєстрації</span>
+                                        <span class="text-700">12.03.2022</span>
+                                    </div>
+                                    <div class="flex align-items-center gap-2 pt-3">
+                                        <i class="pi pi-map-marker text-xl"></i>
+                                        <span class="text-700">м. Київ Київська область</span>
+                                    </div>
+                                    <div class="pt-4">
+                                        <div class="text-4xl font-bold text-700">
+                                            {{ isPhoneVisible ? phoneNumber : phoneNumber.replace(/\d(?!\d{0,3}$)/g, '*') }}
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-content-end pt-2">
+                                        <Button v-if="!isPhoneVisible" 
+                                                severity="success" 
+                                                class="w-full" 
+                                                @click="showPhoneNumber">
+                                            <span class="text-xl">Показати номер</span>
+                                        </Button>
+                                        <Button v-else 
+                                                severity="success" 
+                                                class="w-full" 
+                                                tag="a" 
+                                                :href="getPhoneLink()">
+                                            <i class="pi pi-phone mr-2"></i>
+                                            <span class="text-xl">Зателефонувати</span>
+                                        </Button>
+                                    </div>
+                                
+                            </Panel>
+                        </div>
+                    
+                    
+                    <div class="col-12 md:col-9 md:flex-order-1 flex-order-0 "> 
+                        <div class="content p-0">
                         <div class="w-full surface-ground border-round-lg overflow-hidden mb-4 md:mb-0">
                             <div class="relative w-full md:h-30rem surface-section overflow-hidden">
                                 <div class="photo-counter">
@@ -127,6 +151,7 @@
                                         />
                                     </div>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -236,6 +261,19 @@ const formatPrice = (price) => {
         maximumFractionDigits: 0
     }).format(price).replace(/,/g, ' ') + '$'
 }
+
+// Додаємо новий реактивний стан для відображення номера
+const isPhoneVisible = ref(false);
+const phoneNumber = "098 123 45 67"; // Замініть на реальний номер
+
+// Функція для форматування номера телефону для посилання tel:
+const getPhoneLink = () => {
+    return `tel:${phoneNumber.replace(/\s/g, '')}`;
+};
+
+const showPhoneNumber = () => {
+    isPhoneVisible.value = true;
+};
 </script>
 
 <style scoped>
@@ -463,4 +501,6 @@ const formatPrice = (price) => {
     gap: 0.25rem;
     align-items: center;
 }
+
+
 </style> 
