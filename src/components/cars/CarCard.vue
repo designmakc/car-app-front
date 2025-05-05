@@ -121,11 +121,12 @@
   <Toast />
   <!-- Картка автомобіля -->
   <Card class="car-card shadow-1 hover:shadow-2 transition-all border-round-2xl" :pt="{
-    root: { class: ['flex flex-column', { 'border-primary border-3': is_top }] },
+    root: { class: ['flex flex-column ', { 'border-primary border-3': is_top }] },
     content: { class: 'p-0 flex-grow-1 flex flex-column border-round-bottom-2xl' }
   }">
     <!-- Header з фото -->
     <template #header>
+      
       <div 
         class="car-image-container border-round-top-xl"
         @mousemove="handleMouseMove"
@@ -174,12 +175,14 @@
         </div>
         
         <!-- Галерея фото -->
-        <img 
-          :src="currentImage" 
-          :alt="model + ' ' + year"
-          class="car-image border-round-top-xl"
-          :style="{ opacity: imageTransition ? 0.9 : 1 }"
-        />
+        <RouterLink :to="{ name: 'car-details', params: { id: id }}" >
+          <img 
+            :src="currentImage" 
+            :alt="model + ' ' + year"
+            class="car-image border-round-top-xl cursor-pointer"
+            :style="{ opacity: imageTransition ? 0.9 : 1 }"
+          />
+        </RouterLink>
         
         <!-- Оверлей "Ще фото" для останнього фото -->
         <div v-if="currentImageIndex === carImages.length - 1 && totalImages > 5" 
@@ -206,17 +209,20 @@
     <template #content>
       <RouterLink 
         :to="{ name: 'car-details', params: { id: id }}" 
-        class="car-content-link"
+        class="flex flex-column justify-content-between h-full no-underline text-color cursor-pointer"
       >
-        <div class="flex flex-column gap-3">
+        <div class="flex flex-wrap gap-3 ">
           <!-- Заголовок -->
-          <div class="flex align-items-center justify-content-between">
-            <h3 class="m-0 text-lg font-semibold">{{ brand }} {{ model }}</h3>
-            <span class="text-lg font-bold">{{ formattedPrice }}</span>
+          <div class="min-h-5rem max-h-5rem flex flex-column gap-2 justify-content-center">
+            <div class="h-4rem  overflow-hidden text-overflow-ellipsis align-content-center ">
+              <h3 class="text-overflow-ellipsis  m-0 text-lg font-semibold w-full line-height-2 justify-content-center">{{ brand }} {{ model }} {{ year }}</h3>
+            </div>  
+              <span class="text-xl font-bold text-primary unbounded-font">{{ formattedPrice }}</span>
+            
           </div>
           
           <!-- Характеристики авто -->
-          <div class="grid flex-grow-0 ">
+          <div class="grid flex-grow-0">
             <!-- Пробіг -->
             <div class="col-6 flex align-items-center gap-1">
               <i class="pi pi-gauge text-500 text-md"></i>
@@ -264,70 +270,38 @@ import { RouterLink } from 'vue-router'
 const props = defineProps({
   id: Number,
   user_id: Number,
-  brand: {
-    type: String,
-    default: ''
-  },
-  model: {
-    type: String,
-    default: ''
-  },
-  year: {
-    type: [Number, String],
-    default: null
-  },
-  gearbox: {
-    type: String,
-    default: ''
-  },
-  fuel_type: {
-    type: String,
-    default: ''
-  },
-  engine_capacity: {
-    type: [Number, String],
-    default: null
-  },
+  type: String,
+  brand: String,
+  model: String,
+  year: [Number, String],
+  state_number: String,
+  gearbox: String,
+  fuel_type: String,
+  engine_capacity: [Number, String],
   engine_unit: {
     type: String,
     default: 'л'
   },
-  body_type: {
-    type: String,
-    default: ''
-  },
-  mileage: {
-    type: [Number, String],
-    default: null
-  },
-  drive_type: {
-    type: String,
-    default: ''
-  },
-  color: {
-    type: String,
-    default: ''
-  },
-  city: {
-    type: String,
-    default: ''
-  },
-  price: {
-    type: [Number, String],
-    default: null
-  },
-  status: {
-    type: String,
-    default: ''
-  },
-  is_top: {
-    type: [Boolean, Number],
-    default: false
-  },
-  link: {
-    type: String,
-    default: null
-  },
+  body_type: String,
+  imported_from: String,
+  exchange_available: Boolean,
+  keys_count: Number,
+  extra_tires: Boolean,
+  owner_info: String,
+  vin: String,
+  mileage: [Number, String],
+  drive_type: String,
+  seats_number: Number,
+  color: String,
+  city: String,
+  region: String,
+  price: [Number, String],
+  status: String,
+  views_parking: Number,
+  views_count: Number,
+  is_top: [Boolean, Number],
+  sold_car_image: String,
+  sold_at: String,
   created_at: {
     type: String,
     default: null
@@ -409,9 +383,9 @@ const imageContainer = ref(null)
 // Обчислюємо поточне зображення
 const currentImage = computed(() => {
   if (!carImages.value || carImages.value.length === 0) {
-    return props.link || null
+    return props.sold_car_image || null
   }
-  return carImages.value[currentImageIndex.value]?.url || props.link
+  return carImages.value[currentImageIndex.value]?.url || props.sold_car_image
 })
 
 // Обробка руху миші по фото
@@ -483,19 +457,35 @@ const handleTouchEnd = () => {
   isSwiping.value = false
 }
 
+// Додайте цей computed після інших обчислюваних властивостей
+const formattedPrice = computed(() => {
+  return formatPrice(props.price)
+})
+
 // Демо-дані перенесено в src/data/demo/cars.js
 // import { demoCars } from '@/data/demo/cars'
 
 </script>
 
 <style scoped>
-.car-card {
-  transition: all 0.3s ease;
+:deep(.p-card) {
   height: 100%;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
 }
 
-.car-card:hover {
+:deep(.p-card:hover) {
   transform: translateY(-4px);
+}
+
+:deep(.p-card-content) {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+:deep(.p-card-body) {
+  padding: 1rem 1.5rem 1rem 1.5rem;
 }
 
 /* Стилі для контейнера зображення */
@@ -503,50 +493,39 @@ const handleTouchEnd = () => {
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 100%; /* Змінюємо з 75% на 100% для співвідношення 1:1 */
+  padding-bottom: 100%;
   overflow: hidden;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-  background-color: var(--surface-200);
+  border-radius: var(--p-border-radius) var(--p-border-radius) 0 0;
+  background-color: var(--p-surface-200);
 }
 
 /* Стилі для зображення автомобіля */
 .car-image {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.2s var(--p-transition-timing-function);
 }
 
-/* Ефект легкого масштабування при наведенні на карточку */
-.car-card:hover .car-image {
+:deep(.p-card:hover) .car-image {
   transform: scale(1.05);
 }
 
-/* Стилі для скелетона, коли зображення відсутнє */
-.car-image-skeleton {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-}
-
+/* Стилі для індикаторів */
 .image-indicators {
-  background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+  background: linear-gradient(to top, var(--p-surface-ground), transparent);
 }
 
 .indicator-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--p-border-radius-circle);
   background: var(--p-surface-200);
   opacity: 0.6;
-  transition: all 0.2s ease;
+  transition: all 0.2s var(--p-transition-timing-function);
 }
 
 .indicator-dot.active {
@@ -555,16 +534,14 @@ const handleTouchEnd = () => {
   transform: scale(1.2);
 }
 
+/* Оверлей для додаткових фото */
 .more-photos-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  inset: 0;
+  background: var(--p-overlay-color);
+  color: var(--p-surface-0);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s var(--p-transition-timing-function);
   cursor: pointer;
   z-index: 1;
 }
@@ -574,7 +551,7 @@ const handleTouchEnd = () => {
 }
 
 /* Стилі для мобільних пристроїв */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .car-image-container {
     touch-action: pan-y pinch-zoom;
   }
@@ -584,27 +561,5 @@ const handleTouchEnd = () => {
   }
 }
 
-/* Анімація переходу для фото */
-.image-transition {
-  transition: transform 0.3s ease-out;
-}
 
-.image-transition-left {
-  transform: translateX(-100%);
-}
-
-.image-transition-right {
-  transform: translateX(100%);
-}
-
-.car-content-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    flex: 1;
-}
-
-.car-content-link:hover {
-    color: inherit;
-}
 </style>

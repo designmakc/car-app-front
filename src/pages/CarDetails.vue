@@ -8,7 +8,7 @@
                     <div class="flex flex-column align-items-start gap-2 w-full md:w-auto">
                         <h1 class="m-0 text-2xl md:text-4xl">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
                         <div class="flex align-items-center gap-3 flex-wrap">
-                            <div class="text-primary text-2xl md:text-3xl font-bold unbounded-font py-2">{{ car.price }}$</div>
+                            <div class="text-primary text-2xl md:text-3xl font-bold unbounded-font py-2">{{ formatPrice(car.price) }}</div>
                             <div class="flex gap-2 flex-wrap">
                                 <Tag icon="pi pi-hammer" value="Торг" severity="secondary" class="py-1"></Tag>
                                 <Tag icon="pi pi-sync" value="Обмін" severity="info" class="py-1"></Tag>
@@ -227,6 +227,15 @@ const scrollToImage = (indexOrDirection) => {
     });
     currentImageIndex.value = newIndex;
 };
+
+// Функція форматування ціни
+const formatPrice = (price) => {
+    if (!price) return 'Ціна не вказана'
+    return new Intl.NumberFormat('en-US', {
+        useGrouping: true,
+        maximumFractionDigits: 0
+    }).format(price).replace(/,/g, ' ') + '$'
+}
 </script>
 
 <style scoped>
