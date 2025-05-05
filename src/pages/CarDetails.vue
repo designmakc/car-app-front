@@ -92,7 +92,7 @@
                         <Panel header="Контактна інформація" class="mb-4">
                             <div class="text-2xl font-bold text-700 mb-1">Сергій</div>
                             <div class="flex align-items-center gap-2 mb-2">
-                                <span class="text-600 text-sm w-12rem">Дата реєстрації</span>
+                                <span class="text-600 text-sm ">Дата реєстрації</span>
                                 <span class="text-700">12.03.2022</span>
                             </div>
                             <div class="flex align-items-center gap-2 pt-3">
