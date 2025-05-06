@@ -1,6 +1,6 @@
 <script setup>
 import Mainlayout from '@/layouts/Mainlayout.vue'
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Breadcrumb from 'primevue/breadcrumb';
 import SelectButton from 'primevue/selectbutton';
 import Chip from 'primevue/chip';
@@ -59,9 +59,17 @@ const filters = ref({
   year: null
 });
 
+// Додайте новий реактивний параметр для відстеження змін фільтрів
+const filterChangeCounter = ref(0)
+
+// Додайте до існуючого лічильника змін також відстеження сортування
+const listUpdateTrigger = computed(() => `${filterChangeCounter.value}-${selectedSort.value}`)
+
 function onFiltersUpdate(newFilters) {
-  filters.value = { ...newFilters };
-  activeFilters.value = [];
+  filters.value = { ...newFilters }
+  activeFilters.value = []
+  // Збільшуємо лічильник при кожній зміні фільтрів
+  filterChangeCounter.value++
 }
 
 const hasActiveFilters = computed(() => {
@@ -88,13 +96,76 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
     // Емулюємо затримку мережі
     await new Promise(resolve => setTimeout(resolve, 500))
     
-    // Фільтруємо всі автомобілі за статусом "На майданчику"
-    const catalogCars = demoCars.filter(car => car.status === "На майданчику")
+    // Фільтруємо автомобілі
+    let filteredCars = demoCars.filter(car => car.status === "На майданчику")
+
+    // Застосовуємо фільтри
+    if (filters.value) {
+      if (filters.value.brand) {
+        filteredCars = filteredCars.filter(car => car.brand === filters.value.brand)
+      }
+      if (filters.value.model) {
+        filteredCars = filteredCars.filter(car => car.model === filters.value.model)
+      }
+      if (filters.value.fuel_type && Object.keys(filters.value.fuel_type).length > 0) {
+        filteredCars = filteredCars.filter(car => {
+          const fuelTypeMap = {
+            'Бензин': 'petrol',
+            'Дизель': 'diesel',
+            'Гібрид': 'hybrid',
+            'Електро': 'electric'
+          };
+          const normalizedFuelType = fuelTypeMap[car.fuel_type];
+          return filters.value.fuel_type[normalizedFuelType] === true;
+        });
+      }
+      if (filters.value.drive_type && Object.values(filters.value.drive_type).some(v => v)) {
+        filteredCars = filteredCars.filter(car => 
+          filters.value.drive_type[car.drive_type]
+        )
+      }
+      if (filters.value.year_from) {
+        filteredCars = filteredCars.filter(car => car.year >= filters.value.year_from)
+      }
+      if (filters.value.year_to) {
+        filteredCars = filteredCars.filter(car => car.year <= filters.value.year_to)
+      }
+      if (filters.value.price_from) {
+        filteredCars = filteredCars.filter(car => car.price >= filters.value.price_from)
+      }
+      if (filters.value.price_to) {
+        filteredCars = filteredCars.filter(car => car.price <= filters.value.price_to)
+      }
+      if (filters.value.color && filters.value.color.length > 0) {
+        filteredCars = filteredCars.filter(car => 
+          filters.value.color.includes(car.color)
+        )
+      }
+    }
+
+    // Покращена логіка сортування
+    if (selectedSort.value) {
+      filteredCars = [...filteredCars].sort((a, b) => {
+        switch (selectedSort.value) {
+          case 'price_asc':
+            return a.price - b.price
+          case 'price_desc':
+            return b.price - a.price
+          case 'date_desc':
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          case 'date_asc':
+            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          default:
+            return 0
+        }
+      })
+    }
+
     const startIndex = (page - 1) * perPage
     const endIndex = startIndex + perPage
     
     // Повертаємо дані у потрібному форматі
-    return catalogCars.slice(startIndex, endIndex).map(car => ({
+    return filteredCars.slice(startIndex, endIndex).map(car => ({
       ...car,
       link: car.images[0]?.url || ''
     }))
@@ -166,6 +237,20 @@ const filteredCarsCount = computed(() => {
 
   return filteredCars.length;
 });
+
+// Додайте watch для відстеження змін фільтрів
+watch(
+  () => filters.value,
+  () => {
+    filterChangeCounter.value++;
+  },
+  { deep: true }
+);
+
+// Додайте watch для selectedSort
+watch(selectedSort, () => {
+  filterChangeCounter.value++
+})
 </script>
 
 <template>
@@ -297,6 +382,7 @@ const filteredCarsCount = computed(() => {
                     <!-- Список авто -->
                     <div class="car-list pb-8">
                         <CarList 
+                        :key="listUpdateTrigger"
                         :grid="{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }"
                         :provide-cars="provideCatalogCars"
                         :limit="20"
