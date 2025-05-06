@@ -17,10 +17,11 @@
 
 <template>
   <div class="credit-calculator surface-card p-4 border-round ">
-    <h2 class="mb-4">Кредит на автомобіль</h2>
+    
     <div class="grid surface-ground border-round p-4">
-        <div class="col-8">
-            <div class="flex flex-column col-8 w-full col gap-2">
+        <h2 class="mb-4">Кредит на автомобіль</h2>
+        <div class="col-8 p-0">
+            <div class="flex flex-column col-8 w-full col gap-2 p-0">
             <div class="flex gap-2 mb-4">
             <Tag severity="contrast" value="Без першого внеску" />
             <Tag severity="success" value="Онлайн" />
@@ -63,8 +64,8 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="flex flex-column col-4 w-full col gap-2">
-                    <div class="payment-info surface-ground p-3 border-round mb-4 ">
+            <div class="flex flex-column col-4 w-full col gap-2 p-0">
+                    <div class="payment-info surface-ground p-3 border-round mb-4 p-0">
                         <div class="text-xl mb-2">В місяць</div>
                     <div class="text-3xl font-bold mb-2">від {{ formatCurrency(calculateMonthlyPayment()) }}</div>
                 
