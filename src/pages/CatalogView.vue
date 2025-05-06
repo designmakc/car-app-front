@@ -103,6 +103,69 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
     return []
   }
 }
+
+// Функція для підрахунку відфільтрованих авто
+const filteredCarsCount = computed(() => {
+  let filteredCars = demoCars.filter(car => car.status === "На майданчику")
+
+  if (filters.value) {
+    if (filters.value.brand) {
+      filteredCars = filteredCars.filter(car => car.brand === filters.value.brand)
+    }
+    if (filters.value.model) {
+      filteredCars = filteredCars.filter(car => car.model === filters.value.model)
+    }
+    if (filters.value.fuel_type && Object.values(filters.value.fuel_type).some(v => v)) {
+      filteredCars = filteredCars.filter(car => {
+        const carFuelType = car.fuel_type === "Бензин" ? "petrol" : 
+                          car.fuel_type === "Дизель" ? "diesel" : 
+                          car.fuel_type === "Гібрид" ? "hybrid" : 
+                          car.fuel_type === "Електро" ? "electric" : "";
+        return filters.value.fuel_type[carFuelType];
+      })
+    }
+    if (filters.value.drive_type && Object.values(filters.value.drive_type).some(v => v)) {
+      filteredCars = filteredCars.filter(car => 
+        filters.value.drive_type[car.drive_type]
+      )
+    }
+    if (filters.value.mileage && Object.values(filters.value.mileage).some(v => v)) {
+      filteredCars = filteredCars.filter(car => {
+        return Object.entries(filters.value.mileage)
+          .filter(([_, selected]) => selected)
+          .some(([range]) => {
+            const [min, max] = range.split('-').map(Number)
+            if (max === '+') {
+              return car.mileage >= min
+            }
+            return car.mileage >= min && car.mileage <= max
+          })
+      })
+    }
+    if (filters.value.year_from) {
+      filteredCars = filteredCars.filter(car => car.year >= filters.value.year_from)
+    }
+    if (filters.value.year_to) {
+      filteredCars = filteredCars.filter(car => car.year <= filters.value.year_to)
+    }
+    if (filters.value.price_from) {
+      filteredCars = filteredCars.filter(car => car.price >= filters.value.price_from)
+    }
+    if (filters.value.price_to) {
+      filteredCars = filteredCars.filter(car => car.price <= filters.value.price_to)
+    }
+    if (filters.value.color && filters.value.color.length > 0) {
+      filteredCars = filteredCars.filter(car => 
+        filters.value.color.includes(car.color)
+      )
+    }
+    if (filters.value.exchange_available) {
+      filteredCars = filteredCars.filter(car => car.exchange_available)
+    }
+  }
+
+  return filteredCars.length;
+});
 </script>
 
 <template>
@@ -174,9 +237,9 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
                           />
                         </div>
                         <template #footer>
-                          <div class="mobile-filter-footer">
+                          <div class="mobile-filter-footer w-full">
                             <Button 
-                              :label="`Показати 356 оголошень`" 
+                              :label="`Показати ${filteredCarsCount} авто`"
                               icon="pi pi-search" 
                               size="large" 
                               class="w-full mb-2"
@@ -209,7 +272,9 @@ const provideCatalogCars = async (page = 1, perPage = 12) => {
 
                     <!-- Сортування -->
                     <div class="flex justify-content-between align-items-center mb-4">
-                        <span class="text-lg">Знайдено 356</span>
+                        <span class="text-lg">
+                          Знайдено {{ filteredCarsCount }} авто
+                        </span>
                         <Select
                             v-model="selectedSort"
                             :options="sortOptions"

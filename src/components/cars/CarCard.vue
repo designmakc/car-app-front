@@ -236,7 +236,7 @@
             <!-- Об'єм двигуна -->
             <div class="col-6 flex align-items-center gap-1">
               <i class="pi pi-car text-500 text-md"></i>
-              <span class="text-600 text-md pl-1">{{ engine_capacity }} {{ engine_unit || 'л' }}</span>
+              <span class="text-600 text-md pl-1">{{ engine_capacity ? fuel_type + ' ' + engine_capacity + ' ' + engine_unit : '...' }}</span>
             </div>
             <!-- Місто -->
             <div class="col-6 flex align-items-center gap-1">
