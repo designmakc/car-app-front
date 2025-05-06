@@ -27,6 +27,27 @@
 -->
 
 <template>
+  <!-- Додаємо діалог з AdvancedCarFilter -->
+  <Dialog 
+    v-model:visible="showSearchDialog" 
+    modal 
+    :dismissableMask="true"
+    :style="{ width: '90vw', maxWidth: '500px' }"
+    position="bottom"
+    :draggable="false"
+    :closeOnEscape="true"
+    header="Всі фільтри"
+  >
+    <AdvancedCarFilter 
+      :filters="filters"
+      :formData="demoCarFormData"
+      @update:filters="handleFiltersChange"
+      @apply="handleApplyFilters"
+      @close="showSearchDialog = false"
+      :showHeader="false"
+    />
+  </Dialog>
+
   <!-- Контейнер навбара з фіксованою позицією внизу екрану -->
   <div class="mobile-navbar block lg:hidden fixed bottom-0 left-0 w-full z-5">
     <!-- Фоновий елемент з blur-ефектом для сучасного вигляду -->
@@ -68,11 +89,12 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
-// Імпорт роутера
+// Імпорт роутера та поточного маршруту
 const router = useRouter()
+const route = useRoute()
 
 // Елементи навігації
 const navItems = [
@@ -83,8 +105,16 @@ const navItems = [
   { key: 'profile', icon: 'pi-user', label: 'Профіль' }
 ]
 
-// Активний елемент (початково "Головна")
-const activeIndex = ref(0)
+// Активний елемент тепер залежить від поточного маршруту
+const activeIndex = computed(() => {
+  const path = route.path
+  if (path === '/') return 0
+  if (path === '/add-car') return 1
+  if (path === '/search') return 2
+  if (path === '/favorites') return 3
+  if (path === '/profile' || path === '/login') return 4
+  return -1
+})
 
 // Замість store використовуємо API
 const favoritesCount = ref(0)
@@ -110,59 +140,45 @@ const badges = computed(() => ({
 
 // Функція для зміни активного елемента з анімацією
 function setActive(index) {
-  // Запускаємо делікатну анімацію при зміні
-  if (activeIndex.value !== index) {
-    const buttons = document.querySelectorAll('.nav-button')
-    buttons[activeIndex.value].classList.add('leaving')
-    buttons[index].classList.add('entering')
-    
-    // Видаляємо класи анімації після завершення
-    setTimeout(() => {
-      buttons.forEach(btn => {
-        btn.classList.remove('leaving', 'entering')
-      })
-    }, 400)
-  }
-  
-  // Оновлюємо активний елемент
-  activeIndex.value = index
-  
-  // Навігація в залежності від обраного пункту
   const route = navItems[index].key
+  
   switch(route) {
     case 'home':
       router.push('/')
       break
+      
     case 'add':
       router.push('/add-car')
       break
+      
     case 'search':
-      router.push('/search')
+      // Тимчасово просто переходимо на сторінку пошуку
+      router.push('@click="openMobileFilters"')
       break
+      
     case 'favorites':
       router.push('/favorites')
       break
+      
     case 'profile':
-      router.push('/profile')
+      // Тимчасово завжди перенаправляємо на логін
+      // Пізніше додамо перевірку авторизації
+      router.push('/login')
       break
   }
   
-  // Емітимо подію для батьківського компонента
   emit('change', navItems[index].key)
 }
 
 // Розрахунок позиції індикатора активного елемента 
 const indicatorStyle = computed(() => {
-  // Ширина одного елемента навігації (100% / кількість елементів)
   const itemWidth = 100 / navItems.length
-  
-  // Позиція (відсоток від лівого краю) з центруванням та врахуванням падінгу
   const position = activeIndex.value * itemWidth
   
   return {
     left: `calc(${position}% + ${itemWidth/2}%)`,
     width: '30px',
-    transform: 'translateX(-15px)', // Центрування індикатора (половина його ширини)
+    transform: 'translateX(-15px)',
     transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
   }
 })
@@ -288,6 +304,21 @@ const emit = defineEmits(['change'])
 @keyframes slide-out {
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(5px); opacity: 0.5; }
+}
+
+/* Стилі для діалогу */
+:deep(.p-dialog) {
+  margin: 0;
+  border-radius: 1rem 1rem 0 0;
+}
+
+:deep(.p-dialog-header) {
+  padding: 1rem;
+  border-bottom: 1px solid var(--surface-200);
+}
+
+:deep(.p-dialog-content) {
+  padding: 0;
 }
 </style>
 

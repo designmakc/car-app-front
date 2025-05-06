@@ -31,9 +31,9 @@
                         <div class="flex align-items-center gap-2 flex-wrap">
                             <div class="text-primary text-2xl md:text-3xl font-bold unbounded-font py-2">{{ formatPrice(car.price) }}</div>
                             <div class="flex gap-2 flex-wrap pb-2 md:pb-0">
-                                <Tag icon="pi pi-hammer" value="Торг" severity="secondary" class="py-1"></Tag>
-                                <Tag icon="pi pi-sync" value="Обмін" severity="info" class="py-1"></Tag>
-                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success" class="py-1"></Tag>
+                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning" class="py-1" />
+                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success" class="py-1" />
+                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info" class="py-1" />
                             </div>
                         </div>
                     </div>
@@ -132,14 +132,14 @@
                                                        
                             <div class="w-full surface-ground border-round-lg overflow-hidden mb-4 md:mb-0">
                                 <div class="relative w-full md:h-30rem surface-section overflow-hidden">
-                                    <div class="photo-counter">
+                                    <div class="photo-counter" >
                                         <span class="font-medium">{{ currentImageIndex + 1 }}</span>
                                         <span class="text-300">/</span>
                                         <span class="text-300">{{ carImages.length }}</span>
                                     </div>
 
                                     <div ref="imageContainer" 
-                                        class="flex gap-1 w-full h-full overflow-x-auto scroll-smooth scrollbar-none"
+                                        class="flex gap-1 w-full h-[300px] md:h-full overflow-x-auto scroll-smooth scrollbar-none"
                                         style="scroll-snap-type: x mandatory;"
                                         @scroll="handleScroll">
                                         <div v-for="(image, index) in carImages" 
@@ -154,6 +154,8 @@
                                                 :alt="`${car.brand} ${car.model}`"
                                                 class="mobile-image md:desktop-image" 
                                                 @load="handleImageLoad($event, index)"
+                                                @click="openFullscreenGallery(index)"
+                                                style="cursor: pointer"
                                             />
                                         </div>
                                     </div>
@@ -163,11 +165,13 @@
                                             class="nav-button pointer-events-auto mx-2"
                                             @click="scrollToImage('prev')"
                                             :disabled="currentImageIndex === 0"
+                                            style="background: rgba(0, 0, 0, 0.5); border: none; width: 3rem; height: 3rem;"
                                         />
                                         <Button icon="pi pi-chevron-right" 
                                             class="nav-button pointer-events-auto mx-2"
                                             @click="scrollToImage('next')"
                                             :disabled="currentImageIndex === carImages.length - 1"
+                                            style="background: rgba(0, 0, 0, 0.5); border: none; width: 3rem; height: 3rem;"
                                         />
                                     </div>
 
@@ -206,50 +210,73 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
-                            <!-- @TODO: Додати іконку з кількістю переглядів та дату додавання оголошення -->
+                            </div>
+                             
+                            <!-- Галерея фул скрін -->
+                            <Galleria v-model:visible="isFullscreenGalleryVisible" 
+                                      :value="carImages" 
+                                      :circular="true" 
+                                      :fullScreen="true" 
+                                      :showItemNavigators="true"
+                                      :showThumbnails="false"
+                                      :showIndicators="true"
+                                      :indicatorsPosition="bottom"
+                                      :showIndicatorsOnItem="true"
+                                      :activeIndex="currentImageIndex"
+                                      @update:activeIndex="handleGalleriaChange"
+                                      :pt="{
+                                          closeButton: {
+                                              style: 'z-index: 2; outline: none; box-shadow: none; border: none;'
+                                          }
+                                      }">
+                                <template #item="slotProps">
+                                    <div @touchstart="onTouchStart" 
+                                         @touchmove="onTouchMove" 
+                                         @touchend="onTouchEnd"
+                                         class="w-full h-full">
+                                        <img :src="slotProps.item.url" 
+                                             :alt="`${car.brand} ${car.model}`"
+                                             style="width: 100%; display: block; object-fit: contain;" />
+                                    </div>
+                                </template>
+                            </Galleria>
 
                             <!-- Інформація про оголошення -->  
-                            <Toolbar class="my-2 ">
-                                <template #start >
-                                    <div class="flex align-items-center gap-2">
-                                    <div class="flex align-items-center gap-2 mr-4">
-                                        <i class="pi pi-eye text-600"></i>
-                                        <span class="font-medium text-600">1234</span>
-                                    </div>
-                                    <span class="text-600">Опубліковано: 12.03.2022</span>
-                                    
-                                    
-                                    </div>
+                            <Toolbar class="flex flex-column md:flex-row p-0 surface-ground p-3">
+                                <template #start>
+                                    <div class="flex align-items-center gap-3">
+                                        <div class="flex align-items-center gap-2">
+                                            <i class="pi pi-eye text-600"></i>
+                                            <span class="font-medium text-600">1234</span>
+                                        </div>
+                                        <div class="flex align-items-center gap-2">
+                                            <i class="pi pi-calendar text-600"></i>
+                                            <span class="text-600">Опубліковано: {{ formatDate(car.created_at) }}</span>
+                                        </div>
+                                        
+                                    </div>  
                                 </template>
 
-                                <template #center class="flex md:hidden">
-                                    
-                                
-                                </template>
-
-                                <template #end >
-                                    <div class="mt-2 md:mt-0 ">
-                                    <Button label="Додати в обрані" icon="pi pi-heart" severity="warn" variant="outlined" />
-                                    <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text"  />
-                                    
+                                <template #end>
+                                    <div class="flex align-items-center gap-2 mt-2 md:mt-0">
+                                        <Button label="Додати в обрані" icon="pi pi-heart" severity="warn" variant="outlined" />
+                                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" />
                                     </div>
-                                   
                                 </template>
                             </Toolbar>
 
                             <!-- Коментар власника -->  
-                            <Card class="hidden md:block">
+                            <Card class="hidden md:block mt-4">
                                 <template #title>
                                     <div>
                                         <i class="pi pi-comment mr-2"></i>
-                                        Коментар власника
+                                        Опис автомобіля
                                     </div>
                                 </template>
                                 <template #content>
                                     <div>
                                         <p class="m-0 text-lg">
-                                            Прдам лансер в . Дизель. 150 л.с. На механіці. Датчик дождю і світла. Задня камера. Саббуфер. Торг на каву із заправкою бака. Терміново
+                                            {{ car.description || 'Опис відсутній' }}
                                         </p>
                                     </div>
                                 </template>
@@ -271,8 +298,11 @@
  */
 import Mainlayout from '@/layouts/Mainlayout.vue';
 import { useRoute } from 'vue-router';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, reactive } from 'vue';
 import { demoCars } from '@/data/demo/cars';
+import Galleria from 'primevue/galleria';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
 
 /**
  * =====================
@@ -281,7 +311,13 @@ import { demoCars } from '@/data/demo/cars';
  */
 const route = useRoute();
 const carId = Number(route.params.id);
-const car = computed(() => demoCars.find(c => c.id === carId) || demoCars[0]);
+const car = computed(() => {
+    const foundCar = demoCars.find(c => c.id === carId) || demoCars[0];
+    return {
+        ...foundCar,
+        exchange_available: true // За замовчуванням true, можна змінити на false якщо потрібно
+    };
+});
 
 /**
  * =====================
@@ -348,7 +384,7 @@ onUnmounted(() => {
  * =====================
  */
 const carParams = computed(() => [
-    { label: 'Рік випуску авто', value: car.value.year },
+    { label: 'Рік випуску', value: car.value.year },
     { label: 'Пробіг', value: `${car.value.mileage} тис. км` },
     { label: 'Двигун', value: `${car.value.fuel_type} ${car.value.engine_capacity} ${car.value.engine_unit}` },
     { label: 'Коробка передач', value: car.value.gearbox },
@@ -363,11 +399,11 @@ const carParams = computed(() => [
  * НАВІГАЦІЯ
  * =====================
  */
-const items = [
+const items = computed(() => [
     { label: 'Головна', url: '/' },
     { label: 'Каталог', url: '/catalog' },
-    { label: 'Деталі автомобіля', url: route.path }
-];
+    { label: `${car.value.brand} ${car.value.model} ${car.value.year}`, url: route.path }
+]);
 
 const home = { icon: 'pi pi-home', url: '/' };
 
@@ -454,220 +490,76 @@ const handleScroll = () => {
         currentImageIndex.value = newIndex;
     }
 };
+
+/**
+ * =====================
+ * ПОВНОЕКРАННА ГАЛЕРЕЯ
+ * =====================
+ */
+const isFullscreenGalleryVisible = ref(false);
+const startPos = reactive({ x: 0, y: 0 });
+const isVertical = ref(false);
+
+const onTouchStart = (e) => {
+    const touchobj = e.changedTouches[0];
+    startPos.x = touchobj.pageX;
+    startPos.y = touchobj.pageY;
+};
+
+const onTouchMove = (e) => {
+    if (e.cancelable) {
+        e.preventDefault();
+    }
+};
+
+const onTouchEnd = (e) => {
+    const touchobj = e.changedTouches[0];
+    const diffX = touchobj.pageX - startPos.x;
+    const diffY = touchobj.pageY - startPos.y;
+
+    // Визначаємо напрямок свайпу
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        changePageOnTouch(diffX);
+    }
+};
+
+const changePageOnTouch = (diff) => {
+    if (Math.abs(diff) < 50) return; // Мінімальна відстань для свайпу
+
+    if (diff < 0) {
+        // Свайп вліво - наступне фото
+        if (currentImageIndex.value < carImages.value.length - 1) {
+            currentImageIndex.value++;
+        } else if (carImages.value.length > 0) {
+            currentImageIndex.value = 0; // Переходимо на початок при circular=true
+        }
+    } else {
+        // Свайп вправо - попереднє фото
+        if (currentImageIndex.value > 0) {
+            currentImageIndex.value--;
+        } else if (carImages.value.length > 0) {
+            currentImageIndex.value = carImages.value.length - 1; // Переходимо в кінець при circular=true
+        }
+    }
+};
+
+const handleGalleriaChange = (newIndex) => {
+    currentImageIndex.value = newIndex;
+};
+
+const openFullscreenGallery = (index) => {
+    currentImageIndex.value = index;
+    isFullscreenGalleryVisible.value = true;
+};
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'd MMMM yyyy', { locale: uk });
+};
 </script>
 
 <style scoped>
-/**
- * =====================
- * ЗАГАЛЬНІ СТИЛІ
- * =====================
- */
-.brand-dots {
-    border-bottom: 1px dotted var(--surface-400);
-    margin: 0 0.3rem;
-}
-
-/**
- * =====================
- * СТИЛІ ГАЛЕРЕЇ
- * =====================
- */
-.car-gallery-container {
-    width: 100%;
-    background: var(--surface-ground);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.main-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    background: var(--surface-section);
-    overflow: hidden;
-}
-
-.main-image-container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 0;
-}
-
-.image-slide {
-    scroll-snap-align: start;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-}
-
-.image-slide img {
-    display: block;
-    height: 100%;
-    width: auto;
-}
-
-.image-wrapper {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-wrapper img {
-    height: 100%;
-    width: auto;
-    max-width: none;
-    object-fit: contain;
-}
-
-.navigation-buttons {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-}
-
-.nav-button {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.8) !important;
-    border: none !important;
-    color: var(--primary-color) !important;
-}
-
-.nav-button:hover {
-    background: rgba(255, 255, 255, 0.9) !important;
-}
-
-.nav-button:disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-.image-counter {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    font-size: 0.875rem;
-}
-
-.thumbnails-container {
-    display: flex;
-    gap: 0.5rem;
-    padding: 1rem;
-    overflow-x: auto;
-    background: var(--surface-section);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.thumbnail {
-    position: relative;
-    width: 100px;
-    height: 67px;
-    overflow: hidden;
-}
-
-.thumbnail img {
-    height: 100%;
-    width: auto;
-    min-width: 100%;
-    object-fit: cover;
-}
-
-/* Прибираємо старі стилі, які могли впливати на розтягування */
-.transform-center,
-.min-w-full,
-.min-h-full {
-    display: none;
-}
-
-/**
- * =====================
- * АДАПТИВНІСТЬ
- * =====================
- */
-@media screen and (max-width: 768px) {
-    .main-image-wrapper {
-        height: auto;
-    }
-
-    .image-slide {
-        width: 100% !important; /* Перевизначаємо inline стилі */
-        aspect-ratio: 1/1;
-    }
-
-    .mobile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    /* Приховуємо превью */
-    .thumbnails-container {
-        display: none;
-    }
-
-    /* Зменшуємо розмір кнопок навігації */
-    .nav-button {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-
-    .photo-counter {
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-    }
-
-    .stats-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-}
-
-/* Для дуже маленьких екранів */
-@media screen and (max-width: 480px) {
-    .nav-button {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-
-/**
- * =====================
- * УТИЛІТИ
- * =====================
- */
-.scrollbar-none {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;     /* Firefox */
-}
-
-/* Приховуємо скролбар для Chrome, Safari та Opera */
-.scrollbar-none::-webkit-scrollbar {
-    display: none;
-}
-
-/* Стилі для десктопного зображення */
+/* Базові стилі для зображень */
 .desktop-image {
     height: 100%;
     width: auto;
@@ -675,15 +567,15 @@ const handleScroll = () => {
     display: block;
 }
 
-/* Стилі для мобільного зображення */
+/* Оновлюємо стилі для мобільних зображень */
 .mobile-image {
     width: 100% !important;
-    height: 100%;
+    height: 300px !important; /* Фіксована висота для мобільної версії */
     object-fit: cover !important;
     display: block;
 }
 
-/* Стилі для лічильника */
+/* Стилі для лічильника фото */
 .photo-counter {
     position: absolute;
     top: 1rem;
@@ -699,26 +591,17 @@ const handleScroll = () => {
     align-items: center;
 }
 
-/**
- * =====================
- * СТАТИСТИКА ОГОЛОШЕННЯ
- * =====================
- */
-.stats-container {
-    background: var(--surface-section);
-    border-top: 1px solid var(--surface-border);
-    transition: background-color 0.2s;
+/* Додаємо стилі для кнопок навігації */
+.nav-button:enabled:hover {
+    background: rgba(0, 0, 0, 0.7) !important;
+    border: none !important;
 }
 
-.stats-container:hover {
-    background: var(--surface-hover);
+.nav-button:focus {
+    box-shadow: none !important;
 }
 
-.stats-container i {
-    font-size: 1rem;
-}
-
-.stats-container span {
-    font-size: 0.875rem;
+.nav-button {
+    color: #fff !important;
 }
 </style> 
