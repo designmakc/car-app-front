@@ -18,7 +18,7 @@
 <template>
   <div class="credit-calculator surface-card p-4 border-round ">
     <h2 class="mb-4">Кредит на автомобіль</h2>
-    <div class="grid surface-ground border-round">
+    <div class="grid surface-ground border-round p-4">
         <div class="col-8">
             <div class="flex flex-column col-8 w-full col gap-2">
             <div class="flex gap-2 mb-4">
