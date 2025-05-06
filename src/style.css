@@ -72,26 +72,54 @@ body {
 /* Шрифт для заголовків - Unbounded */
 h1, h2, h3, h4, h5, h6, .Unbounded-heading {
   font-family: 'Unbounded', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
-  margin: auto;
 }
 
 h1 {
   font-size: 1.5rem;         /* text-2xl */
-  font-weight: 700;          /* font-bold */
-  margin-bottom: 0.5rem;     /* mb-2 */
   line-height: 2rem;         /* line-height для text-2xl */
-  color: var(--p-text-color, #22223b); /* PrimeFlex змінна або дефолт */
 }
 
+h2 {
+  font-size: 1.4rem;        /* text-xl */
+  line-height: 1.75rem;      /* line-height для text-xl */
+}
 
+h3 {
+  font-size: 1.3rem;       /* text-lg */
+  line-height: 1.75rem;      /* line-height для text-lg */
+}
+
+h4 {
+  font-size: 1rem;           /* text-base */
+  line-height: 1.5rem;       /* line-height для text-base */
+}
+
+h5 {
+  font-size: 0.875rem;       /* text-sm */
+  line-height: 1.5rem;       /* line-height для text-base */
+}
 
 @media (min-width: 1024px) {
   h1 {
     font-size: 2.25rem;      /* lg:text-4xl */
-    margin-bottom: 1rem;     /* lg:mb-4 */
     line-height: 2.5rem;     /* line-height для text-4xl */
+  }
+
+  h2 {
+    font-size: 2rem;     /* lg:text-3xl */
+    line-height: 2.25rem;    /* line-height для text-3xl */
+  }
+
+  h3 {
+    font-size: 1.5rem;       /* lg:text-2xl */
+    line-height: 2rem;       /* line-height для text-2xl */
+  }
+
+  h4 {
+    font-size: 1.25rem;      /* lg:text-xl */
+    line-height: 1.75rem;    /* line-height для text-xl */
   }
 }
 

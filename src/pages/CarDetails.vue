@@ -18,28 +18,28 @@
             <!-- ==================== -->
             <!-- = НАВІГАЦІЯ       = -->
             <!-- ==================== -->
-            <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round mt-4" />
+            <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round mt-4 hidden md:block"/>
 
             <main>
                 <!-- ==================== -->
                 <!-- = ШАПКА СТОРІНКИ  = -->
                 <!-- ==================== -->
-                <div class="flex justify-content-between flex-column md:flex-row gap-3">
+                <div class="flex justify-content-between flex-column md:flex-row gap-2">
                     <!-- Блок з назвою та ціною -->
-                    <div class="flex flex-column align-items-start gap-2 w-full md:w-auto">
-                        <h1 class="m-0 text-2xl md:text-4xl">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
-                        <div class="flex align-items-center gap-2 flex-wrap">
-                            <div class="text-primary text-2xl md:text-3xl font-bold unbounded-font py-2">{{ formatPrice(car.price) }}</div>
-                            <div class="flex gap-2 flex-wrap pb-2 md:pb-0">
-                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning" class="py-1" />
-                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success" class="py-1" />
-                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info" class="py-1" />
+                    <div class="flex align-items-start flex-column">
+                        <h1 class="m-0 pt-2 md:pt-0">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
+                        <div class="flex flex-column align-content-center flex-wrap md:flex-row gap-0 md:gap-4">
+                            <h2 class="align-content-center text-primary p-0 my-2">{{ formatPrice(car.price) }}</h2>
+                            <div class="flex align-content-center flex-wrap gap-2">
+                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning"  />
+                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success"  />
+                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info"  />
                             </div>
                         </div>
                     </div>
                     
                     <!-- Блок кнопок дій -->
-                    <div class="hidden md:flex flex-row md:flex-column justify-content-between md:align-items-end gap-2 ">
+                    <div class="hidden md:flex flex-column gap-2 ">
                         <Button 
                             :label="isFavorite ? 'В обраних' : 'В обрані'" 
                             :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
@@ -96,7 +96,7 @@
                         </div>
                         
                         <!-- Панель контактів -->
-                        <Panel header="Контактна інформація" class="mb-4">
+                        <Panel header="Продавець" class="mb-4">
                             <div class="text-2xl font-bold text-700 mb-1">Сергій</div>
                             <div class="flex align-items-center gap-2 mb-2">
                                 <span class="text-600 text-sm ">Дата реєстрації</span>
@@ -248,24 +248,25 @@
                                 </template>
                             </Galleria>
 
-    <!-- Інформація про оголошення -->  
-                            <Toolbar class="flex flex-column md:flex-row p-0 surface-ground p-3">
+                            <!-- Інформація про оголошення -->  
+                            <Toolbar class="flex">
                                 <template #start>
-                                    <div class="flex align-items-center gap-3">
-                                        <div class="flex align-items-center gap-2">
+                                    <div class="flex gap-3">
+                                        <div class="flex gap-2 align-items-center">
                                         <i class="pi pi-eye text-600"></i>
                                         <span class="font-medium text-600">1234</span>
                                         </div>
-                                        <div class="flex align-items-center gap-2">
+                                        <div  class="flex gap-2" >
                                             <i class="pi pi-calendar text-600"></i>
-                                            <span class="text-600">Опубліковано: {{ formatDate(car.created_at) }}</span>
+                                            <span class="text-600">{{ formatDate(car.created_at) }}</span>
                                         </div>
                                         
                                     </div>  
                                 </template>
 
                                 <template #end>
-                                    <div class="flex gap-2 mt-3">
+                                    <div class="flex gap-2">
+                                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" class="w-full" />
                                         <Button 
                                             :label="isFavorite ? 'В обраних' : 'В обрані'" 
                                             :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
@@ -273,8 +274,8 @@
                                             :variant="isFavorite ? 'filled' : 'outlined'"
                                             @click="toggleFavorite"
                                             class="w-full"
-                                         />
-                                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" class="w-full" />
+                                        />
+                                        
                                     </div>
                                 </template>
                             </Toolbar>
@@ -295,11 +296,20 @@
                                     </div>
                                 </template>
                             </Card>
+
+                            <!-- Додайте компонент кредитного калькулятора -->
+                            <CreditCalculator 
+                            class="w-full"
+                            />
+
+
                             
                         </div>
                     </div>
                 </div>
             </main>
+
+            
         </div>
     </Mainlayout>
 </template>
@@ -317,6 +327,7 @@ import { demoCars } from '@/data/demo/cars';
 import Galleria from 'primevue/galleria';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
+import CreditCalculator from '@/components/credit/CreditCalculator.vue';
 
 /**
  * =====================
@@ -404,6 +415,8 @@ onUnmounted(() => {
  * =====================
  */
 const carParams = computed(() => [
+    { label: 'Марка', value: car.value.brand },
+    { label: 'Модель', value: car.value.model },
     { label: 'Рік випуску', value: car.value.year },
     { label: 'Пробіг', value: `${car.value.mileage} тис. км` },
     { label: 'Двигун', value: `${car.value.fuel_type} ${car.value.engine_capacity} ${car.value.engine_unit}` },
@@ -655,17 +668,5 @@ const toggleFavorite = () => {
     color: #fff !important;
 }
 
-/* Додайте стилі для анімації */
-.p-button {
-  transition: all 0.2s ease;
-}
 
-.p-button:hover {
-  transform: scale(1.02);
-}
-
-/* Стиль для іконки серця */
-.pi-heart-fill {
-  color: var(--primary-color);
-}
 </style> 
