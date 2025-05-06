@@ -40,7 +40,14 @@
                     
                     <!-- Блок кнопок дій -->
                     <div class="hidden md:flex flex-row md:flex-column justify-content-between md:align-items-end gap-2 ">
-                        <Button label="Додати в обрані" icon="pi pi-heart" severity="warn" variant="outlined" class="w-auto" />
+                        <Button 
+                            :label="isFavorite ? 'В обраних' : 'В обрані'" 
+                            :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+                            :severity="isFavorite ? 'primary' : 'warn'" 
+                            :variant="isFavorite ? 'filled' : 'outlined'"
+                            @click="toggleFavorite"
+                            class="w-auto"
+                        />
                         <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text"  />
                     </div>
                 </div>
@@ -131,7 +138,7 @@
 
                                                        
                             <div class="w-full surface-ground border-round-lg overflow-hidden mb-4 md:mb-0">
-                                <div class="relative w-full md:h-30rem surface-section overflow-hidden">
+                                <div class="relative w-full h-[300px] md:h-[30rem] surface-section overflow-hidden">
                                     <div class="photo-counter" >
                                         <span class="font-medium">{{ currentImageIndex + 1 }}</span>
                                         <span class="text-300">/</span>
@@ -139,7 +146,7 @@
                                     </div>
 
                                     <div ref="imageContainer" 
-                                        class="flex gap-1 w-full h-[300px] md:h-full overflow-x-auto scroll-smooth scrollbar-none"
+                                        class="flex gap-1 w-full h-[300px] md:h-[30rem] overflow-x-auto scroll-smooth scrollbar-none"
                                         style="scroll-snap-type: x mandatory;"
                                         @scroll="handleScroll">
                                         <div v-for="(image, index) in carImages" 
@@ -241,13 +248,13 @@
                                 </template>
                             </Galleria>
 
-                            <!-- Інформація про оголошення -->  
+    <!-- Інформація про оголошення -->  
                             <Toolbar class="flex flex-column md:flex-row p-0 surface-ground p-3">
                                 <template #start>
                                     <div class="flex align-items-center gap-3">
                                         <div class="flex align-items-center gap-2">
-                                            <i class="pi pi-eye text-600"></i>
-                                            <span class="font-medium text-600">1234</span>
+                                        <i class="pi pi-eye text-600"></i>
+                                        <span class="font-medium text-600">1234</span>
                                         </div>
                                         <div class="flex align-items-center gap-2">
                                             <i class="pi pi-calendar text-600"></i>
@@ -258,9 +265,16 @@
                                 </template>
 
                                 <template #end>
-                                    <div class="flex align-items-center gap-2 mt-2 md:mt-0">
-                                        <Button label="Додати в обрані" icon="pi pi-heart" severity="warn" variant="outlined" />
-                                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" />
+                                    <div class="flex gap-2 mt-3">
+                                        <Button 
+                                            :label="isFavorite ? 'В обраних' : 'В обрані'" 
+                                            :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+                                            :severity="isFavorite ? 'primary' : 'warn'" 
+                                            :variant="isFavorite ? 'filled' : 'outlined'"
+                                            @click="toggleFavorite"
+                                            class="w-full"
+                                         />
+                                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" class="w-full" />
                                     </div>
                                 </template>
                             </Toolbar>
@@ -368,6 +382,12 @@ onMounted(() => {
     if (imageContainer.value) {
         imageContainer.value.addEventListener('scroll', debouncedScroll);
     }
+
+    // Прокручуємо сторінку вгору при монтуванні компонента
+    window.scrollTo({
+        top: 0,
+        behavior: 'instant' // або 'smooth' для плавного скролу
+    })
 });
 
 onUnmounted(() => {
@@ -556,23 +576,53 @@ const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'd MMMM yyyy', { locale: uk });
 };
+
+// Винесемо стан та функцію на рівень компонента
+const isFavorite = ref(false)
+
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value
+}
 </script>
 
 <style scoped>
 /* Базові стилі для зображень */
 .desktop-image {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
+    display: none; /* Приховуємо на мобільних */
+}
+
+/* Стилі для мобільних зображень */
+.mobile-image {
+    width: 100% !important;
+    height: 300px !important;
+    object-fit: cover !important;
     display: block;
 }
 
-/* Оновлюємо стилі для мобільних зображень */
-.mobile-image {
-    width: 100% !important;
-    height: 300px !important; /* Фіксована висота для мобільної версії */
-    object-fit: cover !important;
+/* Приховуємо скролбар */
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE та Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari та Opera */
+}
+
+/* Медіа-запит для десктопної версії */
+@media screen and (min-width: 768px) {
+.desktop-image {
     display: block;
+        height: 30rem !important;
+        width: auto !important;
+        object-fit: contain !important;
+}
+
+.mobile-image {
+        height: 30rem !important;
+        width: auto !important;
+        object-fit: contain !important;
+    }
 }
 
 /* Стилі для лічильника фото */
@@ -603,5 +653,19 @@ const formatDate = (dateString) => {
 
 .nav-button {
     color: #fff !important;
+}
+
+/* Додайте стилі для анімації */
+.p-button {
+  transition: all 0.2s ease;
+}
+
+.p-button:hover {
+  transform: scale(1.02);
+}
+
+/* Стиль для іконки серця */
+.pi-heart-fill {
+  color: var(--primary-color);
 }
 </style> 

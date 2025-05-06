@@ -1,14 +1,15 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import './style.css'
-import App from './App.vue'
-import router from './router'
-
 import PrimeVue from 'primevue/config'
 import { definePreset } from '@primeuix/themes'
 import Lara from '@primeuix/themes/lara'
-import 'primeicons/primeicons.css'
+
+// Імпортуємо стилі в правильному порядку
+import './style.css'
 import 'primeflex/primeflex.css'
+import 'primeicons/primeicons.css'
+
+import App from './App.vue'
+import router from './router'
 
 // Імпорт компонентів PrimeVue
 import Button from 'primevue/button'
@@ -67,9 +68,6 @@ const MyPreset = definePreset(Lara, {
 
 // Створюємо та налаштовуємо додаток
 const app = createApp(App)
-
-const pinia = createPinia()
-app.use(pinia)
 
 // Налаштовуємо PrimeVue
 app.use(PrimeVue, {
@@ -133,6 +131,5 @@ app.component('Galleria', Galleria)
 app.component('Toolbar', Toolbar)
 // Монтуємо додаток
 app.mount('#app')
-
 document.documentElement.classList.remove('dark')
 document.body.classList.remove('dark')

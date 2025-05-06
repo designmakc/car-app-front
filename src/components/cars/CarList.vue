@@ -192,7 +192,7 @@ EMITS:
 - (loading-change): (loading: boolean) => void // Подія зміни стану завантаження
 */
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import CarCard from './CarCard.vue'
 import ProgressSpinner from 'primevue/progressspinner'
 import Button from 'primevue/button'
@@ -210,27 +210,26 @@ const props = defineProps({
   limit: {
     type: Number,
     required: false,
-    default: 12,
+    default: 20,
     validator: (value) => value > 0
   },
   // Кількість авто для підвантаження за раз
   perPage: {
     type: Number,
     required: false,
-    default: 12,
+    default: 8,
     validator: (value) => value > 0 && value <= 20
   },
   // Режим підвантаження: безкінечний скрол чи кнопка
   infiniteScroll: {
     type: Boolean,
     required: false,
-    default: false
+    default: true
   },
   // Функція для отримання даних
   provideCars: {
     type: Function,
-    required: false,
-    default: null
+    required: true
   },
   // Режим демо (для відображення демо-даних)
   demo: {
@@ -243,8 +242,8 @@ const props = defineProps({
     default: () => ({
       xs: 1,  // <576px - одна картка
       sm: 2,  // ≥576px - дві картки
-      md: 2,  // ≥768px - дві картки
-      lg: 3,  // ≥992px - три картки
+      md: 3,  // ≥768px - три картки
+      lg: 4,  // ≥992px - чотири картки
       xl: 4   // ≥1200px - чотири картки
     }),
     validator: (value) => {
@@ -263,17 +262,12 @@ const emit = defineEmits(['load-more', 'loading-change'])
 // Стан
 const cars = ref([])
 const loading = ref(false)
-const page = ref(1)
+const currentPage = ref(1)
 const hasMoreCars = ref(true)
 
 // Обчислювані властивості
 const displayedCars = computed(() => {
   return cars.value
-})
-
-// Функція для надання авто в залежності від режиму
-const actualProvideCarsFn = computed(() => {
-  return props.provideCars
 })
 
 // Кількість скелетонів для відображення
@@ -287,35 +281,24 @@ const gridClasses = computed(() => {
 
 // Методи
 const loadCars = async () => {
-  if (loading.value || !hasMoreCars.value || cars.value.length >= props.limit) return
-  
-  loading.value = true
-  emit('loading-change', true)
-  
+  if (loading.value || !hasMoreCars.value) return
+
   try {
-    // Передаємо поточну сторінку та кількість на сторінку
-    const newCars = await actualProvideCarsFn.value(page.value, props.perPage)
+    loading.value = true
+    const newCars = await props.provideCars(currentPage.value, props.perPage)
     
-    // Додаємо нові машини до списку
-    cars.value = [...cars.value, ...newCars]
-    
-    // Перевіряємо, чи є ще машини для завантаження
-    hasMoreCars.value = newCars.length === props.perPage && cars.value.length < props.limit
-    
-    // Збільшуємо номер сторінки для наступного запиту
-    page.value++
-    
-    emit('load-more', {
-      page: page.value,
-      totalItems: cars.value.length,
-      hasMore: hasMoreCars.value
-    })
+    // Перевіряємо, чи є нові автомобілі
+    if (newCars && newCars.length > 0) {
+      cars.value = [...cars.value, ...newCars]
+      currentPage.value++
+      hasMoreCars.value = cars.value.length < props.limit
+    } else {
+      hasMoreCars.value = false
+    }
   } catch (error) {
-    console.error('Помилка завантаження авто:', error)
-    hasMoreCars.value = false // Зупиняємо завантаження при помилці
+    console.error('Error loading cars:', error)
   } finally {
     loading.value = false
-    emit('loading-change', false)
   }
 }
 
@@ -323,21 +306,30 @@ const loadMore = () => {
   loadCars()
 }
 
-// Обробник безкінечного скролу
+// Обробник скролу
 const handleScroll = () => {
-  if (!props.infiniteScroll || loading.value) return
-  
-  const scrollPosition = window.innerHeight + window.scrollY
-  const threshold = document.documentElement.scrollHeight - 200 // Збільшено поріг
-  
-  if (scrollPosition >= threshold) {
+  if (!props.infiniteScroll) return
+
+  const scrollHeight = document.documentElement.scrollHeight
+  const scrollTop = document.documentElement.scrollTop
+  const clientHeight = document.documentElement.clientHeight
+
+  if (scrollTop + clientHeight >= scrollHeight - 100) {
     loadCars()
   }
 }
 
+// Скидання списку при зміні фільтрів або сортування
+const resetList = () => {
+  cars.value = []
+  currentPage.value = 1
+  hasMoreCars.value = true
+  loadCars()
+}
+
 // Життєвий цикл
 onMounted(() => {
-  loadCars() // Завантажуємо першу порцію
+  loadCars()
   if (props.infiniteScroll) {
     window.addEventListener('scroll', handleScroll)
   }
@@ -348,6 +340,9 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
   }
 })
+
+// Спостерігаємо за змінами пропсів
+watch(() => props.provideCars, resetList)
 </script>
 
 <!-- Мінімальні стилі для анімації -->

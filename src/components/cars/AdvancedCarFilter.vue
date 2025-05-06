@@ -806,7 +806,7 @@ const closeMobileFilters = () => {
         <!-- Кнопки для десктопу -->
         <div class="grid gap-4 w-full m-0 hidden-mobile">
           <Button 
-            :label="'Показати ' + foundCarsCount + ' оголошень'" 
+            :label="'Показати ' + foundCarsCount  + ' оголошень'" 
             icon="pi pi-search" 
             size="large" 
             class="w-full"
