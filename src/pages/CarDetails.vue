@@ -2,10 +2,11 @@
 /**
  * CarDetails.vue
  * 
- * Component for displaying detailed car information including:
- * - Image gallery
- * - Main specifications 
- * - Seller contact info
+ * Компонент для відображення детальної інформації про автомобіль:
+ * - Галерея зображень
+ * - Основні характеристики
+ * - Контактна інформація продавця
+ * - Опис та додаткові опції
  *
  * @component
  */
@@ -42,15 +43,15 @@
                         <div class="flex flex-column align-content-center flex-wrap md:flex-row gap-0 md:gap-4">
                             <h2 class="align-content-center text-primary p-0 my-2">{{ formatPrice(car.price) }}</h2>
                             <div class="flex align-content-center flex-wrap gap-2">
-                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning"  class="font-normal"/>
-                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success"  class="font-normal"    />
-                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info"  class="font-normal"/>
+                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning" class="font-normal"/>
+                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success" class="font-normal"/>
+                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info" class="font-normal"/>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Action buttons -->
-                    <div class="hidden md:flex flex-column gap-2 ">
+                    <div class="hidden md:flex flex-column gap-2">
                         <Button 
                             :label="isFavorite ? 'В обраних' : 'В обрані'" 
                             :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
@@ -59,7 +60,7 @@
                             @click="toggleFavorite"
                             class="w-auto"
                         />
-                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text"  />
+                        <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" />
                     </div>
                 </div>
 
@@ -71,22 +72,7 @@
                     <!-- ==================== -->
                     <!-- = SIDEBAR        = -->
                     <!-- ==================== -->
-                    <div class="col-12 md:col-3 md:pl-0 mt-0 md:flex-order-0 flex-order-1">
-                        <!-- Parameters panel -->
-                        <div v-if="isLoading">
-                            <Skeleton class="mb-4" height="15rem" />
-                        </div>
-                        <CarParameters v-else :params="carParams" />
-
-                        <!-- Owner comment for mobile -->
-                        <div class="md:hidden">
-                            <div v-if="isLoading">
-                                <Skeleton class="mb-4" height="10rem" />
-                            </div>
-                            <CarDescription v-else :description="car.description" />
-                            <CreditCalculator />
-                        </div>
-                        
+                    <div class="col-12 md:col-3 md:pl-0 mt-0 flex-order-2 md:flex-order-0">
                         <!-- Contact panel -->
                         <div v-if="isLoading">
                             <Skeleton class="mb-4" height="20rem" />
@@ -105,7 +91,7 @@
                     <!-- ==================== -->
                     <!-- = GALLERY        = -->
                     <!-- ==================== -->
-                    <div class="col-12 md:col-9 md:flex-order-1 flex-order-0"> 
+                    <div class="col-12 md:col-9 flex-order-0 md:flex-order-1"> 
                         <div class="content p-0 surface-card p-0 border-round">
                             <!-- Галерея зображень --> 
                             <div v-if="isLoading">
@@ -143,11 +129,17 @@
                                 @toggle-favorite="toggleFavorite"
                             />
 
+                            <!-- Parameters panel -->
+                            <div v-if="isLoading">
+                                <Skeleton class="mb-4" height="15rem" />
+                            </div>
+                            <CarParameters v-else :params="carParams" class="mt-4" />
+
                             <!-- Owner comment -->  
                             <div v-if="isLoading">
                                 <Skeleton class="mb-4" height="10rem" />
                             </div>
-                            <CarDescription v-else :description="car.description" class="hidden md:block" />
+                            <CarDescription v-else :description="car.description" />
 
                             <!-- Car Options -->
                             <div v-if="isLoading">
@@ -155,8 +147,8 @@
                             </div>
                             <CarOptions v-else :options="carOptions" class="mt-4" />
 
-                            <!-- Credit calculator для десктопу -->
-                            <div class="mt-4 hidden md:block">
+                            <!-- Credit calculator -->
+                            <div class="mt-4">
                                 <CreditCalculator />
                             </div>
                         </div>
@@ -164,6 +156,12 @@
                 </div>
             </main>
         </div>
+        <CarStickyPhoneButton
+            :sellerName="'Сергій'"
+            :registrationDate="'12.03.2022'"
+            :location="'м. Київ Київська область'"
+            :phoneNumber="phoneNumber"
+        />
     </Mainlayout>
 </template>
 
@@ -189,6 +187,7 @@ import CarDescription from '@/components/cars/details/CarDescription.vue';
 import CarContactBlock from '@/components/cars/details/CarContactBlock.vue';
 import CarStatistics from '@/components/cars/details/CarStatistics.vue';
 import CarOptions from '@/components/cars/details/CarOptions.vue';
+import CarStickyPhoneButton from '@/components/cars/details/CarStickyPhoneButton.vue';
 
 /**
  * =====================
