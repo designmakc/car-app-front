@@ -149,6 +149,12 @@
                             </div>
                             <CarDescription v-else :description="car.description" class="hidden md:block" />
 
+                            <!-- Car Options -->
+                            <div v-if="isLoading">
+                                <Skeleton class="mb-4" height="20rem" />
+                            </div>
+                            <CarOptions v-else :options="carOptions" class="mt-4" />
+
                             <!-- Credit calculator для десктопу -->
                             <div class="mt-4 hidden md:block">
                                 <CreditCalculator />
@@ -170,7 +176,7 @@
 import Mainlayout from '@/layouts/Mainlayout.vue';
 import { useRoute } from 'vue-router';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { demoCars } from '@/data/demo/cars';
+import { demoCars, demoCarOptions } from '@/data/demo/cars';
 import CreditCalculator from '@/components/credit/CreditCalculator.vue';
 import Skeleton from 'primevue/skeleton';
 
@@ -182,6 +188,7 @@ import CarParameters from '@/components/cars/details/CarParameters.vue';
 import CarDescription from '@/components/cars/details/CarDescription.vue';
 import CarContactBlock from '@/components/cars/details/CarContactBlock.vue';
 import CarStatistics from '@/components/cars/details/CarStatistics.vue';
+import CarOptions from '@/components/cars/details/CarOptions.vue';
 
 /**
  * =====================
@@ -235,6 +242,8 @@ const carParams = computed(() => [
     { label: 'Колір', value: car.value.color },
     { label: 'Місто', value: car.value.city }
 ]);
+
+const carOptions = demoCarOptions;
 
 /**
  * =====================

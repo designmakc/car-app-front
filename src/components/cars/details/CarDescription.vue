@@ -7,26 +7,22 @@
 -->
 
 <template>
-    <Card class="mb-4">
-        <template #title>
-            <div class="flex align-items-center">
-                <i class="pi pi-comment mr-2"></i>
-                Опис автомобіля
-            </div>
-        </template>
-        <template #content>
-            <div>
-                <p class="m-0 text-lg">
+    <div class="surface-card border-round p-0">
+        <h3 class="text-xl font-semibold mb-4">Опис автомобіля</h3>
+        
+        <div class="border-round p-0">
+            <div class="flex align-items-start">
+                <i class="pi pi-comment text-primary mr-2 mt-1"></i>
+                <p class="m-0 text-lg line-height-3 text-color">
                     {{ description || 'Опис відсутній' }}
                 </p>
             </div>
-        </template>
-    </Card>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue';
-import Card from 'primevue/card';
 
 defineProps({
     description: {
