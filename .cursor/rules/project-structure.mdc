@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Структура проекту Vue 3 + PrimeVue 4
+
+Проект використовує Vue 3 з Composition API та PrimeVue 4 для UI компонентів.
+
+## Основні технології
+- Vue 3
+- PrimeVue 4
+- PrimeFlex для стилізації
+- PrimeIcons для іконок
+- Vue Router для навігації
+
+## Файлова структура
+- `src/main.js` - точка входу в додаток
+- `src/App.vue` - кореневий компонент
+- `src/router/index.js` - налаштування роутингу
+- `src/components/` - повторно використовувані компоненти
+- `src/pages/` - сторінки, які відображаються через роутер
+- `src/layouts/` - шаблони для сторінок
+- `src/composables/` - повторно використовувана логіка (composable functions)
+- `src/data/` - статичні дані для демонстрації
+
+## Важливі файли
+- [src/main.js](mdc:src/main.js) - налаштування Vue та PrimeVue
+- [src/router/index.js](mdc:src/router/index.js) - маршрутизація
+- [src/style.css](mdc:src/style.css) - глобальні стилі
+

@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Правила обробки даних
+
+## Загальні принципи
+- Дані мають точно відповідати майбутній API-структурі
+- У формах лише UI-валидація (required, maxlength)
+- Фільтри — заглушки з @input/@change, emit('update:filters')
+- API-запити — пусті методи з коментарями // TODO: API call
+- Демо-дані зберігати в окремих файлах у директорії src/data/
+
+## Заборонено
+- Не підключати реальні API
+- Не імпортувати бібліотеки для HTTP-запитів
+- Не реалізовувати авторизацію/сесію
+- Не оптимізувати завантаження даних (prefetch, cache)
+
+## Приклад роботи з даними
+```js
+// src/data/cars.js - файл з демо-даними
+export const cars = [
+  {
+    id: 1,
+    make: 'Toyota',
+    model: 'Camry',
+    year: 2022,
+    price: 950000,
+    mileage: 15000,
+    color: 'Білий',
+    transmission: 'Автомат',
+    // інші поля...
+  },
+  // інші автомобілі...
+];
+
+// Використання в компоненті
+import { cars } from '@/data/cars';
+import { ref, computed } from 'vue';
+
+// Реактивний стан з демо-даними
+const allCars = ref(cars);
+const filters = ref({
+  make: null,
+  priceRange: [0, 2000000],
+  year: null
+});
+
+// Фільтрація
+const filteredCars = computed(() => {
+  return allCars.value.filter(car => {
+    // Логіка фільтрації
+  });
+});
+
+/**
+ * Коментар для бекендера
+ * Endpoint: GET /api/cars?make={make}&minPrice={min}&maxPrice={max}&year={year}
+ * Params: всі опціональні
+ * Response: { data: Car[], total: number, page: number, perPage: number }
+ */
+const fetchCars = (params) => {
+  // TODO: API call
+  console.log('Fetch cars with params:', params);
+  // В реальному API запиті буде тут
+};
+```
+
+## Коментарі для бекендера
+Обов'язково додавати коментарі для бекендера:
+- Над компонентом — очікувані пропси
+- Над методами — опис ендпоінтів
+- Біля emit — очікувані події
+
+Для Laravel:
+- Позначати, де Blade, де Vue
+- Додавати коментарі про X-CSRF-TOKEN, multipart/form-data
+- Вказувати очікувані HTTP-коди помилок
+

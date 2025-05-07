@@ -1,0 +1,68 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Laravel + Inertia.js Інтеграція
+
+## Бекенд вимоги
+1. Контролер і методи
+2. Моделі та зв'язки
+3. API endpoints
+4. Структура даних
+5. Правила валідації
+
+## Приклад документації
+```typescript
+/**
+ * @backend Laravel API Integration
+ * 
+ * 1. Controller: App\Http\Controllers\ResourceController
+ * Methods:
+ * - index(): список ресурсів
+ * - show(id): деталі ресурсу
+ * - store(Request): створення
+ * - update(Request, id): оновлення
+ * - destroy(id): видалення
+ * 
+ * 2. Models & Relations:
+ * - Required models
+ * - Database relations
+ * - Eager loading
+ * 
+ * 3. API Structure:
+ * GET /api/resource:
+ * {
+ *   data: Array<{
+ *     id: number,
+ *     // ...fields
+ *   }>,
+ *   meta: {
+ *     current_page: number,
+ *     // ...pagination
+ *   }
+ * }
+ * 
+ * 4. Validation:
+ * class ResourceRequest extends FormRequest
+ * {
+ *   public function rules()
+ *   {
+ *     return [
+ *       // validation rules
+ *     ];
+ *   }
+ * }
+ */
+```
+
+## Чек-лист інтеграції
+- [ ] Описана структура даних
+- [ ] Вказані HTTP методи
+- [ ] Описана пагінація/сортування
+- [ ] Наведені приклади відповідей API
+- [ ] Описана обробка помилок
+- [ ] Вказані контролери/методи
+- [ ] Описані необхідні ресурси
+- [ ] Вказані Eloquent-зв'язки
+
