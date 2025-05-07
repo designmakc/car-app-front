@@ -11,7 +11,7 @@
 
     <!-- MobileNavbar для sm та md екранів -->
     <MobileNavbar class="block lg:hidden" /> 
-    <Footer class="w-full mt-auto" />
+    <Footer class="w-full mt-4" />
   </div>
 </template>
 

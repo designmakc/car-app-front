@@ -1,5 +1,5 @@
 <template>
-  <footer class="w-full surface-900 py-5 md:py-6">
+  <footer class="w-full surface-900 py-5 md:py-6 ">
     <div class="container">
       <!-- Логотип та опис -->
       <div class="mb-4">

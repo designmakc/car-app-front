@@ -78,7 +78,7 @@
           <div class="col-12 md:col-4 pl-0 md:pl-4 mt-4 md:mt-0">
             <div class="flex flex-column gap-4 align-content-between m-width-full">
               <!-- Інформація про платіж -->
-              <div class="payment-info surface-ground p-3 border-round">
+              <div class="payment-info bg-white p-3 border-round">
                 
                 <div class="text-xl mb-2">В місяць</div>
                 <div class="text-3xl font-bold mb-0">від {{ formatCurrency(calculateMonthlyPayment()) }}</div>
@@ -469,9 +469,7 @@ const closeDialog = () => {
   margin: 1rem 0;
 }
 
-.payment-info {
-  background: var(--p-surface-ground);
-}
+
 
 :deep(.p-button) {
   min-width: 100px;
