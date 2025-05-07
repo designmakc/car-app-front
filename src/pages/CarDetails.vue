@@ -2,12 +2,11 @@
 /**
  * CarDetails.vue
  * 
- * Компонент сторінки деталей автомобіля
- * Відображає повну інформацію про автомобіль, включаючи:
- * - Галерею зображень
- * - Основні характеристики
- * - Контактну інформацію продавця
- * 
+ * Component for displaying detailed car information including:
+ * - Image gallery
+ * - Main specifications 
+ * - Seller contact info
+ *
  * @component
  */
 -->
@@ -16,29 +15,29 @@
     <Mainlayout>
         <div class="car-details-page">
             <!-- ==================== -->
-            <!-- = НАВІГАЦІЯ       = -->
+            <!-- = NAVIGATION      = -->
             <!-- ==================== -->
             <Breadcrumb :home="home" :model="items" class="mb-4 p-2 border-round mt-4 hidden md:block"/>
 
             <main>
                 <!-- ==================== -->
-                <!-- = ШАПКА СТОРІНКИ  = -->
+                <!-- = PAGE HEADER    = -->
                 <!-- ==================== -->
                 <div class="flex justify-content-between flex-column md:flex-row gap-2">
-                    <!-- Блок з назвою та ціною -->
+                    <!-- Title and price block -->
                     <div class="flex align-items-start flex-column">
                         <h1 class="m-0 pt-2 md:pt-0">{{ car.brand }} {{ car.model }} {{ car.year }}</h1>
                         <div class="flex flex-column align-content-center flex-wrap md:flex-row gap-0 md:gap-4">
                             <h2 class="align-content-center text-primary p-0 my-2">{{ formatPrice(car.price) }}</h2>
                             <div class="flex align-content-center flex-wrap gap-2">
-                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning"  />
-                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success"  />
-                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info"  />
+                                <Tag v-if="car.is_top" icon="pi pi-star" value="TOP" severity="warning"  class="font-normal"/>
+                                <Tag v-if="car.status === 'На майданчику'" value="На майданчику" severity="success"  class="font-normal"    />
+                                <Tag v-if="car.exchange_available" icon="pi pi-sync" value="Обмін" severity="info"  class="font-normal"/>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Блок кнопок дій -->
+                    <!-- Action buttons -->
                     <div class="hidden md:flex flex-column gap-2 ">
                         <Button 
                             :label="isFavorite ? 'В обраних' : 'В обрані'" 
@@ -53,15 +52,15 @@
                 </div>
 
                 <!-- ==================== -->
-                <!-- = ОСНОВНИЙ КОНТЕНТ = -->
+                <!-- = MAIN CONTENT   = -->
                 <!-- ==================== -->
                 <div class="flex flex-row flex-wrap md:flex-nowrap grid mt-1 md:mt-4">
                     
                     <!-- ==================== -->
-                    <!-- = САЙДБАР         = -->
+                    <!-- = SIDEBAR        = -->
                     <!-- ==================== -->
                     <div class="col-12 md:col-3 md:pl-0 mt-0 md:flex-order-0 flex-order-1">
-                        <!-- Панель параметрів -->
+                        <!-- Parameters panel -->
                         <Panel header="Основні параметри" class="mb-4">
                             <template v-for="(param, index) in carParams" :key="index">
                                 <div class="flex w-full pr-2 mb-3">
@@ -76,7 +75,7 @@
                             </template>
                         </Panel>
 
-                        <!-- Коментар власника для мобільної версії -->
+                        <!-- Owner comment for mobile -->
                         <div class="md:hidden">
                             <Card pt="2" class="mb-4">
                                 <template #title>
@@ -88,14 +87,19 @@
                                 <template #content>
                                     <div>
                                         <p class="m-0 ">
-                                            Прдам лансер в . Дизель. 150 л.с. На механіці. Датчик дождю і світла. Задня камера. Саббуфер. Торг на каву із заправкою бака. Терміново
+                                            {{ car.description || 'Опис відсутній' }}
                                         </p>
                                     </div>
                                 </template>
                             </Card>
+                            
+                            <!-- Кредитний калькулятор для мобільних пристроїв -->
+                            <div class="mb-4">
+                                <CreditCalculator />
+                            </div>
                         </div>
                         
-                        <!-- Панель контактів -->
+                        <!-- Contact panel -->
                         <Panel header="Продавець" class="mb-4">
                             <div class="text-2xl font-bold text-700 mb-1">Сергій</div>
                             <div class="flex align-items-center gap-2 mb-2">
@@ -131,15 +135,14 @@
                     </div>
                     
                     <!-- ==================== -->
-                    <!-- = ГАЛЕРЕЯ         = -->
+                    <!-- = GALLERY        = -->
                     <!-- ==================== -->
                     <div class="col-12 md:col-9 md:flex-order-1 flex-order-0"> 
-                        <div class="content p-0">
-
-                                                       
-                            <div class="w-full surface-ground border-round-lg overflow-hidden mb-4 md:mb-0">
+                        <div class="content p-0 surface-card p-0 border-round">
+                            <!-- Галерея зображень --> 
+                            <div class="surface-ground border-round-lg overflow-hidden mb-4">
                                 <div class="relative w-full h-[300px] md:h-[30rem] surface-section overflow-hidden">
-                                    <div class="photo-counter" >
+                                    <div class="photo-counter">
                                         <span class="font-medium">{{ currentImageIndex + 1 }}</span>
                                         <span class="text-300">/</span>
                                         <span class="text-300">{{ carImages.length }}</span>
@@ -155,8 +158,7 @@
                                             :style="{ 
                                                 width: isMobile ? '100%' : `${imageWidths[index]}px`,
                                                 'scroll-snap-align': 'start'
-                                            }"
-                                        >
+                                            }">
                                             <img :src="image.url" 
                                                 :alt="`${car.brand} ${car.model}`"
                                                 class="mobile-image md:desktop-image" 
@@ -206,8 +208,7 @@
                                                 ? 'border-2 border-primary opacity-100' 
                                                 : 'opacity-70 hover:opacity-90'
                                         ]"
-                                        style="width: 100px; height: 67px; position: relative;"
-                                    >
+                                        style="width: 100px; height: 67px; position: relative;">
                                         <div class="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center overflow-hidden">
                                             <img :src="image.url" 
                                                 :alt="`${car.brand} ${car.model} - ${index + 1}`"
@@ -219,7 +220,7 @@
                                 </div>
                             </div>
                              
-                            <!-- Галерея фул скрін -->
+                            <!-- Fullscreen gallery -->
                             <Galleria v-model:visible="isFullscreenGalleryVisible" 
                                       :value="carImages" 
                                       :circular="true" 
@@ -248,19 +249,18 @@
                                 </template>
                             </Galleria>
 
-                            <!-- Інформація про оголошення -->  
-                            <Toolbar class="flex">
+                            <!-- Listing info -->  
+                            <Toolbar class="mt-4">
                                 <template #start>
                                     <div class="flex gap-3">
                                         <div class="flex gap-2 align-items-center">
-                                        <i class="pi pi-eye text-600"></i>
-                                        <span class="font-medium text-600">1234</span>
+                                            <i class="pi pi-eye text-600"></i>
+                                            <span class="font-medium text-600">1234</span>
                                         </div>
-                                        <div  class="flex gap-2" >
+                                        <div class="flex gap-2">
                                             <i class="pi pi-calendar text-600"></i>
                                             <span class="text-600">{{ formatDate(car.created_at) }}</span>
                                         </div>
-                                        
                                     </div>  
                                 </template>
 
@@ -275,15 +275,14 @@
                                             @click="toggleFavorite"
                                             class="w-full"
                                         />
-                                        
                                     </div>
                                 </template>
                             </Toolbar>
 
-                            <!-- Коментар власника -->  
+                            <!-- Owner comment -->  
                             <Card class="hidden md:block mt-4">
                                 <template #title>
-                                    <div>
+                                    <div class="flex align-items-center">
                                         <i class="pi pi-comment mr-2"></i>
                                         Опис автомобіля
                                     </div>
@@ -297,19 +296,14 @@
                                 </template>
                             </Card>
 
-                            <!-- Додайте компонент кредитного калькулятора -->
-                            <CreditCalculator 
-                            class="w-full"
-                            />
-
-
-                            
+                            <!-- Credit calculator для десктопу -->
+                            <div class="mt-4 hidden md:block">
+                                <CreditCalculator />
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
-
-            
         </div>
     </Mainlayout>
 </template>
@@ -317,7 +311,7 @@
 <script setup>
 /**
  * =====================
- * ІМПОРТИ ТА ЗАЛЕЖНОСТІ
+ * IMPORTS & DEPENDENCIES
  * =====================
  */
 import Mainlayout from '@/layouts/Mainlayout.vue';
@@ -331,7 +325,7 @@ import CreditCalculator from '@/components/credit/CreditCalculator.vue';
 
 /**
  * =====================
- * СТАНИ ТА РЕАКТИВНІСТЬ
+ * STATE & REACTIVITY
  * =====================
  */
 const route = useRoute();
@@ -340,16 +334,15 @@ const car = computed(() => {
     const foundCar = demoCars.find(c => c.id === carId) || demoCars[0];
     return {
         ...foundCar,
-        exchange_available: true // За замовчуванням true, можна змінити на false якщо потрібно
+        exchange_available: true
     };
 });
 
 /**
  * =====================
- * ГАЛЕРЕЯ
+ * GALLERY
  * =====================
  */
-// Стани галереї
 const carImages = computed(() => car.value.images || []);
 const currentImageIndex = ref(0);
 const currentImage = computed(() => carImages.value[currentImageIndex.value] || carImages.value[0]);
@@ -358,16 +351,11 @@ const imageWidths = ref([]);
 const imageWidth = ref(0);
 const isMobile = ref(window.innerWidth <= 768);
 
-// Обробники подій галереї
 const handleImageLoad = (event, index) => {
-    const img = event.target;
-    
     if (!isMobile.value) {
-        // Для десктопу - розрахунок на основі висоти контейнера
-        const renderedWidth = img.offsetWidth || img.clientWidth;
+        const renderedWidth = event.target.offsetWidth || event.target.clientWidth;
         imageWidths.value[index] = renderedWidth;
     }
-    // Для мобільних - ширина не потрібна, використовуємо 100%
 };
 
 const handleResize = () => {
@@ -376,14 +364,13 @@ const handleResize = () => {
 
 /**
  * =====================
- * ЖИТТЄВИЙ ЦИКЛ
+ * LIFECYCLE HOOKS
  * =====================
  */
 onMounted(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
     
-    // Додаємо обробник прокрутки з debounce
     let scrollTimeout;
     const debouncedScroll = () => {
         clearTimeout(scrollTimeout);
@@ -394,11 +381,10 @@ onMounted(() => {
         imageContainer.value.addEventListener('scroll', debouncedScroll);
     }
 
-    // Прокручуємо сторінку вгору при монтуванні компонента
     window.scrollTo({
         top: 0,
-        behavior: 'instant' // або 'smooth' для плавного скролу
-    })
+        behavior: 'instant'
+    });
 });
 
 onUnmounted(() => {
@@ -411,7 +397,7 @@ onUnmounted(() => {
 
 /**
  * =====================
- * ПАРАМЕТРИ АВТОМОБІЛЯ
+ * CAR PARAMETERS
  * =====================
  */
 const carParams = computed(() => [
@@ -429,7 +415,7 @@ const carParams = computed(() => [
 
 /**
  * =====================
- * НАВІГАЦІЯ
+ * NAVIGATION
  * =====================
  */
 const items = computed(() => [
@@ -442,7 +428,7 @@ const home = { icon: 'pi pi-home', url: '/' };
 
 /**
  * =====================
- * ФУНКЦІЇ ГАЛЕРЕЇ
+ * GALLERY FUNCTIONS
  * =====================
  */
 const scrollToImage = (indexOrDirection) => {
@@ -457,7 +443,6 @@ const scrollToImage = (indexOrDirection) => {
             : Math.max(currentImageIndex.value - 1, 0);
     }
 
-    // Змінюємо логіку прокрутки для мобільної версії
     if (isMobile.value) {
         const containerWidth = imageContainer.value.clientWidth;
         const scrollPosition = newIndex * containerWidth;
@@ -467,7 +452,6 @@ const scrollToImage = (indexOrDirection) => {
             behavior: 'smooth'
         });
     } else {
-        // Залишаємо оригінальну логіку для десктопу
         const scrollPosition = imageWidths.value
             .slice(0, newIndex)
             .reduce((acc, width) => acc + width, 0);
@@ -483,7 +467,7 @@ const scrollToImage = (indexOrDirection) => {
 
 /**
  * =====================
- * ФОРМАТУВАННЯ
+ * FORMATTING
  * =====================
  */
 const formatPrice = (price) => {
@@ -496,11 +480,11 @@ const formatPrice = (price) => {
 
 /**
  * =====================
- * ТЕЛЕФОННЫЙ НОМЕР
+ * PHONE NUMBER
  * =====================
  */
 const isPhoneVisible = ref(false);
-const phoneNumber = "098 123 45 67"; // Демо номер
+const phoneNumber = "098 123 45 67";
 
 const getPhoneLink = () => {
     return `tel:${phoneNumber.replace(/\s/g, '')}`;
@@ -510,14 +494,12 @@ const showPhoneNumber = () => {
     isPhoneVisible.value = true;
 };
 
-// Додаємо функцію для обробки прокрутки
 const handleScroll = () => {
     if (!imageContainer.value || !isMobile.value) return;
     
     const containerWidth = imageContainer.value.clientWidth;
     const scrollLeft = imageContainer.value.scrollLeft;
     
-    // Розраховуємо поточний індекс на основі прокрутки
     const newIndex = Math.round(scrollLeft / containerWidth);
     if (newIndex !== currentImageIndex.value) {
         currentImageIndex.value = newIndex;
@@ -526,7 +508,7 @@ const handleScroll = () => {
 
 /**
  * =====================
- * ПОВНОЕКРАННА ГАЛЕРЕЯ
+ * FULLSCREEN GALLERY
  * =====================
  */
 const isFullscreenGalleryVisible = ref(false);
@@ -550,28 +532,25 @@ const onTouchEnd = (e) => {
     const diffX = touchobj.pageX - startPos.x;
     const diffY = touchobj.pageY - startPos.y;
 
-    // Визначаємо напрямок свайпу
     if (Math.abs(diffX) > Math.abs(diffY)) {
         changePageOnTouch(diffX);
     }
 };
 
 const changePageOnTouch = (diff) => {
-    if (Math.abs(diff) < 50) return; // Мінімальна відстань для свайпу
+    if (Math.abs(diff) < 50) return;
 
     if (diff < 0) {
-        // Свайп вліво - наступне фото
         if (currentImageIndex.value < carImages.value.length - 1) {
             currentImageIndex.value++;
         } else if (carImages.value.length > 0) {
-            currentImageIndex.value = 0; // Переходимо на початок при circular=true
+            currentImageIndex.value = 0;
         }
     } else {
-        // Свайп вправо - попереднє фото
         if (currentImageIndex.value > 0) {
             currentImageIndex.value--;
         } else if (carImages.value.length > 0) {
-            currentImageIndex.value = carImages.value.length - 1; // Переходимо в кінець при circular=true
+            currentImageIndex.value = carImages.value.length - 1;
         }
     }
 };
@@ -590,7 +569,6 @@ const formatDate = (dateString) => {
     return format(date, 'd MMMM yyyy', { locale: uk });
 };
 
-// Винесемо стан та функцію на рівень компонента
 const isFavorite = ref(false)
 
 const toggleFavorite = () => {
@@ -599,12 +577,12 @@ const toggleFavorite = () => {
 </script>
 
 <style scoped>
-/* Базові стилі для зображень */
+/* Base image styles */
 .desktop-image {
-    display: none; /* Приховуємо на мобільних */
+    display: none;
 }
 
-/* Стилі для мобільних зображень */
+/* Mobile image styles */
 .mobile-image {
     width: 100% !important;
     height: 300px !important;
@@ -612,33 +590,33 @@ const toggleFavorite = () => {
     display: block;
 }
 
-/* Приховуємо скролбар */
+/* Hide scrollbar */
 .scrollbar-none {
-    -ms-overflow-style: none;  /* IE та Edge */
-    scrollbar-width: none;     /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari та Opera */
+    display: none;
 }
 
-/* Медіа-запит для десктопної версії */
+/* Desktop media query */
 @media screen and (min-width: 768px) {
-.desktop-image {
-    display: block;
+    .desktop-image {
+        display: block;
         height: 30rem !important;
         width: auto !important;
         object-fit: contain !important;
-}
+    }
 
-.mobile-image {
+    .mobile-image {
         height: 30rem !important;
         width: auto !important;
         object-fit: contain !important;
     }
 }
 
-/* Стилі для лічильника фото */
+/* Photo counter styles */
 .photo-counter {
     position: absolute;
     top: 1rem;
@@ -654,7 +632,7 @@ const toggleFavorite = () => {
     align-items: center;
 }
 
-/* Додаємо стилі для кнопок навігації */
+/* Navigation button styles */
 .nav-button:enabled:hover {
     background: rgba(0, 0, 0, 0.7) !important;
     border: none !important;
@@ -667,6 +645,4 @@ const toggleFavorite = () => {
 .nav-button {
     color: #fff !important;
 }
-
-
 </style> 
