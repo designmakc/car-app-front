@@ -91,6 +91,23 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import Dialog from 'primevue/dialog'
+import AdvancedCarFilter from '@/components/cars/AdvancedCarFilter.vue'
+
+// Змінна для діалогу пошуку
+const showSearchDialog = ref(false)
+const filters = ref({})
+const demoCarFormData = ref({})
+
+// Обробники подій фільтра
+const handleFiltersChange = (newFilters) => {
+  filters.value = newFilters
+}
+
+const handleApplyFilters = () => {
+  showSearchDialog.value = false
+  // Логіка застосування фільтрів
+}
 
 // Імпорт роутера та поточного маршруту
 const router = useRouter()
@@ -152,8 +169,8 @@ function setActive(index) {
       break
       
     case 'search':
-      // Тимчасово просто переходимо на сторінку пошуку
-      router.push('@click="openMobileFilters"')
+      // Відкриваємо діалог пошуку
+      showSearchDialog.value = true
       break
       
     case 'favorites':

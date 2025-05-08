@@ -47,6 +47,8 @@ import Breadcrumb from 'primevue/breadcrumb'
 import Galleria from 'primevue/galleria'
 import Toolbar from 'primevue/toolbar';
 
+
+
 // Налаштування пресету з оранжевою темою
 const MyPreset = definePreset(Lara, {
     semantic: {
@@ -129,6 +131,7 @@ app.component('OverlayBadge', OverlayBadge)
 app.component('Breadcrumb', Breadcrumb)
 app.component('Galleria', Galleria)
 app.component('Toolbar', Toolbar)
+
 // Монтуємо додаток
 app.mount('#app')
 document.documentElement.classList.remove('dark')

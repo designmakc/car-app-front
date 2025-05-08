@@ -73,8 +73,14 @@
                     <!-- = SIDEBAR        = -->
                     <!-- ==================== -->
                     <div class="col-12 md:col-3 md:pl-0 mt-0 flex-order-2 md:flex-order-0">
+                        <!-- Основные параметры (перенесено с основного блока) -->
+                        <div v-if="isLoading" class="flex-order-0 md:flex-order-0 mb-4">
+                            <Skeleton height="15rem" />
+                        </div>
+                        <CarParameters v-else :params="carParams" class="flex-order-0 md:flex-order-0 mb-4" />
+                        
                         <!-- Contact panel -->
-                        <div v-if="isLoading">
+                        <div v-if="isLoading" class="flex-order-1 md:flex-order-1">
                             <Skeleton class="mb-4" height="20rem" />
                         </div>
                         <CarContactBlock
@@ -85,6 +91,7 @@
                             :phoneNumber="phoneNumber"
                             :isPhoneVisible="isPhoneVisible"
                             @show-phone="showPhoneNumber"
+                            class="flex-order-1 md:flex-order-1"
                         />
                     </div>
                     
@@ -128,12 +135,6 @@
                                 :isFavorite="isFavorite"
                                 @toggle-favorite="toggleFavorite"
                             />
-
-                            <!-- Parameters panel -->
-                            <div v-if="isLoading">
-                                <Skeleton class="mb-4" height="15rem" />
-                            </div>
-                            <CarParameters v-else :params="carParams" class="mt-4" />
 
                             <!-- Owner comment -->  
                             <div v-if="isLoading">
