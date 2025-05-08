@@ -28,7 +28,7 @@
         <!-- Заголовок сторінки -->
         <div class="text-center mb-5">
           <h1>Продайте свій автомобіль</h1>
-          <p class="text-color-secondary mt-2">Вкажіть державний номер або VIN, і ми заповнимо оголошення за вас</p>
+          
         </div>
         
         <!-- Компонент категорій та поля VIN/держномера -->
@@ -68,18 +68,39 @@
               </IconField>
             </div>
             
+            <!-- Повідомлення про ненайдений автомобіль -->
+            <Message closable
+              v-if="isVinNotFound" 
+              severity="secondary"
+              class="mb-4 w-full"
+              icon="pi pi-exclamation-circle"
+            >
+              <div class="flex flex-column gap-2 pl-2">
+                <h4 class="m-0">Не змогли знайти ваш автомобіль</h4>
+                <p class="m-0">Заповніть оголошення вручну або перевірте номер</p>
+              </div>
+            </Message>
+            
             <div class="flex flex-column gap-3">
               <Button 
                 label="Далі" 
+                size="large"
                 class="w-full" 
+                :loading="isVinSubmitted && !isVinNotFound"
                 :disabled="!vinOrPlate"
+                @click="checkVin"
               />
               <Button 
                 label="Заповню все вручну" 
                 class="w-full p-button-text p-button-secondary" 
-                @click="fillManually"
+                @click="showManualForm"
               />
             </div>
+          </div>
+          
+          <!-- Форма для ручного заповнення оголошення -->
+          <div v-if="isManualForm" class="manual-form-container">
+            <CarForm />
           </div>
           
           <!-- Форма для грузових -->
@@ -230,13 +251,18 @@ import SelectButton from 'primevue/selectbutton';
 import InputNumber from 'primevue/inputnumber';
 import Dropdown from 'primevue/dropdown';
 import RadioButton from 'primevue/radiobutton';
+import IconField from 'primevue/iconfield';
+import IftaLabel from 'primevue/iftalabel';
+import InputIcon from 'primevue/inputicon';
+import Message from 'primevue/message';
+import CarForm from '@/components/cars/CarForm.vue';
 
 // Шляхи до зображень
 import logoSrc from '@/assets/logo-orang.svg';
 
 // Тип транспорту
 const selectedType = ref('Легковий');
-const vehicleTypeOptions = ['Легковий', 'Вантажний', 'Мото'];
+const vehicleTypeOptions = ['Легковий', 'Вантажний', 'Автобус', 'Мото'];
 
 // Пошук марок
 const searchBrand = ref('');
@@ -329,11 +355,26 @@ const filteredMotoBrands = computed(() => {
 
 // VIN або держномер
 const vinOrPlate = ref('');
+const isVinSubmitted = ref(false);
+const isVinNotFound = ref(false);
 
 // Ручне заповнення оголошення
 const fillManually = () => {
   // Тут буде логіка для переходу до ручного заповнення оголошення
   console.log('Перехід до ручного заповнення оголошення');
+};
+
+// Перевірка VIN/держномера
+const checkVin = () => {
+  if (!vinOrPlate.value) return;
+  
+  isVinSubmitted.value = true;
+  
+  // Імітація перевірки VIN/держномера
+  setTimeout(() => {
+    // Для демонстрації, припустимо, що автомобіль не знайдено
+    isVinNotFound.value = true;
+  }, 1000);
 };
 
 // Функція для визначення, чи опція має бути неактивною
@@ -362,6 +403,22 @@ watch(selectedType, (newValue, oldValue) => {
     };
   }
 });
+
+// Спостерігач за зміною VIN/держномера
+watch(vinOrPlate, () => {
+  if (isVinSubmitted.value) {
+    isVinSubmitted.value = false;
+    isVinNotFound.value = false;
+  }
+});
+
+// Новий стан для ручного заповнення оголошення
+const isManualForm = ref(false);
+
+// Функція для переходу до ручного заповнення оголошення
+const showManualForm = () => {
+  isManualForm.value = true;
+};
 </script>
 
 <style scoped>
