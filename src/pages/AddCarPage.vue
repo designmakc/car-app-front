@@ -24,7 +24,7 @@
     
     <!-- Основний контент сторінки -->
     <main class="flex-grow-1 flex flex-column align-items-center justify-content-start pt-6">
-      <div class="w-full max-w-max py-5">
+      <div class="col-12 py-5">
         <!-- Заголовок сторінки -->
         <div class="text-center mb-5">
           <h1>Продайте свій автомобіль</h1>
@@ -38,11 +38,10 @@
             <div class="p-buttonset w-full">
               <SelectButton 
                 v-model="selectedType" 
-                :options="vehicleTypeOptions" 
+                :options="vehicleTypeOptions"
+                :size="buttonSize"
                 allowEmpty="true"
-                size="large"
                 :optionDisabled="isOptionDisabled"
-                class="w-full"
                 :pt="{
                   root: { class: 'w-full flex' },
                   button: { class: 'flex-1 text-center' }
@@ -54,7 +53,7 @@
           <!-- Різний контент форми залежно від типу транспорту -->
           
           <!-- Форма для легкових -->
-          <div v-if="selectedType === 'Легковий'" class="vehicleTypeForm">
+          <div v-if="selectedType === 'Легковий' && !isManualForm" class="vehicleTypeForm">
             <!-- Поле для введення VIN/держномера -->
             <div class="mb-4 mt-2">
               <IconField>
@@ -86,6 +85,7 @@
                 label="Далі" 
                 size="large"
                 class="w-full" 
+                severity="success"
                 :loading="isVinSubmitted && !isVinNotFound"
                 :disabled="!vinOrPlate"
                 @click="checkVin"
@@ -256,6 +256,7 @@ import IftaLabel from 'primevue/iftalabel';
 import InputIcon from 'primevue/inputicon';
 import Message from 'primevue/message';
 import CarForm from '@/components/cars/CarForm.vue';
+import { useWindowSize } from '@vueuse/core';
 
 // Шляхи до зображень
 import logoSrc from '@/assets/logo-orang.svg';
@@ -263,6 +264,10 @@ import logoSrc from '@/assets/logo-orang.svg';
 // Тип транспорту
 const selectedType = ref('Легковий');
 const vehicleTypeOptions = ['Легковий', 'Вантажний', 'Автобус', 'Мото'];
+
+// Розмір кнопки в залежності від ширини екрану
+const { width } = useWindowSize();
+const buttonSize = computed(() => width.value < 768 ? 'small' : 'large');
 
 // Пошук марок
 const searchBrand = ref('');

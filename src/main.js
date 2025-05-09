@@ -46,7 +46,7 @@ import OverlayBadge from 'primevue/overlaybadge'
 import Breadcrumb from 'primevue/breadcrumb'
 import Galleria from 'primevue/galleria'
 import Toolbar from 'primevue/toolbar';
-
+import Editor from 'primevue/editor';
 
 
 // Налаштування пресету з оранжевою темою
@@ -131,6 +131,7 @@ app.component('OverlayBadge', OverlayBadge)
 app.component('Breadcrumb', Breadcrumb)
 app.component('Galleria', Galleria)
 app.component('Toolbar', Toolbar)
+app.component('Editor', Editor)
 
 // Монтуємо додаток
 app.mount('#app')

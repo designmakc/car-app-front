@@ -213,20 +213,20 @@ EMITS:
 */
 
 import { ref, computed } from 'vue'
+import { carBrands, getModelsByBrand } from '@/data/carFormOptions';
 
 // Дані про марки
 const selectedBrand = ref();
-const brands = ref([
-  { name: 'Audi', code: 'AUDI', models: ['A4', 'A6', 'Q5', 'Q7'] },
-  { name: 'BMW', code: 'BMW', models: ['X3', 'X5', '3 Series', '5 Series'] },
-  { name: 'Mercedes', code: 'MB', models: ['C-Class', 'E-Class', 'GLC', 'GLE'] },
-  // Інші марки...
-]);
+const brands = carBrands.map(brand => ({
+  name: brand.name,
+  code: brand.name.toLowerCase().replace(/\s+/g, '-'),
+  models: brand.models
+}));
 
 // Дані про моделі
 const selectedModel = ref();
 const allModels = computed(() => {
-  return brands.value.flatMap(brand => 
+  return brands.flatMap(brand => 
     brand.models.map(model => ({
       name: model,
       brandCode: brand.code
@@ -241,7 +241,7 @@ const handleBrandChange = () => {
 
 // Відсортовані марки
 const sortedBrands = computed(() => {
-  return [...brands.value].sort((a, b) => a.name.localeCompare(b.name));
+  return [...brands].sort((a, b) => a.name.localeCompare(b.name));
 });
 
 // Фільтровані моделі

@@ -42,7 +42,7 @@ Response: { data: Array<{name: string, count: number}>, total: number }
 
 import { ref, computed, onMounted } from 'vue'
 import Panel from 'primevue/panel'
-import { demoPopularBrands } from '@/data/demo/cars'
+import { carBrands } from '@/data/carFormOptions'
 
 const brands = ref([])
 const loading = ref(false)
@@ -61,8 +61,11 @@ const fetchPopularBrands = async () => {
 
     // Використовуємо демо-дані
     await new Promise(resolve => setTimeout(resolve, 500)) // Імітація затримки API
-    brands.value = demoPopularBrands
-    totalBrands.value = demoPopularBrands.length
+    brands.value = carBrands.slice(0, 12).map(brand => ({
+      name: brand.name,
+      count: Math.floor(Math.random() * 1000) + 100 // Генеруємо випадкову кількість для демо
+    }))
+    totalBrands.value = carBrands.length
   } catch (error) {
     console.error('Помилка при завантаженні брендів:', error)
   } finally {
@@ -85,16 +88,12 @@ const loadAllBrands = async () => {
     // const data = await response.json()
     // brands.value = data.data
     
-    // Демо-дані - додаємо більше брендів
+    // Демо-дані - додаємо всі бренди
     await new Promise(resolve => setTimeout(resolve, 500))
-    brands.value = [
-      ...brands.value,
-      { name: 'Volkswagen', count: 45123 },
-      { name: 'Renault', count: 32145 },
-      { name: 'Mazda', count: 28456 },
-      { name: 'Subaru', count: 15789 },
-      // ... можна додати більше брендів
-    ]
+    brands.value = carBrands.map(brand => ({
+      name: brand.name,
+      count: Math.floor(Math.random() * 1000) + 100 // Генеруємо випадкову кількість для демо
+    }))
     showAllBrands.value = true
   } catch (error) {
     console.error('Помилка при завантаженні всіх брендів:', error)
