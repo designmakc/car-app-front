@@ -3,7 +3,7 @@ import HomeView from '@/pages/HomeView.vue'
 import DesignSystemView from '@/pages/DesignSystemView.vue'
 import CatalogView from '@/pages/CatalogView.vue'
 import CarDetails from '@/pages/CarDetails.vue'
-import AddCarPage from '@/pages/AddCarPage.vue'
+import AddCar from '@/pages/AddCar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +31,7 @@ const router = createRouter({
     {
       path: '/add-car',
       name: 'add-car',
-      component: AddCarPage
+      component: AddCar
     }
   ],
   scrollBehavior(to, from, savedPosition) {

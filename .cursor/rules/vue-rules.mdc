@@ -1,0 +1,220 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Правила розробки Vue.js проекту
+
+## Технічний стек
+- Vue 3 з Composition API (`<script setup>`)
+- PrimeVue 4 для UI компонентів
+- PrimeFlex для utility-класів
+- PrimeIcons для іконок
+- TypeScript (опціонально)
+
+## Структура проекту
+```
+src/
+├── assets/         # Статичні ресурси
+├── components/     # Перевикористовувані компоненти
+├── composables/    # Композабл функції
+├── layouts/        # Шаблони сторінок
+├── pages/          # Сторінки додатку
+├── router/         # Конфігурація маршрутизації
+├── stores/         # Pinia сховища
+└── types/          # TypeScript типи
+```
+
+## Загальні правила розробки
+
+### Компоненти
+- Використовуйте тільки офіційні компоненти PrimeVue
+- Уникайте створення власних CSS-класів
+- Розділяйте код на малі, перевикористовувані компоненти
+- Кожен компонент має бути самодостатнім
+
+### Структура всех страниц
+```vue
+<template>
+  <MainLayout>
+    <!-- Контент сторінки -->
+  </MainLayout>
+</template>
+
+<script setup>
+// Імпорти
+import { ref, computed } from 'vue'
+import ComponentName from 'primevue/componentname'
+
+// Логіка компонента
+</script>
+
+<style scoped>
+/* Стилі тільки якщо не можна використати PrimeFlex */
+</style>
+```
+
+### UI компоненти PrimeVue
+- Кнопки: `<Button />`
+- Форми: `<InputText />`, `<Textarea />`, `<InputNumber />`
+- Таблиці: `<DataTable />`
+- Модальні вікна: `<Dialog />`
+- Сповіщення: `<Toast />` через `useToast()`
+
+### Адаптивний дизайн
+```vue
+<script setup>
+const { width } = useWindowSize()
+const buttonSize = computed(() => width.value < 768 ? 'small' : 'large')
+</script>
+
+<template>
+  <SelectButton 
+    v-model="selectedType" 
+    :options="vehicleTypeOptions"
+    :size="buttonSize"
+    :pt="{
+      root: { class: 'w-full flex' },
+      button: { class: 'flex-1 text-center' }
+    }"
+  />
+</template>
+```
+
+### Правила імпорту
+- Імпортуйте тільки необхідні компоненти
+- Використовуйте логічні назви для імпортів
+- Групуйте імпорти за категоріями (Vue, PrimeVue, власні компоненти)
+
+### Реактивність
+- Використовуйте `ref()` для простих значень
+- Використовуйте `computed()` для похідних значень
+- Використовуйте `v-model` для двостороннього зв'язування
+
+### Стилізація
+- Використовуйте PrimeFlex utility-класи
+- Уникайте власних CSS-класів
+- Використовуйте `:pt` проп для кастомізації PrimeVue компонентів
+
+### Стилізація без PrimeFlex заборонено
+
+
+### Приклад використання власних стилів
+```vue
+<template>
+  <div class="container">
+    <div class="flex flex-col gap-4">
+      <div class="flex justify-between items-center">
+        <h1>Заголовок</h1>
+        <Button label="Додати" class="hidenn md:block"/>
+      </div>
+      
+      <div class="flex flex-wrap gap-2">
+        <div class="w-half">
+          <InputText v-model="form.name" placeholder="Ім'я" />
+        </div>
+        <div class="w-half">
+          <InputText v-model="form.email" placeholder="Email" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+
+const form = ref({
+  name: '',
+  email: ''
+})
+</script>
+
+<style scoped>
+/* Використовуємо базові класи з вищезазначеного CSS */
+</style>
+```
+
+### Правила написання CSS
+- Використовуйте семантичні назви класів
+- Групуйте стилі за призначенням (layout, spacing, typography)
+- Використовуйте CSS змінні для кольорів та розмірів
+- Дотримуйтесь методології BEM для складних компонентів
+- Коментуйте складні CSS-правила
+
+### Приклад використання CSS змінних
+```vue
+<style>
+:root {
+  --p-primary-color: #4CAF50;
+  --p-secondary-color: #2196F3;
+  --p-spacing-unit: 1rem;
+  --p-border-radius: 4px;
+}
+
+.button {
+  background-color: var(--p-primary-color);
+  padding: var(--p-spacing-unit);
+  border-radius: var(--p-border-radius);
+}
+
+.card {
+  border: 1px solid var(--p-secondary-color);
+  padding: calc(var(--p-spacing-unit) * 2);
+}
+</style>
+```
+
+## Приклади використання
+
+### Модальне вікно
+```vue
+<script setup>
+import { ref } from 'vue'
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+
+const visible = ref(false)
+</script>
+
+<template>
+  <Button label="Відкрити" @click="visible = true" />
+  <Dialog v-model:visible="visible" modal header="Заголовок">
+    Контент діалогу
+  </Dialog>
+</template>
+```
+
+### Форма з валідацією
+```vue
+<script setup>
+import { ref } from 'vue'
+import InputText from 'primevue/inputtext'
+import Button from 'primevue/button'
+import { useToast } from 'primevue/usetoast'
+
+const form = ref({
+  name: '',
+  email: ''
+})
+const toast = useToast()
+
+const submit = () => {
+  // Логіка відправки форми
+  toast.add({ severity: 'success', summary: 'Успішно', detail: 'Форму відправлено' })
+}
+</script>
+
+<template>
+  <form @submit.prevent="submit">
+    <InputText v-model="form.name" placeholder="Ім'я" />
+    <InputText v-model="form.email" placeholder="Email" />
+    <Button type="submit" label="Відправити" />
+  </form>
+</template>
+```
+
+
+
