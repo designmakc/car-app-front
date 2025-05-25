@@ -11,6 +11,9 @@ import 'primeicons/primeicons.css'
 import App from './App.vue'
 import router from './router'
 
+// Stagewise toolbar
+import { initToolbar } from '@stagewise/toolbar'
+
 // Імпорт компонентів PrimeVue
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -133,7 +136,74 @@ app.component('Galleria', Galleria)
 app.component('Toolbar', Toolbar)
 app.component('Editor', Editor)
 
+// Конфігурація Stagewise toolbar
+const stagewiseConfig = {
+  plugins: [
+    {
+      name: 'car-app-plugin',
+      description: 'Додає контекст для компонентів автомобільного додатку',
+      shortInfoForPrompt: () => {
+        const currentRoute = router.currentRoute.value
+        const routeInfo = `Поточна сторінка: ${currentRoute.name || currentRoute.path}`
+        
+        // Додаткова інформація залежно від сторінки
+        let contextInfo = routeInfo
+        if (currentRoute.name === 'add-car') {
+          contextInfo += '\nСторінка додавання нового оголошення про автомобіль'
+        } else if (currentRoute.name === 'catalog') {
+          contextInfo += '\nКаталог автомобілів з фільтрами та пошуком'
+        } else if (currentRoute.name === 'car-details') {
+          contextInfo += `\nДетальна сторінка автомобіля ID: ${currentRoute.params.id}`
+        }
+        
+        return contextInfo
+      },
+      mcp: null,
+      actions: [
+        {
+          name: 'Перейти до каталогу',
+          description: 'Швидкий перехід до каталогу автомобілів',
+          execute: () => {
+            router.push('/catalog')
+          },
+        },
+        {
+          name: 'Додати авто',
+          description: 'Перейти до форми додавання автомобіля',
+          execute: () => {
+            router.push('/add-car')
+          },
+        },
+        {
+          name: 'Головна сторінка',
+          description: 'Повернутися на головну сторінку',
+          execute: () => {
+            router.push('/')
+          },
+        },
+        {
+          name: 'Показати інформацію про додаток',
+          description: 'Показує основну інформацію про автомобільний додаток',
+          execute: () => {
+            window.alert('Car Market App - додаток для продажу автомобілів\nВерсія: 1.0.0\nТехнології: Vue 3, PrimeVue, PrimeFlex')
+          },
+        },
+      ],
+    },
+  ],
+}
+
+// Ініціалізація Stagewise toolbar тільки в режимі розробки
+function setupStagewise() {
+  if (import.meta.env.DEV) {
+    initToolbar(stagewiseConfig)
+  }
+}
+
 // Монтуємо додаток
 app.mount('#app')
 document.documentElement.classList.remove('dark')
 document.body.classList.remove('dark')
+
+// Викликаємо налаштування Stagewise після монтування
+setupStagewise()

@@ -1,161 +1,194 @@
 <template>
     <Stepper value="1" class="grid col-12 gap-4">
       <!-- Крок 1: Характеристики -->
-      <StepItem value="1" class="col-6">
+      <StepItem value="1" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Характеристики</Step>
         <StepPanel v-slot="{ activateCallback }">
           <Card class="surface-100">
             <template #content>
               <div class="flex col gap-4">
                 <div class="flex flex-column gap-4 w-full">
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.vehicleType"
-                      filter
-                      showClear
-                      :options="vehicleTypes"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Тип транспорту</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.vehicleType"
+                        filter
+                        showClear
+                        :options="vehicleTypes"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Тип транспорту</label>
+                    </FloatLabel>
+                    <small class="hidden lg:block text-500 text-sm mt-3 w-12rem">Оберіть категорію транспортного засобу</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.brand"
-                      filter
-                      showClear
-                      :options="brands"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Марка авто</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.brand"
+                        filter
+                        showClear
+                        :options="brands"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Марка авто</label>
+                    </FloatLabel>
+                    <small class="hidden lg:block text-500 text-sm mt-3 w-12rem">Виробник автомобіля (BMW, Audi, Toyota тощо)</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.model"
-                      filter
-                      showClear
-                      :options="models"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Модель авто</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.model"
+                        filter
+                        showClear
+                        :options="models"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Модель авто</label>
+                    </FloatLabel>
+                    <small class="hidden lg:block text-500 text-sm mt-3 w-12rem">Конкретна модель обраної марки</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <InputNumber
-                      v-model="form.year"
-                      class="w-full"
-                      :min="1900"
-                      :max="new Date().getFullYear()"
-                    />
-                    <label>Рік випуску</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <InputNumber
+                        v-model="form.year"
+                        class="w-full"
+                        :min="1900"
+                        :max="new Date().getFullYear()"
+                      />
+                      <label>Рік випуску</label>
+                    </FloatLabel>
+                    <small class="hidden lg:block text-500 text-sm mt-3 w-12rem">Рік виготовлення автомобіля</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.bodyType"
-                      filter
-                      showClear
-                      :options="bodyTypesList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                    />
-                    <label>Тип кузова</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.bodyType"
+                        filter
+                        showClear
+                        :options="bodyTypesList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                      />
+                      <label>Тип кузова</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Седан, хетчбек, універсал тощо</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.generation"
-                      filter
-                      showClear
-                      :options="generationsList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Покоління</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.generation"
+                        filter
+                        showClear
+                        :options="generationsList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Покоління</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Покоління моделі (рестайлінг)</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.fuelType"
-                      filter
-                      showClear
-                      :options="fuelTypesList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Двигун (топливо)</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.fuelType"
+                        filter
+                        showClear
+                        :options="fuelTypesList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Двигун (топливо)</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Тип палива: бензин, дизель, гібрид</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.driveType"
-                      filter
-                      showClear
-                      :options="driveTypesList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Привід</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.driveType"
+                        filter
+                        showClear
+                        :options="driveTypesList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Привід</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Передній, задній або повний привід</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.transmission"
-                      filter
-                      showClear
-                      :options="transmissionsList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Коробка передач</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.transmission"
+                        filter
+                        showClear
+                        :options="transmissionsList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Коробка передач</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Механічна, автоматична, варіатор</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.modification"
-                      filter
-                      showClear
-                      :options="modifications"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Модифікація</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.modification"
+                        filter
+                        showClear
+                        :options="modifications"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Модифікація</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Об'єм та потужність двигуна</small>
+                  </div>
 
-                  <FloatLabel class="w-full" variant="in">
-                    <Dropdown
-                      v-model="form.color"
-                      filter
-                      showClear
-                      :options="colorsList"
-                      optionLabel="name"
-                      fluid="true"
-                      class="w-full"
-                      scrollHeight="20rem"
-                    />
-                    <label>Колір</label>
-                  </FloatLabel>
+                  <div class="flex gap-3 align-items-start">
+                    <FloatLabel class="flex-1" variant="in">
+                      <Dropdown
+                        v-model="form.color"
+                        filter
+                        showClear
+                        :options="colorsList"
+                        optionLabel="name"
+                        fluid="true"
+                        class="w-full"
+                        scrollHeight="20rem"
+                      />
+                      <label>Колір</label>
+                    </FloatLabel>
+                    <small class="text-500 text-sm mt-3 w-12rem">Колір кузова автомобіля</small>
+                  </div>
                 </div>
               </div>
             </template>
@@ -167,21 +200,37 @@
       </StepItem>
 
       <!-- Крок 2: Пробіг -->
-      <StepItem value="2" class="col-6">
+      <StepItem value="2" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Пробіг</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <Card>
+          <Card class="surface-100">
             <template #content>
               <div class="flex col gap-4">
-                <FloatLabel class="w-full" variant="in">
-                  <InputNumber
-                    v-model="form.mileage"
-                    class="w-full"
-                    suffix=" км"
-                    :min="0"
-                  />
-                  <label>Пробіг</label>
-                </FloatLabel>
+                <div class="flex gap-3 align-items-start">
+                  <FloatLabel class="flex-1" variant="in">
+                    <InputNumber
+                      v-model="form.mileage"
+                      class="w-full"
+                      suffix=" км"
+                      :min="0"
+                    />
+                    <label>Пробіг</label>
+                  </FloatLabel>
+                  <small class="text-500 text-sm mt-3 w-12rem">Кількість пройдених кілометрів</small>
+                </div>
+
+                <div class="flex gap-3 align-items-start">
+                  <FloatLabel class="flex-1" variant="in">
+                    <InputNumber
+                      v-model="form.price"
+                      class="w-full"
+                      suffix=" $"
+                      :min="0"
+                    />
+                    <label>Ціна</label>
+                  </FloatLabel>
+                  <small class="text-500 text-sm mt-3 w-12rem">Вартість автомобіля в доларах США</small>
+                </div>
               </div>
             </template>
           </Card>
@@ -193,10 +242,10 @@
       </StepItem>
 
       <!-- Крок 3: Фото -->
-      <StepItem value="3" class="col-6">
+      <StepItem value="3" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Фото</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <Card>
+          <Card class="surface-100">
             <template #content>
               <div class="flex flex-column gap-4">
                 <div>
@@ -207,7 +256,11 @@
                     :maxFileSize="1000000"
                     chooseLabel="Додати головне фото"
                     class="w-full"
+                    @select="handleMainPhotoSelect"
                   />
+                  <div v-if="previewImage" class="mt-2">
+                    <img :src="previewImage" alt="Превью" class="w-full h-8rem object-fit-cover border-round" />
+                  </div>
                 </div>
 
                 <div>
@@ -243,10 +296,10 @@
       </StepItem>
 
       <!-- Крок 4: Комплектація -->
-      <StepItem value="4" class="col-6">
+      <StepItem value="4" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Комплектація</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <Card>
+          <Card class="surface-100">
             <template #content>
               <div class="flex flex-column gap-4">
                 <div v-for="category in equipmentCategories" :key="category.id">
@@ -269,21 +322,24 @@
       </StepItem>
 
       <!-- Крок 5: Опис -->
-      <StepItem value="5" class="col-6">
+      <StepItem value="5" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Опис</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <Card>
+          <Card class="surface-100">
             <template #content>
               <div class="flex col gap-4">
-                <FloatLabel class="w-full" variant="in">
-                  <Textarea
-                    v-model="form.description"
-                    rows="5"
-                    class="w-full"
-                    autoResize
-                  />
-                  <label>Опис автомобіля</label>
-                </FloatLabel>
+                <div class="flex gap-3 align-items-start">
+                  <FloatLabel class="flex-1" variant="in">
+                    <Textarea
+                      v-model="form.description"
+                      rows="5"
+                      class="w-full"
+                      autoResize
+                    />
+                    <label>Опис автомобіля</label>
+                  </FloatLabel>
+                  <small class="text-500 text-sm mt-3 w-12rem">Детальний опис стану та особливостей авто</small>
+                </div>
               </div>
             </template>
           </Card>
@@ -295,10 +351,10 @@
       </StepItem>
 
       <!-- Крок 6: Контакти -->
-      <StepItem value="6" class="col-6">
+      <StepItem value="6" class="col-12 lg:col-8">
         <Step class="text-2xl font-bold">Контакти</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <Card>
+          <Card class="surface-100">
             <template #content>
               <div class="flex col gap-4">
                 <div class="flex flex-column gap-4">
@@ -429,6 +485,9 @@ const form = ref({
   // Пробіг
   mileage: null,
   
+  // Ціна
+  price: null,
+  
   // Комплектація
   equipment: {},
   
@@ -442,6 +501,15 @@ const form = ref({
   email: '',
   region: null,
   city: null
+})
+
+// Стан для превью фото
+const previewImage = ref(null)
+
+// Експортуємо дані форми для превью
+defineExpose({
+  form,
+  previewImage
 })
 
 // Списки даних
@@ -504,6 +572,18 @@ watch(() => form.value.region, (newRegion) => {
   }
   form.value.city = null
 })
+
+// Обробка завантаження головного фото
+const handleMainPhotoSelect = (event) => {
+  const file = event.files[0]
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      previewImage.value = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
 
 // Обробка відправки форми
 const handleSubmit = async () => {
