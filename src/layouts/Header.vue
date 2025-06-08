@@ -125,10 +125,11 @@
             
             
             <OverlayBadge
+              v-if="isAuthenticated"
               value="2"
               severity="danger"
               size="small"
-              @click="$router.push('/')"
+              @click="$router.push('/profile/notifications')"
               class="cursor-pointer hidden sm:block"
             >
               <i class="pi pi-bell text-white text-xl lg:text-2xl" />
@@ -136,15 +137,25 @@
             </div>
             
             <Button 
+                v-if="!isAuthenticated"
                 icon="pi pi-user"
                 severity="secondary"
-                @click="$router.push('/auth/login')"
+                @click="$router.push('/auth')"
                 aria-label="Увійти"
                 label="Увійти"
                 class="px-2 sm:px-3"
                 size="normal"
-                
-                
+            />
+            
+            <Button 
+                v-else
+                icon="pi pi-user"
+                severity="info"
+                @click="$router.push('/profile')"
+                aria-label="Профіль"
+                label="Профіль"
+                class="px-2 sm:px-3"
+                size="normal"
             />
               
 
@@ -256,7 +267,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import TabMenu from 'primevue/tabmenu'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -266,6 +277,28 @@ import AutoComplete from 'primevue/autocomplete'
 import { demoSearchSuggestions } from '@/data/demo/cars'
 
 const router = useRouter()
+
+// Проверка авторизации
+const isAuthenticated = ref(false)
+
+const checkAuth = () => {
+  isAuthenticated.value = !!localStorage.getItem('isAuthenticated')
+}
+
+// Слушаем изменения в localStorage
+const handleStorageChange = () => {
+  checkAuth()
+}
+
+onMounted(() => {
+  checkAuth()
+  window.addEventListener('storage', handleStorageChange)
+})
+
+// Также проверяем при изменении маршрута
+watch(() => router.currentRoute.value, () => {
+  checkAuth()
+})
 
 // Демо-дані
 const searchQuery = ref('')
