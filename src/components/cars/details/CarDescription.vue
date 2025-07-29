@@ -22,12 +22,11 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-
+// 1. Props компонента
 defineProps({
     description: {
         type: String,
         default: ''
     }
-});
+})
 </script> 

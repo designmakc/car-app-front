@@ -60,7 +60,9 @@
 <template>
     <!-- Варіант для авторинку CAR MARKET -->
     <Panel v-if="status !== 'Онлайн'" header="Продавець" class="mb-4">
-        <div class="text-md font-bold text-700 mb-3 Unbounded-heading">Авторинок CAR MARKET</div>
+        <div class="text-md font-bold text-700 mb-3 Unbounded-heading">
+            Авторинок CAR MARKET
+        </div>
         
         <!-- Адреса авторинку -->
         <div class="flex align-items-center gap-2 mb-4">
@@ -70,35 +72,39 @@
         
         <!-- Телефони авторинку (завжди видимі) -->
         <div class="mb-4">
-                <div v-for="(phone, index) in marketPhones" :key="index" class="mb-3">
+            <div v-for="(phone, index) in marketPhones" :key="index" class="mb-3">
                 <div class="text-xl Unbounded-heading">{{ phone }}</div>
             </div>
         </div>
         
         <!-- Кнопки для авторинку -->
         <div class="flex flex-column gap-2">
-            <Button label="Зателефонувати"
-                    icon="pi pi-phone"
-                    severity="success" 
-                    class="w-full" 
-                    as="a"
-                    size="large"
-                    :href="getPhoneLink(marketPhones[0])"
-                    style="text-decoration: none;" />
+            <Button 
+                label="Зателефонувати"
+                icon="pi pi-phone"
+                severity="success" 
+                class="w-full" 
+                as="a"
+                size="large"
+                :href="getPhoneLink(marketPhones[0])"
+                style="text-decoration: none;" 
+                @click="handlePhoneCall('market')" />
             
-            <Button label="Показати на карті"
-                    icon="pi pi-map"
-                    severity="info" 
-                    class="w-full" 
-                    size="large"
-                    @click="$emit('show-on-map')" />
+            <Button 
+                label="Показати на карті"
+                icon="pi pi-map"
+                severity="info" 
+                class="w-full" 
+                size="large"
+                @click="handleShowOnMap" />
             
-            <Button label="Замовити консультацію"
-                    severity="warning" 
-                    variant="outlined"
-                    class="w-full" 
-                    size="large"
-                    @click="$emit('request-consultation')" />
+            <Button 
+                label="Замовити консультацію"
+                severity="warning" 
+                variant="outlined"
+                class="w-full" 
+                size="large"
+                @click="handleRequestConsultation" />
         </div>
     </Panel>
 
@@ -119,30 +125,37 @@
             </div>
         </div>
         <div class="flex justify-content-end pt-2">
-            <Button v-if="!isPhoneVisible" 
-                    label="Показати номер"
-                    severity="success" 
-                    class="w-full" 
-                    size="large"
-                    @click="$emit('show-phone')" />
-            <Button v-else 
-                    label="Зателефонувати"
-                    icon="pi pi-phone"
-                    severity="success" 
-                    class="w-full" 
-                    size="large"
-                    as="a" 
-                    :href="phoneLink"
-                    style="text-decoration: none;" />
+            <Button 
+                v-if="!isPhoneVisible" 
+                label="Показати номер"
+                severity="success" 
+                class="w-full" 
+                size="large"
+                @click="handleShowPhone" />
+            <Button 
+                v-else 
+                label="Зателефонувати"
+                icon="pi pi-phone"
+                severity="success" 
+                class="w-full" 
+                size="large"
+                as="a" 
+                :href="phoneLink"
+                style="text-decoration: none;"
+                @click="handlePhoneCall('private')" />
         </div>
     </Panel>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from 'vue';
-import Button from 'primevue/button';
-import Panel from 'primevue/panel';
+// 1. Імпорти Vue
+import { computed } from 'vue'
 
+// 2. Імпорти PrimeVue компонентів
+import Button from 'primevue/button'
+import Panel from 'primevue/panel'
+
+// 3. Props компонента
 const props = defineProps({
     // Загальні пропси
     isPhoneVisible: {
@@ -183,40 +196,63 @@ const props = defineProps({
         type: Array,
         default: () => ['(067) 730 08 09', '(050) 730 08 09']
     }
-});
+})
 
-defineEmits(['show-phone', 'show-on-map', 'request-consultation']);
+// 4. Events з типізацією
+const emit = defineEmits({
+    'show-phone': null,
+    'show-on-map': null,
+    'request-consultation': null,
+    'phone-call': (type) => ['private', 'market'].includes(type)
+})
 
-// Функція для обрізання +38 з номера телефону
+// 5. Функції для форматування номерів
 const formatPhoneNumber = (phone) => {
-    if (!phone) return '';
+    if (!phone) return ''
     // Обрізаємо +38 якщо є на початку
-    return phone.replace(/^\+38\s?/, '');
-};
+    return phone.replace(/^\+38\s?/, '')
+}
 
-// Computed для приватного продавця
+const getPhoneLink = (phone) => {
+    if (!phone) return ''
+    return `tel:${phone.replace(/\s/g, '')}`
+}
+
+// 6. Computed властивості для приватного продавця
 const phoneLink = computed(() => {
-    if (!props.phoneNumber) return '';
-    return `tel:${props.phoneNumber.replace(/\s/g, '')}`;
-});
+    if (!props.phoneNumber) return ''
+    return `tel:${props.phoneNumber.replace(/\s/g, '')}`
+})
 
 const formattedPhoneNumber = computed(() => {
-    return formatPhoneNumber(props.phoneNumber);
-});
+    return formatPhoneNumber(props.phoneNumber)
+})
 
 const maskedPhone = computed(() => {
-    const formatted = formatPhoneNumber(props.phoneNumber);
-    if (!formatted) return 'XXX XXX XX XX';
+    const formatted = formatPhoneNumber(props.phoneNumber)
+    if (!formatted) return 'XXX XXX XX XX'
     // Маскуємо номер як (097) XXX XX XX
-    const match = formatted.match(/\((\d{3})\)\s?(\d{3})\s?(\d{2})\s?(\d{2})/);
+    const match = formatted.match(/\((\d{3})\)\s?(\d{3})\s?(\d{2})\s?(\d{2})/)
     if (match) {
-        return `(${match[1]}) XXX XX XX`;
+        return `(${match[1]}) XXX XX XX`
     }
-    return 'XXX XXX XX XX';
-});
+    return 'XXX XXX XX XX'
+})
 
-// Функції для авторинку
-const getPhoneLink = (phone) => {
-    return `tel:${phone.replace(/\s/g, '')}`;
-};
+// 7. Event handlers
+const handleShowPhone = () => {
+    emit('show-phone')
+}
+
+const handleShowOnMap = () => {
+    emit('show-on-map')
+}
+
+const handleRequestConsultation = () => {
+    emit('request-consultation')
+}
+
+const handlePhoneCall = (type) => {
+    emit('phone-call', type)
+}
 </script> 

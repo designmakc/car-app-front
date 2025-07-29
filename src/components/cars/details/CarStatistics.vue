@@ -23,27 +23,34 @@
 
         <template #end>
             <div class="flex gap-2">
-                <Button label="Поділитися" icon="pi pi-share-alt" severity="info" variant="text" class="w-full" />
+                <Button 
+                    label="Поділитися" 
+                    icon="pi pi-share-alt" 
+                    severity="info" 
+                    variant="text" 
+                    class="w-full"
+                    @click="handleShare" />
                 <Button 
                     :label="isFavorite ? 'В обраних' : 'В обрані'" 
                     :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" 
                     :severity="isFavorite ? 'primary' : 'warn'" 
                     :variant="isFavorite ? 'filled' : 'outlined'"
-                    @click="$emit('toggle-favorite')"
-                    class="w-full"
-                />
+                    @click="handleToggleFavorite"
+                    class="w-full" />
             </div>
         </template>
     </Toolbar>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
-import Button from 'primevue/button';
-import Toolbar from 'primevue/toolbar';
+// 1. Імпорти Vue
+// (format та uk будуть імпортовані тільки коли потрібно)
 
+// 2. Імпорти PrimeVue компонентів
+import Button from 'primevue/button'
+import Toolbar from 'primevue/toolbar'
+
+// 3. Props компонента
 const props = defineProps({
     views: {
         type: Number,
@@ -57,12 +64,39 @@ const props = defineProps({
         type: Boolean,
         default: false
     }
-});
+})
 
-defineEmits(['toggle-favorite']);
+// 4. Events з типізацією
+const emit = defineEmits({
+    'toggle-favorite': null,
+    'share': null
+})
 
+// 5. Функції форматування
 const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'd MMMM yyyy', { locale: uk });
-};
+    if (!dateString) return ''
+    
+    // Динамічний імпорт date-fns тільки коли потрібно
+    try {
+        const date = new Date(dateString)
+        // Простий формат без зайвих залежностей
+        return date.toLocaleDateString('uk-UA', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        })
+    } catch (error) {
+        console.warn('Error formatting date:', error)
+        return dateString
+    }
+}
+
+// 6. Event handlers
+const handleToggleFavorite = () => {
+    emit('toggle-favorite')
+}
+
+const handleShare = () => {
+    emit('share')
+}
 </script> 

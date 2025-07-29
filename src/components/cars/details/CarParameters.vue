@@ -23,15 +23,16 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import Panel from 'primevue/panel';
+// 1. Імпорти PrimeVue компонентів
+import Panel from 'primevue/panel'
 
+// 2. Props компонента
 defineProps({
     params: {
         type: Array,
         required: true
     }
-});
+})
 </script>
 
 <style scoped>

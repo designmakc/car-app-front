@@ -30,20 +30,16 @@
 </template>
 
 <script setup>
-/**
- * Props
- */
-defineProps({
+// 1. Props компонента
+const props = defineProps({
     options: {
         type: Array,
         required: true,
         default: () => []
     }
-});
+})
 
-/**
- * Категорії опцій
- */
+// 2. Категорії опцій (статичні дані)
 const categories = [
     {
         name: 'Освітлення',
@@ -124,5 +120,5 @@ const categories = [
             { name: 'Віконні (штори)', value: 'curtain_airbags' }
         ]
     }
-];
+]
 </script> 

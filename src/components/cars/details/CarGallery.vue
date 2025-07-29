@@ -26,7 +26,7 @@
                     :key="index"
                     class="flex-none h-full image-slide"
                     :style="{ 
-                        width: isMobile ? '100%' : `${imageWidths[index]}px`,
+                        width: isMobile ? '100%' : `${imageWidths[index] || 400}px`,
                         'scroll-snap-align': 'start'
                     }">
                     <img :src="image.url" 
@@ -91,9 +91,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import Button from 'primevue/button';
+// 1. Імпорти Vue
+import { ref, onMounted, onUnmounted } from 'vue'
 
+// 2. Імпорти PrimeVue компонентів
+import Button from 'primevue/button'
+
+// 3. Props компонента
 const props = defineProps({
     images: {
         type: Array,
@@ -111,87 +115,133 @@ const props = defineProps({
         type: Object,
         required: true
     }
-});
+})
 
-const emit = defineEmits(['update:index', 'open-fullscreen']);
+// 4. Events з типізацією
+const emit = defineEmits({
+    'update:index': (index) => typeof index === 'number' && index >= 0,
+    'open-fullscreen': (index) => typeof index === 'number' && index >= 0
+})
 
-const imageContainer = ref(null);
-const imageWidths = ref([]);
+// 5. Reactive стан (SSR-безпечний)
+const imageContainer = ref(null)
+const imageWidths = ref([])
 
+// 6. Event handlers для зображень
 const handleImageLoad = (event, index) => {
-    if (!props.isMobile) {
-        const renderedWidth = event.target.offsetWidth || event.target.clientWidth;
-        imageWidths.value[index] = renderedWidth;
+    if (typeof window === 'undefined') return
+    if (props.isMobile) return
+    
+    try {
+        const renderedWidth = event.target.offsetWidth || event.target.clientWidth
+        if (renderedWidth > 0) {
+            imageWidths.value[index] = renderedWidth
+        }
+    } catch (error) {
+        console.warn('Error handling image load:', error)
     }
-};
+}
 
+// 7. Scroll handler (SSR-безпечний)
 const handleScroll = () => {
-    if (!imageContainer.value || !props.isMobile) return;
+    if (typeof window === 'undefined') return
+    if (!imageContainer.value || !props.isMobile) return
     
-    const containerWidth = imageContainer.value.clientWidth;
-    const scrollLeft = imageContainer.value.scrollLeft;
-    
-    const newIndex = Math.round(scrollLeft / containerWidth);
-    if (newIndex !== props.currentIndex) {
-        emit('update:index', newIndex);
-    }
-};
-
-const scrollToImage = (indexOrDirection) => {
-    if (!imageContainer.value) return;
-
-    let newIndex;
-    if (typeof indexOrDirection === 'number') {
-        newIndex = indexOrDirection;
-    } else {
-        newIndex = indexOrDirection === 'next' 
-            ? Math.min(props.currentIndex + 1, props.images.length - 1)
-            : Math.max(props.currentIndex - 1, 0);
-    }
-
-    if (props.isMobile) {
-        const containerWidth = imageContainer.value.clientWidth;
-        const scrollPosition = newIndex * containerWidth;
+    try {
+        const containerWidth = imageContainer.value.clientWidth
+        const scrollLeft = imageContainer.value.scrollLeft
         
-        imageContainer.value.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
-    } else {
-        const scrollPosition = imageWidths.value
-            .slice(0, newIndex)
-            .reduce((acc, width) => acc + width, 0);
-
-        imageContainer.value.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
+        const newIndex = Math.round(scrollLeft / containerWidth)
+        if (newIndex !== props.currentIndex && newIndex >= 0 && newIndex < props.images.length) {
+            emit('update:index', newIndex)
+        }
+    } catch (error) {
+        console.warn('Error handling scroll:', error)
     }
-    
-    emit('update:index', newIndex);
-};
+}
+
+// 8. Navigation functions
+const scrollToImage = (indexOrDirection) => {
+    if (typeof window === 'undefined') return
+    if (!imageContainer.value) return
+
+    try {
+        let newIndex
+        if (typeof indexOrDirection === 'number') {
+            newIndex = Math.max(0, Math.min(indexOrDirection, props.images.length - 1))
+        } else {
+            newIndex = indexOrDirection === 'next' 
+                ? Math.min(props.currentIndex + 1, props.images.length - 1)
+                : Math.max(props.currentIndex - 1, 0)
+        }
+
+        if (props.isMobile) {
+            const containerWidth = imageContainer.value.clientWidth
+            const scrollPosition = newIndex * containerWidth
+            
+            imageContainer.value.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            })
+        } else {
+            const scrollPosition = imageWidths.value
+                .slice(0, newIndex)
+                .reduce((acc, width) => acc + (width || 400), 0)
+
+            imageContainer.value.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            })
+        }
+        
+        emit('update:index', newIndex)
+    } catch (error) {
+        console.warn('Error scrolling to image:', error)
+    }
+}
 
 const openFullscreenGallery = (index) => {
-    emit('open-fullscreen', index);
-};
+    if (typeof index === 'number' && index >= 0) {
+        emit('open-fullscreen', index)
+    }
+}
+
+// 9. Lifecycle hooks (SSR-безпечні)
+let scrollTimeout
+let debouncedScrollHandler
 
 onMounted(() => {
-    let scrollTimeout;
-    const debouncedScroll = () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(handleScroll, 50);
-    };
+    if (typeof window === 'undefined') return
     
-    if (imageContainer.value) {
-        imageContainer.value.addEventListener('scroll', debouncedScroll);
+    try {
+        debouncedScrollHandler = () => {
+            clearTimeout(scrollTimeout)
+            scrollTimeout = setTimeout(handleScroll, 50)
+        }
+        
+        if (imageContainer.value) {
+            imageContainer.value.addEventListener('scroll', debouncedScrollHandler)
+        }
+    } catch (error) {
+        console.warn('Error setting up scroll listener:', error)
     }
-});
+})
 
 onUnmounted(() => {
-    if (imageContainer.value) {
-        imageContainer.value.removeEventListener('scroll', handleScroll);
+    if (typeof window === 'undefined') return
+    
+    try {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout)
+        }
+        
+        if (imageContainer.value && debouncedScrollHandler) {
+            imageContainer.value.removeEventListener('scroll', debouncedScrollHandler)
+        }
+    } catch (error) {
+        console.warn('Error cleaning up scroll listener:', error)
     }
-});
+})
 </script>
 
 <style scoped>
