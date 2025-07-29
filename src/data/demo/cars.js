@@ -141,7 +141,7 @@ export const demoCars = [
     color: 'Синій',
     city: 'Київ',
     price: 39900,
-    status: 'На майданчику',
+    status: 'Онлайн',
     is_top: true,
     images: [
       {

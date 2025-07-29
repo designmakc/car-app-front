@@ -1,6 +1,6 @@
 <template>
   <div class="grid gap-3 md:gap-4 bg-orange-500 p-3 md:p-4 text-white border-round-lg m-0">
-    <h3 class="text-xl md:text-2xl font-bold w-full">Статистика на сьогодні</h3>
+    <h3 class="text-xl md:text-2xl font-bold mt-0 w-full">Статистика на сьогодні</h3>
     <div class="flex text-sm w-full">
       <i class="pi pi-map-marker mr-2"></i>
       <span>Житомир</span> <!-- Поки що статично, можна зробити пропсом -->

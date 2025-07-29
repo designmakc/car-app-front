@@ -85,12 +85,17 @@
                         </div>
                         <CarContactBlock
                             v-else
-                            sellerName="Сергій"
-                            registrationDate="12.03.2022"
-                            location="м. Київ Київська область"
-                            :phoneNumber="phoneNumber"
+                            :isCarMarket="car.status === 'На майданчику'"
+                            :sellerName="sellerInfo.name"
+                            :registrationDate="sellerInfo.registrationDate"
+                            :location="sellerInfo.location"
+                            :phoneNumber="sellerInfo.phone"
                             :isPhoneVisible="isPhoneVisible"
+                            :marketAddress="marketInfo.address"
+                            :marketPhones="marketInfo.phones"
                             @show-phone="showPhoneNumber"
+                            @show-on-map="showOnMap"
+                            @request-consultation="requestConsultation"
                             class="flex-order-1 md:flex-order-1"
                         />
                     </div>
@@ -158,10 +163,10 @@
             </main>
         </div>
         <CarStickyPhoneButton
-            :sellerName="'Сергій'"
-            :registrationDate="'12.03.2022'"
-            :location="'м. Київ Київська область'"
-            :phoneNumber="phoneNumber"
+            :sellerName="sellerInfo.name"
+            :registrationDate="sellerInfo.registrationDate"
+            :location="sellerInfo.location"
+            :phoneNumber="sellerInfo.phone"
         />
     </Mainlayout>
 </template>
@@ -219,11 +224,24 @@ const isMobile = ref(window.innerWidth <= 768);
 
 /**
  * =====================
- * PHONE NUMBER
+ * CONTACT INFORMATION
  * =====================
  */
 const isPhoneVisible = ref(false);
-const phoneNumber = "098 123 45 67";
+
+// Інформація про приватного продавця
+const sellerInfo = computed(() => ({
+    name: "Сергій",
+    registrationDate: "12.03.2022", 
+    location: "м. Київ Київська область",
+    phone: "+38 (098) 123 45 67"
+}));
+
+// Інформація про авторинок CAR MARKET
+const marketInfo = computed(() => ({
+    address: "м. Житомир вул. Покровська 271",
+    phones: ["(067) 730 08 09", "(050) 730 08 09"]
+}));
 
 /**
  * =====================
@@ -311,11 +329,23 @@ const formatPrice = (price) => {
 
 /**
  * =====================
- * PHONE NUMBER
+ * CONTACT HANDLERS
  * =====================
  */
 const showPhoneNumber = () => {
     isPhoneVisible.value = true;
+    // TODO: Відправити аналітику
+    console.log('Phone number revealed');
+};
+
+const showOnMap = () => {
+    // TODO: Відкрити карту з локацією авторинку
+    console.log('Show market location on map');
+};
+
+const requestConsultation = () => {
+    // TODO: Відкрити форму заявки на консультацію
+    console.log('Request consultation');
 };
 
 const isFavorite = ref(false)

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap gap-3 quick-filters mt-4">
     <div>
-      <h4 class="mb-3 text-lg font-semibold">Нові авто за</h4>
+      <h4 class="mb-3 text-lg font-semibold mt-0">Нові авто за</h4>
       <div class="flex flex-wrap gap-2 mb-2"> <!-- flex-wrap для переносу на малих екранах -->
         <Button type="button" class="p-button-rounded border-2" label="Сьогодні" severity="secondary" variant="outlined" badge="2" badgeSeverity="contrast" outlined />
 
