@@ -1,5 +1,40 @@
-# Vue 3 + Vite
+# Car Market App Frontend
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Vue.js додаток для автомобільного ринку.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 📋 Правила розробки
+
+**⚠️ ОБОВ'ЯЗКОВО для всіх розробників та AI асистентів:**
+
+👉 **[ПРАВИЛА ПРОЕКТУ - PROJECT_RULES.md](./PROJECT_RULES.md)**
+
+### Ключові правила:
+- **ЗАВЖДИ перевіряти документацію** https://primevue.org/ перед використанням PrimeVue компонентів
+- **Всі коментарі українською мовою**
+- **Тільки офіційні API** згідно з документацією
+- **Інструкції для бек-енду** в кожному компоненті
+
+## 🛠 Технології
+
+- Vue 3 + Composition API
+- PrimeVue 4 (офіційна документація: https://primevue.org/)
+- PrimeFlex
+- Vite
+
+## 🚀 Запуск проекту
+
+```bash
+npm install
+npm run dev
+```
+
+## 📖 Документація компонентів
+
+Перед використанням будь-якого PrimeVue компонента обов'язково перевіряйте:
+- **Button:** https://primevue.org/button/
+- **Panel:** https://primevue.org/panel/
+- **Dialog:** https://primevue.org/dialog/
+- **InputText:** https://primevue.org/inputtext/
+- **DataTable:** https://primevue.org/datatable/
+
+**ВАЖЛИВО:** Завжди використовуйте тільки офіційні API з документації!

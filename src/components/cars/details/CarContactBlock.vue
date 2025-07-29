@@ -3,44 +3,103 @@
  * CarContactBlock.vue
  * 
  * Компонент з контактною інформацією продавця
+ * Підтримує два варіанти: для приватних продавців та для авторинку CAR MARKET
+ * 
+ * 🚨 ВАЖЛИВО: Всі PrimeVue компоненти використовуються згідно з офіційною документацією
+ * 📖 Button API: https://primevue.org/button/
+ * 📖 Panel API: https://primevue.org/panel/
+ * 
+ * === ІНСТРУКЦІЇ ДЛЯ БЕК-ЕНД РОЗРОБНИКА ===
+ * 
+ * 1. ПОЛЯ В БАЗІ ДАНИХ:
+ *    - cars.seller_type: enum('private', 'car_market') - тип продавця
+ *    - cars.seller_name: varchar(255) - ім'я приватного продавця (nullable для car_market)
+ *    - cars.seller_registration_date: date - дата реєстрації приватного продавця (nullable для car_market)
+ *    - cars.seller_location: varchar(255) - локація приватного продавця (nullable для car_market)
+ *    - cars.seller_phone: varchar(20) - телефон приватного продавця (nullable для car_market)
+ *    - market_locations.id: int - ID локації авторинку (foreign key, nullable для private)
+ *    - market_locations.address: varchar(500) - адреса авторинку
+ *    - market_locations.phones: json - масив телефонів авторинку ['phone1', 'phone2']
+ * 
+ * 2. API ЕНДПОІНТИ:
+ *    GET /api/cars/{id}/contact-info - отримати контактну інформацію
+ *    Response для приватного продавця:
+ *    {
+ *      "seller_type": "private",
+ *      "seller_name": "Іван Петренко",
+ *      "registration_date": "2023-03-15",
+ *      "location": "Київ",
+ *      "phone_number": "+38 (097) 123 45 67"
+ *    }
+ *    УВАГА: На фронті +38 автоматично обрізається!
+ *    
+ *    Response для авторинку:
+ *    {
+ *      "seller_type": "car_market", 
+ *      "market_address": "м. Житомир вул. Покровська 271",
+ *      "market_phones": ["(067) 730 08 09", "(050) 730 08 09"]
+ *    }
+ * 
+ *    POST /api/cars/{id}/show-phone - показати номер телефону (логування)
+ *    POST /api/cars/{id}/request-consultation - заявка на консультацію
+ *    Body: { "user_name": "string", "user_phone": "string", "preferred_time": "string" }
+ * 
+ * 3. ПОДІЇ ДЛЯ АНАЛІТИКИ:
+ *    - phone_number_revealed: коли користувач натискає "Показати номер"
+ *    - phone_call_initiated: коли користувач натискає "Зателефонувати"  
+ *    - map_location_requested: коли користувач натискає "Показати на карті"
+ *    - consultation_requested: коли користувач натискає "Замовити консультацію"
  */
 -->
 
 <template>
-    <Panel v-if="showPanel" header="Продавець" class="mb-4">
-        <div class="text-2xl font-bold text-700 mb-1">{{ sellerName }}</div>
-        <div class="flex align-items-center gap-2 mb-2">
-            <span class="text-600 text-sm">Дата реєстрації</span>
-            <span class="text-700">{{ registrationDate }}</span>
+    <!-- Варіант для авторинку CAR MARKET -->
+    <Panel v-if="isCarMarket" header="Продавець" class="mb-4">
+        <div class="text-md font-bold text-700 mb-3 Unbounded-heading">Авторинок CAR MARKET</div>
+        
+        <!-- Адреса авторинку -->
+        <div class="flex align-items-center gap-2 mb-4">
+            <i class="pi pi-map-marker text-xl text-primary"></i>
+            <span class="text-700">{{ marketAddress }}</span>
         </div>
-        <div class="flex align-items-center gap-2 pt-3">
-            <i class="pi pi-map-marker text-xl"></i>
-            <span class="text-700">{{ location }}</span>
-        </div>
-        <div class="pt-4">
-            <div class="text-4xl font-bold text-700">
-                {{ isPhoneVisible ? phoneNumber : maskedPhone }}
+        
+        <!-- Телефони авторинку (завжди видимі) -->
+        <div class="mb-4">
+                <div v-for="(phone, index) in marketPhones" :key="index" class="mb-3">
+                <div class="text-xl Unbounded-heading">{{ phone }}</div>
             </div>
         </div>
-        <div class="flex justify-content-end pt-2">
-            <Button v-if="!isPhoneVisible" 
+        
+        <!-- Кнопки для авторинку -->
+        <div class="flex flex-column gap-2">
+            <Button label="Зателефонувати"
+                    icon="pi pi-phone"
                     severity="success" 
                     class="w-full" 
-                    @click="$emit('show-phone')">
-                <span class="text-xl">Показати номер</span>
-            </Button>
-            <Button v-else 
-                    severity="success" 
+                    as="a"
+                    size="large"
+                    :href="getPhoneLink(marketPhones[0])"
+                    style="text-decoration: none;" />
+            
+            <Button label="Показати на карті"
+                    icon="pi pi-map"
+                    severity="info" 
                     class="w-full" 
-                    tag="a" 
-                    :href="phoneLink">
-                <i class="pi pi-phone mr-2"></i>
-                <span class="text-xl">Зателефонувати</span>
-            </Button>
+                    size="large"
+                    @click="$emit('show-on-map')" />
+            
+            <Button label="Замовити консультацію"
+                    severity="warning" 
+                    variant="outlined"
+                    class="w-full" 
+                    size="large"
+                    @click="$emit('request-consultation')" />
         </div>
     </Panel>
-    <template v-else>
-        <div class="text-2xl font-bold text-700 mb-1">{{ sellerName }}</div>
+
+    <!-- Варіант для приватного продавця -->
+    <Panel v-else header="Продавець" class="mb-4">
+        <div class="text-xl Unbounded-heading mb-1">{{ sellerName }}</div>
         <div class="flex align-items-center gap-2 mb-2">
             <span class="text-600 text-sm">Дата реєстрації</span>
             <span class="text-700">{{ registrationDate }}</span>
@@ -49,28 +108,29 @@
             <i class="pi pi-map-marker text-xl"></i>
             <span class="text-700">{{ location }}</span>
         </div>
-        <div class="pt-4">
-            <div class="text-4xl font-bold text-700">
-                {{ isPhoneVisible ? phoneNumber : maskedPhone }}
+        <div class="pt-4 mb-2">
+            <div class="text-xl Unbounded-heading">
+                {{ isPhoneVisible ? formattedPhoneNumber : maskedPhone }}
             </div>
         </div>
         <div class="flex justify-content-end pt-2">
             <Button v-if="!isPhoneVisible" 
+                    label="Показати номер"
                     severity="success" 
                     class="w-full" 
-                    @click="$emit('show-phone')">
-                <span class="text-xl">Показати номер</span>
-            </Button>
+                    size="large"
+                    @click="$emit('show-phone')" />
             <Button v-else 
+                    label="Зателефонувати"
+                    icon="pi pi-phone"
                     severity="success" 
                     class="w-full" 
-                    tag="a" 
-                    :href="phoneLink">
-                <i class="pi pi-phone mr-2"></i>
-                <span class="text-xl">Зателефонувати</span>
-            </Button>
+                    size="large"
+                    as="a" 
+                    :href="phoneLink"
+                    style="text-decoration: none;" />
         </div>
-    </template>
+    </Panel>
 </template>
 
 <script setup>
@@ -79,44 +139,77 @@ import Button from 'primevue/button';
 import Panel from 'primevue/panel';
 
 const props = defineProps({
-    sellerName: {
-        type: String,
-        required: true
-    },
-    registrationDate: {
-        type: String,
-        required: true
-    },
-    location: {
-        type: String,
-        required: true
-    },
-    phoneNumber: {
-        type: String,
-        required: true
-    },
+    // Загальні пропси
     isPhoneVisible: {
         type: Boolean,
         default: false
     },
-    showPanel: {
+    
+    // Пропси для приватного продавця
+    sellerName: {
+        type: String,
+        default: ''
+    },
+    registrationDate: {
+        type: String,
+        default: ''
+    },
+    location: {
+        type: String,
+        default: ''
+    },
+    phoneNumber: {
+        type: String,
+        default: ''
+    },
+    
+    // Пропси для авторинку CAR MARKET
+    isCarMarket: {
         type: Boolean,
-        default: true
+        default: false
+    },
+    marketAddress: {
+        type: String,
+        default: 'м. Житомир вул. Покровська 271'
+    },
+    marketPhones: {
+        type: Array,
+        default: () => ['(067) 730 08 09', '(050) 730 08 09']
     }
 });
 
-defineEmits(['show-phone']);
+defineEmits(['show-phone', 'show-on-map', 'request-consultation']);
 
+// Функція для обрізання +38 з номера телефону
+const formatPhoneNumber = (phone) => {
+    if (!phone) return '';
+    // Обрізаємо +38 якщо є на початку
+    return phone.replace(/^\+38\s?/, '');
+};
+
+// Computed для приватного продавця
 const phoneLink = computed(() => {
+    if (!props.phoneNumber) return '';
     return `tel:${props.phoneNumber.replace(/\s/g, '')}`;
 });
 
+const formattedPhoneNumber = computed(() => {
+    return formatPhoneNumber(props.phoneNumber);
+});
+
 const maskedPhone = computed(() => {
+    const formatted = formatPhoneNumber(props.phoneNumber);
+    if (!formatted) return 'XXX XXX XX XX';
     // Маскуємо номер як (097) XXX XX XX
-    const match = props.phoneNumber.match(/(\d{3})\s?(\d{3})\s?(\d{2})\s?(\d{2})/);
+    const match = formatted.match(/\((\d{3})\)\s?(\d{3})\s?(\d{2})\s?(\d{2})/);
     if (match) {
         return `(${match[1]}) XXX XX XX`;
     }
     return 'XXX XXX XX XX';
 });
+
+// Функції для авторинку
+const getPhoneLink = (phone) => {
+    return `tel:${phone.replace(/\s/g, '')}`;
+};
 </script> 
