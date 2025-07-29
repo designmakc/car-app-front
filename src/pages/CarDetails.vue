@@ -85,7 +85,7 @@
                         </div>
                         <CarContactBlock
                             v-else
-                            :isCarMarket="car.status === 'На майданчику'"
+                            :status="car.status"
                             :sellerName="sellerInfo.name"
                             :registrationDate="sellerInfo.registrationDate"
                             :location="sellerInfo.location"
